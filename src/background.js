@@ -69,3 +69,20 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
   const tab = await browser.tabs.get(activeInfo.tabId);
   currentDomain = getDomain(tab.url);
 });
+
+// default settings on install
+const defaultSettings = {
+  theme: "light",
+  notificationsEnabled: true,
+  refreshRate: 30,
+  limit: 1800,
+  // save all the dommscrolling sites
+  ursl: ["http://youtube.com/shorts", "http://instagram.com/reels", "http://tiktok.com/"]
+};
+// save default settings to synced storage on first install 
+browser.runtime.onInstalled.addListener((details) => {
+  if (details.reason === "install") {
+    browser.storage.sync.set(defaultSettings);
+    console.log("Default settings initialized.");
+  }
+});
