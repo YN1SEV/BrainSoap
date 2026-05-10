@@ -1,6 +1,6 @@
 {
-  "name": "Domain Time Tracker",
-  "description": "to come in future",
+  "name": "BrainSoap",
+  "description": "A browser extension to help users manage their time spent on distracting websites by providing customizable blocking and redirection features.",
   "version": "1.0.0",
   "manifest_version": 3,
   "permissions": ["storage", "tabs", "idle", "alarms", "notifications"],
@@ -18,7 +18,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "domain-tracker@yourdomain.com"
+      "id": "theBrainSoapProject"
     }
   }
 }
