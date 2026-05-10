@@ -1,4 +1,5 @@
 // Initialize components
+
 const usernameInput = document.getElementById('username');
 const notifyCheckbox = document.getElementById('notifications');
 const themeSelect = document.getElementById('theme');
