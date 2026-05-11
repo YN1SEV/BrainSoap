@@ -32,8 +32,6 @@ function getSetting(name)
         checkSettingsExists()
         return defaultSettings[name];
     }
-
-
 }
 
 function checkSettingsExists()
