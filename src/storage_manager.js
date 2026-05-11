@@ -1,27 +1,43 @@
-import { defaultSettings } from "./defaults.js";
-
 // save new or update variable in browser storage
-function SaveVariable(name, value) 
+async function saveVariable(name, value) 
 {
-  browser.storage.local.set({ [name]: value });
+    try {
+        await browser.storage.local.set({ [name]: value });
+    } catch (e) {
+        console.error("Storage write error:", e);
+        return undefined;
+    }
 }
 
 // get variable from browser storage, may return undefined if variable doesnt exist.
-function GetVariable(name) 
+async function getVariable(name) 
 {
-    return browser.storage.local.get(name).then((result) => result[name]);
+    try {
+        const result = await browser.storage.local.get(name);
+        return result[name];
+    } catch (e) {
+        console.error("Storage read error:", e);
+        return undefined;
+    }
 }
 
 // save setting to synced storage or create new if not eist
-function saveSetting(name, value) 
+async function saveSetting(name, value) 
 {
-  browser.storage.sync.set({ [name]: value });
+    try {
+        await browser.storage.sync.set({ [name]: value });
+        
+    } catch (error) {
+        console.error("Storage write error:", error);
+    }
 }
 
 // get setting from synced storage, restores default if user deleted browser data
-function getSetting(name) 
+async function getSetting(name) 
 {
-    value = browser.storage.sync.get(name).then((result) => result[name]);
+    const result = await browser.storage.sync.get(name);
+    const value = result[name];
+
     // validate that the value exists and is not undefined
     if (value !== undefined) 
     {
@@ -29,17 +45,17 @@ function getSetting(name)
     }
     else 
     {
-        checkSettingsExists()
+        await checkSettingsExists()
         return defaultSettings[name];
     }
 }
 
-function checkSettingsExists()
+async function checkSettingsExists()
 {
-    exist = browser.storage.sync.get("exist").then((result) => result.exist);
-    if (exist === undefined)
+    const result = await browser.storage.sync.get("exist").then((result) => result.exist);
+    if (result === undefined)
     {
         // restore default settings if user deleted browser data
-        browser.storage.sync.set(defaultSettings);
+        await browser.storage.sync.set(defaultSettings);
     }
 }

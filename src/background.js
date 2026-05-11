@@ -1,14 +1,11 @@
 let currentDomain = null;
 let startTime = Date.now();
 
-// Helper: Get domain from URL
-const getDomain = (url) => {
-  try {
-    return new URL(url).hostname;
-  } catch (e) {
-    return null;
-  }
-};
+
+const checkIfTracked = async (url) => {
+  const trackedUrls = await getSetting("urls");
+  return trackedUrls.some(trackedUrl => url.startsWith(trackedUrl));
+}
 
 // 1. Setup the Heartbeat (Every 1 minute)
 browser.alarms.create("checkLimit", { periodInMinutes: 1 });
@@ -28,20 +25,22 @@ async function updateTime() {
   const delta = Math.floor((now - startTime) / 1000);
   
   // Storage usage with Promises
-  const data = await browser.storage.local.get(currentDomain);
-  const total = (data[currentDomain] || 0) + delta;
+  const data = await getVariable(currentDomain);
+  const total = (data || 0) + delta;
 
-  await browser.storage.local.set({ [currentDomain]: total });
+  await saveVariable(currentDomain, total);
+
   startTime = now; 
 }
 
 // 3. The "At that moment" check
 async function checkThresholds() {
   if (!currentDomain) return;
+  if (!checkIfTracked(currentDomain)) return;
 
   const data = await getVariable(currentDomain);
   const timeSpent = data[currentDomain] || 0;
-  const limit = getSetting("limit") 
+  const limit = await getSetting("limit") 
 
   if (timeSpent >= limit) {
     browser.notifications.create({
@@ -67,15 +66,31 @@ browser.idle.onStateChanged.addListener(async (state) => {
 browser.tabs.onActivated.addListener(async (activeInfo) => {
   await updateTime();
   const tab = await browser.tabs.get(activeInfo.tabId);
-  currentDomain = getDomain(tab.url);
+  currentDomain = getCleanedIdentifier(tab.url);
 });
 
 
 // save default settings to synced storage on first install 
-browser.runtime.onInstalled.addListener((details) => {
-    import { defaultSettings } from "./defaults.js";
-  if (details.reason === "install") {
-    browser.storage.sync.set(defaultSettings);
-    console.log("Default settings initialized.");
-  }
+browser.runtime.onInstalled.addListener(async (details) => {
+  if (details.reason === "install") 
+    {
+      await saveSetting("limit", defaultSettings.limit);
+      console.log("Default settings initialized.");
+    }
 });
+
+browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+    // changeInfo.url will only be present if the URL actually changed
+    if (changeInfo.url) {
+      console.log("URL changed to:", tab.url);
+      try {
+        currentDomain = getCleanedIdentifier(tab.url);
+        console.log("Current domain ID set to:", currentDomain);
+        await updateTime();
+        
+      } catch (e) {
+        console.error(e);
+        
+      }
+    }
+  },{properties: ["url"]});
