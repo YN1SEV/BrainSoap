@@ -1,10 +1,14 @@
 let currentDomain = null;
 let startTime = Date.now();
 
+window.addEventListener("unhandledrejection", (event) => {
+  console.error("Unhandled Promise Rejection:", event.reason);
+});
 
 const checkIfTracked = async (url) => {
+  if (!url) return false;
   const trackedUrls = await getSetting("urls");
-  return trackedUrls.some(trackedUrl => url.startsWith(trackedUrl));
+  return trackedUrls.some(trackedUrl => url.includes(trackedUrl));
 }
 
 // 1. Setup the Heartbeat (Every 1 minute)
@@ -38,16 +42,26 @@ async function checkThresholds() {
   if (!currentDomain) return;
   if (!checkIfTracked(currentDomain)) return;
 
-  const data = await getVariable(currentDomain);
-  const timeSpent = data[currentDomain] || 0;
+  const timeSpent = await getVariable(currentDomain) || 0;
+  //const timeSpent = data[currentDomain] || 0;
   const limit = await getSetting("limit") 
 
   if (timeSpent >= limit) {
-    browser.notifications.create({
+    console.log(`Limit reached for ${currentDomain}: ${timeSpent} seconds`);
+    browser.notifications.create("limit-notify", {
       "type": "basic",
-      "iconUrl": browser.runtime.getURL("icon.png"),
-      "title": "Limit Reached",
-      "message": `Time's up on ${currentDomain}!`
+      "iconUrl": browser.runtime.getURL("icons/icon128.png"),
+      "title": "BrainSoap: Limit Reached",
+      "message": `You've used up your time on ${currentDomain}. Move along!`,
+      
+      // This is the key property for persistence
+      "requireInteraction": true, 
+      
+      // Optional: Adds a button for better UX
+      "buttons": [
+        { "title": "Close Tab" },
+        { "title": "Give me 5 more minutes" }
+      ]
     });
   }
 }
@@ -69,9 +83,9 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
   currentDomain = getCleanedIdentifier(tab.url);
 });
 
-
-// save default settings to synced storage on first install 
+// on install, set default settings 
 browser.runtime.onInstalled.addListener(async (details) => {
+  await clearLocalStorage(); 
   if (details.reason === "install") 
     {
       await saveSetting("limit", defaultSettings.limit);
@@ -79,6 +93,7 @@ browser.runtime.onInstalled.addListener(async (details) => {
     }
 });
 
+// Listen for URL changes in the active tab
 browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     // changeInfo.url will only be present if the URL actually changed
     if (changeInfo.url) {
@@ -87,10 +102,18 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
         currentDomain = getCleanedIdentifier(tab.url);
         console.log("Current domain ID set to:", currentDomain);
         await updateTime();
-        
+        await checkThresholds();
       } catch (e) {
         console.error(e);
         
       }
     }
   },{properties: ["url"]});
+
+// listenfer for browser startupo
+browser.runtime.onStartup.addListener(async () => {
+    console.log("Browser started, checking settings...");
+    await checkSettingsExists();
+    await clearLocalStorage(); 
+
+  });

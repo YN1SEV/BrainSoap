@@ -22,6 +22,7 @@ async function getVariable(name)
 }
 
 // save setting to synced storage or create new if not eist
+// this trusts the user input. 
 async function saveSetting(name, value) 
 {
     try {
@@ -57,5 +58,14 @@ async function checkSettingsExists()
     {
         // restore default settings if user deleted browser data
         await browser.storage.sync.set(defaultSettings);
+    }
+}
+
+async function clearLocalStorage() {
+    try {
+        await browser.storage.local.clear();
+        console.log("All storage cleared.");
+    } catch (e) {
+        console.error("Storage clear error:", e);
     }
 }

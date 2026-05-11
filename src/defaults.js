@@ -5,5 +5,5 @@ const defaultSettings = {
   notificationsEnabled: true, // note to self: change to false
   limit: 5, // TODO: make this per domain
   // save all the dommscrolling sites
-  urls: ["https://youtube.com/shorts", "https://instagram.com/reels", "https://tiktok.com/"]
+  urls: ["youtube.com/shorts", "instagram.com/reels", "tiktok.com"] // no trailing backslash, no http, no www, just the domain and first path segment
 };
