@@ -56,8 +56,7 @@ async function checkSettingsExists()
     const result = await browser.storage.sync.get("exist").then((result) => result.exist);
     if (result === undefined)
     {
-        // restore default settings if user deleted browser data
-        await browser.storage.sync.set(defaultSettings);
+        await resetSettings();
     }
 }
 
@@ -67,5 +66,15 @@ async function clearLocalStorage() {
         console.log("All storage cleared.");
     } catch (e) {
         console.error("Storage clear error:", e);
+    }
+}
+
+async function resetSettings() {
+    try {
+        await browser.storage.sync.set(defaultSettings);
+        console.log("Settings reset to default.");
+    }
+    catch (e) {
+        console.error("Settings reset error:", e);
     }
 }

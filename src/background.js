@@ -8,6 +8,7 @@ window.addEventListener("unhandledrejection", (event) => {
 const checkIfTracked = async (url) => {
   if (!url) return false;
   const trackedUrls = await getSetting("urls");
+  console.log(`Checking if ${url} is tracked among:`, trackedUrls);
   return trackedUrls.some(trackedUrl => url.includes(trackedUrl));
 }
 
@@ -40,9 +41,12 @@ async function updateTime() {
 // 3. The "At that moment" check
 async function checkThresholds() {
   if (!currentDomain) return;
-  if (!checkIfTracked(currentDomain)) return;
-
-  const timeSpent = await getVariable(currentDomain) || 0;
+  tracked = await checkIfTracked(currentDomain);
+  console.log(`Is ${currentDomain} tracked? ${tracked}`);
+  if (!tracked) return;
+  
+  const timeSpent = await getVariable(currentDomain);
+  console.log(`Time spent on ${currentDomain}: ${timeSpent} seconds`);
   //const timeSpent = data[currentDomain] || 0;
   const limit = await getSetting("limit") 
 
@@ -53,15 +57,6 @@ async function checkThresholds() {
       "iconUrl": browser.runtime.getURL("icons/icon128.png"),
       "title": "BrainSoap: Limit Reached",
       "message": `You've used up your time on ${currentDomain}. Move along!`,
-      
-      // This is the key property for persistence
-      "requireInteraction": true, 
-      
-      // Optional: Adds a button for better UX
-      "buttons": [
-        { "title": "Close Tab" },
-        { "title": "Give me 5 more minutes" }
-      ]
     });
   }
 }
@@ -86,6 +81,7 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
 // on install, set default settings 
 browser.runtime.onInstalled.addListener(async (details) => {
   await clearLocalStorage(); 
+  await resetSettings();
   if (details.reason === "install") 
     {
       await saveSetting("limit", defaultSettings.limit);
@@ -117,3 +113,8 @@ browser.runtime.onStartup.addListener(async () => {
     await clearLocalStorage(); 
 
   });
+
+async function actionOnLimit(domain)
+{  
+
+}
