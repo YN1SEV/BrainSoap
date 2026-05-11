@@ -18,7 +18,8 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "theBrainSoapProject"
+      "id": "BrainSoap@yourdomain.com"
     }
   }
 }
+
