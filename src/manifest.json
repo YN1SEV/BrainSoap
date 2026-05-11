@@ -11,7 +11,12 @@
     "128": "icons/icon128.png"
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "defaults.js",
+      "utils.js",
+      "storage_manager.js",
+      "background.js"
+    ]
   },
   "action": {
     "default_popup": "settings.html"
