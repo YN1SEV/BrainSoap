@@ -32,3 +32,9 @@ saveBtn.addEventListener('click', () => {
     }, 2000);
   });
 });
+
+document.getElementById('openBigPage').addEventListener("click", async () => {
+  browser.tabs.create({
+    url: browser.runtime.getURL("dashboard.html")
+  });
+});
