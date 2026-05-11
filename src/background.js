@@ -41,23 +41,15 @@ async function updateTime() {
 // 3. The "At that moment" check
 async function checkThresholds() {
   if (!currentDomain) return;
-  tracked = await checkIfTracked(currentDomain);
-  console.log(`Is ${currentDomain} tracked? ${tracked}`);
-  if (!tracked) return;
-  
+  if (!await checkIfTracked(currentDomain)) return;
+
   const timeSpent = await getVariable(currentDomain);
   console.log(`Time spent on ${currentDomain}: ${timeSpent} seconds`);
-  //const timeSpent = data[currentDomain] || 0;
   const limit = await getSetting("limit") 
 
-  if (timeSpent >= limit) {
-    console.log(`Limit reached for ${currentDomain}: ${timeSpent} seconds`);
-    browser.notifications.create("limit-notify", {
-      "type": "basic",
-      "iconUrl": browser.runtime.getURL("icons/icon128.png"),
-      "title": "BrainSoap: Limit Reached",
-      "message": `You've used up your time on ${currentDomain}. Move along!`,
-    });
+  if (timeSpent >= limit) 
+  {
+    actionOnLimit(timeSpent, limit);
   }
 }
 
@@ -81,10 +73,10 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
 // on install, set default settings 
 browser.runtime.onInstalled.addListener(async (details) => {
   await clearLocalStorage(); 
-  await resetSettings();
+  await resetSettings(); // TODO: delete later, dont overwrite user settings on update
   if (details.reason === "install") 
     {
-      await saveSetting("limit", defaultSettings.limit);
+      await resetSettings();
       console.log("Default settings initialized.");
     }
 });
@@ -114,7 +106,13 @@ browser.runtime.onStartup.addListener(async () => {
 
   });
 
-async function actionOnLimit(domain)
+async function actionOnLimit(time, limit)
 {  
-
+  console.log(`Limit reached for ${currentDomain}: ${time} seconds out of ${limit} allowed.`);
+  browser.notifications.create("limit-notify", {
+    "type": "basic",
+    "iconUrl": browser.runtime.getURL("icons/icon128.png"),
+    "title": "BrainSoap: Limit Reached",
+    "message": `You've used up your time on ${currentDomain}. Move along!`,
+  });
 }
