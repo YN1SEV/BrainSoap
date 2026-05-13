@@ -29,5 +29,29 @@ this was a great help in understanding how to create an extension and what you c
 - variables are treated diffrently by the storage manager from settings because settings are synced. variables are kept local to keep traffic low. 
 - local ai inline completion is awesome!
 - manifest_version in manifest.json is about the manifest protocol version, dont change it. 
-
+- proposed Folder structure:
+    ```tree
+    BrainSoap
+    ├── src
+    │   ├── icons
+    │   │   ├── icon16.png
+    │   │   ├── icon32.png
+    │   │   ├── icon48.png
+    │   │   ├── icon128.png
+    │   │   └── credits.txt
+    │   ├── browser_handlers
+    │   │   └── storage_manager.js
+    │   ├── background
+    │   │   └── background.js
+    │   ├── frontend
+    │   │   ├── settings.html
+    │   │   └── settings.js
+    │   └── utils
+    │   │   ├── defaults.js
+    │   │   └── utils.js
+    │   └── manifest.json
+    ├── .gitignore
+    ├── Ideas.md.ts
+    └── README.md
+    ```
 
