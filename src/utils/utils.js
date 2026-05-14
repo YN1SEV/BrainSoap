@@ -1,3 +1,4 @@
+// extract the domain and first path segment from a url, and clean it up
 function getCleanedIdentifier(input) {
   if (!input || typeof input !== 'string') return null;
 

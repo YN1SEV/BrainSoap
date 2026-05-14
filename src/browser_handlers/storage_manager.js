@@ -39,12 +39,11 @@ async function getSetting(name)
     const result = await browser.storage.sync.get(name);
     const value = result[name];
 
-    // validate that the value exists and is not undefined
     if (value !== undefined) 
     {
         return value;
     }
-    else 
+    else // TODO: change
     {
         await checkSettingsExists()
         return defaultSettings[name];
