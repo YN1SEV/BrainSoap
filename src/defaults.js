@@ -6,8 +6,14 @@ const defaultSettings = {
   limit: 5, // TODO: make this per domain
   // save all the dommscrolling sites
   urls: ["youtube.com/shorts", "instagram.com/reels", "tiktok.com"], // no trailing backslash, no http, no www, just the domain and first path segment
+  
   // available actions: "notify" = message, "popup" = popup window, "redirect":url = redirect to a different page
-  actions: {"youtube.com/shorts": ["notify", "popup", "redirect"], 
-            "instagram.com/reels": ["notify"], 
-            "tiktok.com": ["notify"]}
+  timers: {"default": {"limit": 5, "actions": ["notify", "popup", "redirect"], "redirectUrl": null},
+            "example1": {"limit": 10, "actions": ["notify"], "redirectUrl": null},
+            },
+
+  timerMap: {"youtube.com/shorts": ["default"],
+              "instagram.com/reels": ["example1"],
+              "tiktok.com": ["default"]
+  }
 };

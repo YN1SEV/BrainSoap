@@ -78,7 +78,8 @@ browser.runtime.onStartup.addListener(async () => {
 // =================================================
 const checkIfTracked = async (url) => {
   if (!url) return false;
-  const trackedUrls = await getSetting("urls");
+  const timerMap = await getSetting("timerMap");
+  const trackedUrls = Object.keys(timerMap);
   console.log(`Checking if ${url} is tracked among:`, trackedUrls);
   return trackedUrls.some(trackedUrl => url.includes(trackedUrl));
 }
@@ -106,18 +107,32 @@ async function checkThresholds() {
 
   const timeSpent = await getVariable(currentDomain);
   console.log(`Time spent on ${currentDomain}: ${timeSpent} seconds`);
-  const limit = await getSetting("limit") 
 
-  if (timeSpent >= limit) 
-  {
-    actionOnLimit(timeSpent, limit);
+  const timerMap = await getSetting("timerMap");
+  const timersList = await getSetting("timers");
+  const activeTimerKeys = timerMap[currentDomain] || ["default"];
+
+  for (const t of activeTimerKeys) {
+    const timerObject = timersList[t];
+    
+    if (!timerObject) continue; // Safety check if timer key doesn't exist
+
+    const limit = timerObject.limit;
+    
+    if (timeSpent >= limit) 
+    {
+      // dont need to wait on result
+      actionOnLimit(timeSpent, limit, timerObject.actions);
+    }
   }
 }
 
 // action depending on settings
-async function actionOnLimit(time, limit)
+async function actionOnLimit(time, limit, actions)
 {  
+
   console.log(`Limit reached for ${currentDomain}: ${time} seconds out of ${limit} allowed.`);
+  
   browser.notifications.create("limit-notify", {
     "type": "basic",
     "iconUrl": browser.runtime.getURL("icons/icon128.png"),
