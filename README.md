@@ -23,12 +23,14 @@ this was a great help in understanding how to create an extension and what you c
 
 
 # Dev-Notes
-
 - please abstract the browser interaction layer by topic. this makes it a lot easier to maintain multiple browsers
 - javascript sucks but please make the code readable
 - variables are treated diffrently by the storage manager from settings because settings are synced. variables are kept local to keep traffic low. 
 - local ai inline completion is awesome!
 - manifest_version in manifest.json is about the manifest protocol version, dont change it. 
+- the scripts in the manifest are loaded in order how they are listed. plan accordingly
+- when getting a url from the user sanitize it to turn it into the url id (see utils.js)
+- maybe rework the settings loading option fallback,- right now it's kinda bad.
 - proposed Folder structure:
     ```tree
     BrainSoap
@@ -54,4 +56,3 @@ this was a great help in understanding how to create an extension and what you c
     ├── Ideas.md.ts
     └── README.md
     ```
-
