@@ -1,3 +1,4 @@
+// not a background script so not there!
 browser.runtime.onMessage.addListener((message) => {
   if (message.action === "TRIGGER_BLOCK") {
     renderBlocker(message.seconds, message.redirectUrl);
@@ -14,10 +15,11 @@ function renderBlocker(seconds, redirectUrl = null) {
   const overlay = document.createElement('div');
   overlay.id = 'doom-blocker-overlay';
 
+  // not worth it rn to make a html file
   overlay.innerHTML = `
     <div class="blocker-card">
       <h2>Focus Mode</h2>
-      <p>Muscle memory check: Is this how you want to spend your time?</p>
+      <p>Reality check: Is this how you want to spend your time?</p>
       <button id="close-blocker" disabled>Wait (${seconds}s)</button>
     </div>
   `;

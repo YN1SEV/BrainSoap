@@ -5,7 +5,7 @@ let currentDomain = null;
 let startTime = Date.now();
 
 // =================================================
-// EVENT LISTENERS
+// EVENT LISTENERS - maybe make they'r own file?
 // =================================================
 window.addEventListener("unhandledrejection", (event) => {
   console.error("Unhandled Promise Rejection:", event.reason);
@@ -160,25 +160,4 @@ async function actionOnLimit(time, timerObject)
   }
 
   return;
-
-
-  for (const action of timerObject.actions) 
-  {
-    switch (action) {
-      case "notify":
-        sendMessage("BrainSoap: Limit Reached", `You've used up your time on ${currentDomain}. Move along!`, "limit-notify");
-        break;
-      
-      case "popup":
-        showBlocker("STOP");
-        break;
-      case "redirect":
-        redirectTo(timerObject.redirectUrl);
-        // console.log("not implemented yet: redirect");
-        break;
-      default:
-        break;
-    }
-  }
-  
 }

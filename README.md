@@ -1,6 +1,15 @@
 # BrainSoap
 Browser extension to help you avoid extended scrolling by blocking your screen or redirecting you to a more productive site.
 
+# Features
+- tracking how much time you spend on diffrent sites
+- actions when a limit is exceded
+    - sending you a message
+    - creating a popup 
+    - redirecting you to a diffrent URL
+    - also in arbitrary combinations
+
+
 # Notice
 This project was created as a learning Project for DHBW Stuttgart. 
 
@@ -31,7 +40,7 @@ this was a great help in understanding how to create an extension and what you c
 - the scripts in the manifest are loaded in order how they are listed. plan accordingly
 - when getting a url from the user sanitize it to turn it into the url id (see utils.js)
 - maybe rework the settings loading option fallback,- right now it's kinda bad.
-- proposed Folder structure:
+- proposed Folder structure: -DENIED
     ```tree
     BrainSoap
     ├── src
@@ -56,3 +65,4 @@ this was a great help in understanding how to create an extension and what you c
     ├── Ideas.md.ts
     └── README.md
     ```
+- only add a feature to the list when it is done.
