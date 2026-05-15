@@ -122,10 +122,14 @@ async function checkThresholds() {
   const timersList = await getSetting("timers");
   const activeTimerKeys = timerMap[currentDomain] || ["default"];
 
+  // need to reset bevore actions because redirect
+  await saveVariable(currentDomain, 0);
+
+  // performe actions
   for (const t of activeTimerKeys) {
     const timerObject = timersList[t];
     
-    if (!timerObject) continue; // Safety check if timer key doesn't exist
+    if (!timerObject) continue;
 
     const limit = timerObject.limit;
     
@@ -135,6 +139,7 @@ async function checkThresholds() {
       actionOnLimit(timeSpent, timerObject);
     }
   }
+
 }
 
 // action depending on settings
