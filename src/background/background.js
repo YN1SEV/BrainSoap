@@ -73,6 +73,16 @@ browser.runtime.onStartup.addListener(async () => {
 
 });
 
+// can listen to all messages, add more if blocks/switch
+browser.runtime.onMessage.addListener((message, sender) => {
+  if (message.action === "BLOCKER_CONFIRMED") {
+    if(message.url){
+      redirectTo(message.url); 
+    }
+    unmuteCurrentTab();
+  }
+});
+
 // =================================================
 // FUNCTIONS
 // =================================================
@@ -122,21 +132,53 @@ async function checkThresholds() {
     if (timeSpent >= limit) 
     {
       // dont need to wait on result
-      actionOnLimit(timeSpent, limit, timerObject.actions);
+      actionOnLimit(timeSpent, timerObject);
     }
   }
 }
 
 // action depending on settings
-async function actionOnLimit(time, limit, actions)
+async function actionOnLimit(time, timerObject)
 {  
-
-  console.log(`Limit reached for ${currentDomain}: ${time} seconds out of ${limit} allowed.`);
+  console.log(`Limit reached for ${currentDomain}: ${time} seconds out of ${timerObject.limit} allowed.`);
   
-  browser.notifications.create("limit-notify", {
-    "type": "basic",
-    "iconUrl": browser.runtime.getURL("icons/icon128.png"),
-    "title": "BrainSoap: Limit Reached",
-    "message": `You've used up your time on ${currentDomain}. Move along!`,
-  });
+  const actions = timerObject.actions;
+
+  const hasPopup = actions.includes("popup");
+  const hasRedirect = actions.includes("redirect");
+
+  if (actions.includes("notify")) {
+    sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
+  }
+
+  if (hasPopup && hasRedirect) {
+    showBlocker(redirectUrl = timerObject.redirectUrl); 
+  } else if (hasPopup) {
+    showBlocker();
+  } else if (hasRedirect) {
+    redirectTo(timerObject.redirectUrl);
+  }
+
+  return;
+
+
+  for (const action of timerObject.actions) 
+  {
+    switch (action) {
+      case "notify":
+        sendMessage("BrainSoap: Limit Reached", `You've used up your time on ${currentDomain}. Move along!`, "limit-notify");
+        break;
+      
+      case "popup":
+        showBlocker("STOP");
+        break;
+      case "redirect":
+        redirectTo(timerObject.redirectUrl);
+        // console.log("not implemented yet: redirect");
+        break;
+      default:
+        break;
+    }
+  }
+  
 }
