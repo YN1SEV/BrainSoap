@@ -8,7 +8,7 @@ const defaultSettings = {
   urls: ["youtube.com/shorts", "instagram.com/reels", "tiktok.com"], // no trailing backslash, no http, no www, just the domain and first path segment
   
   // available actions: "notify" = message, "popup" = popup window, "redirect":url = redirect to a different page
-  timers: {"default": {"limit": 5, "actions": ["notify", "popup", "redirect"], "redirectUrl": null},
+  timers: {"default": {"limit": 5, "actions": ["notify", "popup", "redirect"], "redirectUrl": "https://google.com"},
             "example1": {"limit": 10, "actions": ["notify"], "redirectUrl": null},
             },
 
