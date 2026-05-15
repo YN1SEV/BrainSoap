@@ -5,7 +5,7 @@ let currentDomain = null;
 let startTime = Date.now();
 
 // =================================================
-// EVENT LISTENERS
+// EVENT LISTENERS - maybe make they'r own file?
 // =================================================
 window.addEventListener("unhandledrejection", (event) => {
   console.error("Unhandled Promise Rejection:", event.reason);
@@ -73,6 +73,16 @@ browser.runtime.onStartup.addListener(async () => {
 
 });
 
+// can listen to all messages, add more if blocks/switch
+browser.runtime.onMessage.addListener((message, sender) => {
+  if (message.action === "BLOCKER_CONFIRMED") {
+    if(message.url){
+      redirectTo(message.url); 
+    }
+    unmuteCurrentTab();
+  }
+});
+
 // =================================================
 // FUNCTIONS
 // =================================================
@@ -112,31 +122,47 @@ async function checkThresholds() {
   const timersList = await getSetting("timers");
   const activeTimerKeys = timerMap[currentDomain] || ["default"];
 
+  // need to reset bevore actions because redirect
+  await saveVariable(currentDomain, 0);
+
+  // performe actions
   for (const t of activeTimerKeys) {
     const timerObject = timersList[t];
     
-    if (!timerObject) continue; // Safety check if timer key doesn't exist
+    if (!timerObject) continue;
 
     const limit = timerObject.limit;
     
     if (timeSpent >= limit) 
     {
       // dont need to wait on result
-      actionOnLimit(timeSpent, limit, timerObject.actions);
+      actionOnLimit(timeSpent, timerObject);
     }
   }
+
 }
 
 // action depending on settings
-async function actionOnLimit(time, limit, actions)
+async function actionOnLimit(time, timerObject)
 {  
-
-  console.log(`Limit reached for ${currentDomain}: ${time} seconds out of ${limit} allowed.`);
+  console.log(`Limit reached for ${currentDomain}: ${time} seconds out of ${timerObject.limit} allowed.`);
   
-  browser.notifications.create("limit-notify", {
-    "type": "basic",
-    "iconUrl": browser.runtime.getURL("icons/icon128.png"),
-    "title": "BrainSoap: Limit Reached",
-    "message": `You've used up your time on ${currentDomain}. Move along!`,
-  });
+  const actions = timerObject.actions;
+
+  const hasPopup = actions.includes("popup");
+  const hasRedirect = actions.includes("redirect");
+
+  if (actions.includes("notify")) {
+    sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
+  }
+
+  if (hasPopup && hasRedirect) {
+    showBlocker(redirectUrl = timerObject.redirectUrl); 
+  } else if (hasPopup) {
+    showBlocker();
+  } else if (hasRedirect) {
+    redirectTo(timerObject.redirectUrl);
+  }
+
+  return;
 }
