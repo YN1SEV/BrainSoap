@@ -1,0 +1,168 @@
+// =================================================
+// VARIABLES
+// =================================================
+let currentDomain = null;
+let startTime = Date.now();
+
+// =================================================
+// EVENT LISTENERS - maybe make they'r own file?
+// =================================================
+window.addEventListener("unhandledrejection", (event) => {
+  console.error("Unhandled Promise Rejection:", event.reason);
+});
+
+// 1. Setup the Heartbeat (Every 1 minute)
+browser.alarms.create("checkLimit", { periodInMinutes: 1 });
+browser.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name === "checkLimit") {
+    await updateTime(); 
+    await checkThresholds();
+  }
+});
+
+// 4. Handle State Changes (Idle/Active)
+browser.idle.onStateChanged.addListener(async (state) => {
+  if (state === "active") {
+    startTime = Date.now();
+  } else {
+    await updateTime();
+    currentDomain = null;
+  }
+});
+
+// 5. Track Tab Switching
+browser.tabs.onActivated.addListener(async (activeInfo) => {
+  await updateTime();
+  const tab = await browser.tabs.get(activeInfo.tabId);
+  currentDomain = getCleanedIdentifier(tab.url);
+});
+
+// on install, set default settings 
+browser.runtime.onInstalled.addListener(async (details) => {
+  await clearLocalStorage(); 
+  await resetSettings(); // TODO: delete later, dont overwrite user settings on update
+  if (details.reason === "install") 
+    {
+      await resetSettings();
+      console.log("Default settings initialized.");
+    }
+});
+
+// Listen for URL changes in the active tab
+browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+    // changeInfo.url will only be present if the URL actually changed
+    if (changeInfo.url) {
+      console.log("URL changed to:", tab.url);
+      try {
+        currentDomain = getCleanedIdentifier(tab.url);
+        console.log("Current domain ID set to:", currentDomain);
+        await updateTime();
+        await checkThresholds();
+      } catch (e) {
+        console.error(e);
+        
+      }
+    }
+},{properties: ["url"]});
+
+// listenfer for browser startupo
+browser.runtime.onStartup.addListener(async () => {
+    console.log("Browser started, checking settings...");
+    await checkSettingsExists();
+    await clearLocalStorage(); 
+
+});
+
+// can listen to all messages, add more if blocks/switch
+browser.runtime.onMessage.addListener((message, sender) => {
+  if (message.action === "BLOCKER_CONFIRMED") {
+    if(message.url){
+      redirectTo(message.url); 
+    }
+    unmuteCurrentTab();
+  }
+});
+
+// =================================================
+// FUNCTIONS
+// =================================================
+const checkIfTracked = async (url) => {
+  if (!url) return false;
+  const timerMap = await getSetting("timerMap");
+  const trackedUrls = Object.keys(timerMap);
+  console.log(`Checking if ${url} is tracked among:`, trackedUrls);
+  return trackedUrls.some(trackedUrl => url.includes(trackedUrl));
+}
+
+// save logic
+async function updateTime() {
+  if (!currentDomain) return;
+
+  const now = Date.now();
+  const delta = Math.floor((now - startTime) / 1000);
+  
+  // Storage usage with Promises
+  const data = await getVariable(currentDomain);
+  const total = (data || 0) + delta;
+
+  await saveVariable(currentDomain, total);
+
+  startTime = now; 
+}
+
+// check current time spent
+async function checkThresholds() {
+  if (!currentDomain) return;
+  if (!await checkIfTracked(currentDomain)) return;
+
+  const timeSpent = await getVariable(currentDomain);
+  console.log(`Time spent on ${currentDomain}: ${timeSpent} seconds`);
+
+  const timerMap = await getSetting("timerMap");
+  const timersList = await getSetting("timers");
+  const activeTimerKeys = timerMap[currentDomain] || ["default"];
+
+  // need to reset bevore actions because redirect
+  await saveVariable(currentDomain, 0);
+
+  // performe actions
+  for (const t of activeTimerKeys) {
+    const timerObject = timersList[t];
+    
+    if (!timerObject) continue;
+
+    const limit = timerObject.limit;
+    
+    if (timeSpent >= limit) 
+    {
+      // dont need to wait on result
+      actionOnLimit(timeSpent, timerObject);
+    }
+  }
+
+}
+
+// action depending on settings
+async function actionOnLimit(time, timerObject)
+{  
+  console.log(`Limit reached for ${currentDomain}: ${time} seconds out of ${timerObject.limit} allowed.`);
+  
+  const actions = timerObject.actions;
+
+  const hasPopup = actions.includes("popup");
+  const hasRedirect = actions.includes("redirect");
+
+  if (actions.includes("notify")) {
+    sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
+  }
+
+  if (hasPopup && hasRedirect) {
+    showBlocker(redirectUrl = timerObject.redirectUrl); 
+  } else if (hasPopup) {
+    showBlocker();
+  } else if (hasRedirect) {
+    redirectTo(timerObject.redirectUrl);
+  }
+
+  return;
+}
