@@ -1,4 +1,4 @@
-/* The full-screen darkening layer */
+/* full-screen darkening layer */
 #doom-blocker-overlay {
   position: fixed;
   top: 0;
@@ -13,7 +13,7 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* The popup card */
+/* popup card */
 .blocker-card {
   background: #1a1a1a;
   color: white;
@@ -36,7 +36,7 @@
   color: #ccc;
 }
 
-/* The "Wait" button */
+/*Wait button */
 #close-blocker {
   margin-top: 1.5rem;
   padding: 12px 24px;
@@ -56,7 +56,7 @@
   opacity: 0.6;
 }
 
-/* Stop the background from scrolling */
+/* Stop background from scrolling */
 body.blocked-scrolling {
   overflow: hidden !important;
 }
