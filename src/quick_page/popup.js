@@ -9,12 +9,20 @@ function updateStats(streak, minutes, points) {
 }
 updateStats(7, 12, 340);
 document.getElementById("timeBar").style.width = "60%";
+ 
+//---------------------- Eigentlicher Beginn
 
+const dashboardBtn = document.getElementById('dashboardOpen');
+const settingsBtn = document.querySelector('.icon-btn');
 
-document.addEventListener('click', () => {
+dashboardBtn.addEventListener('click', () => {
     browser.tabs.create({
-        url: browser.runtime.getURL('src/full_page/dashboard.html')
+        url: browser.runtime.getURL('/src/full_page/dashboard.html#/home')
     });
 });
 
-
+settingsBtn.addEventListener('click', () => {
+    browser.tabs.create({
+        url: browser.runtime.getURL('/src/full_page/dashboard.html#/settings')
+    });
+});
