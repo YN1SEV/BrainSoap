@@ -35,17 +35,42 @@
     }
     .navItem:hover { background: #444;}
     .navItem.active { background: #0066cc; }
-    .navSettings { border-top: 1px solid #555; padding-top: 20px; margin-top: auto;}
+    .navSettings { border-top: 1px solid #555; padding-top: 20px; margin-top: 20px;}
 
     .main {
         flex: 1;
         padding: 20px;
         overflow-y: auto;
+        display: flex;
     }
 
-    .content { display: none;}
+    .content { display: none; flex: 1;}
     .content.active { display: block;}
 
+    .gridRules {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+        height: 95%;
+    }
+    .gridRules > div {
+        background: aqua;
+        padding: 20px;
+    }
+    .gridStats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        width: 100%;
+        height: 95%;
+    }
+
+    .gridStats > div {
+        background: aqua;
+        padding: 20px;
+    }
+    
 </style>
 
 <body>
@@ -70,13 +95,23 @@
             </div>
 
             <div id="contentRules" class="content">
-                <h2>Rules</h2>
-                <p>Lorem ipsum</p>
+                <div class="gridRules">
+                    <div>1</div>
+                    <div>2</div>
+                   
+                   
+                </div>
             </div>
 
             <div id="contentStats" class="content">
-                <h2>Stats</h2>
-                <p>Lorem ipsum</p>
+                <div class="gridStats">
+                    <div>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                </div>
             </div>
 
             <div id="contentSettings" class="content">
