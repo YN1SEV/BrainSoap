@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./dashboard.css">
+</head>
+
+
+<!-- 
+    Somehow style doesnt work in the .css file
+    Will be fixed later 
+-->
+<style>
+    .container {
+        display: flex;
+        height: 100vh;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: #222;
+        color: white;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navItem {
+        font-size: 16px;
+        padding: 12px;
+        margin: 8px 0;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+    .navItem:hover { background: #444;}
+    .navItem.active { background: #0066cc; }
+    .navSettings { border-top: 1px solid #555; padding-top: 20px; margin-top: auto;}
+
+    .main {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .content { display: none;}
+    .content.active { display: block;}
+
+</style>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h1>BrainSoap</h1>
+            <hr>
+            <div class="navTop">
+                <div class="navItem active" data-section="home"> Home</div>
+                <div class="navItem"        data-section="rules">Rules</div>
+                <div class="navItem"        data-section="stats">Stats</div>
+            </div>
+            <div class="navSettings">
+                <div class="navItem"        data-section="settings">Settings</div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div id="contentHome" class="content">
+                <h2>Home</h2>
+                <p>Lorem ipsum</p>
+            </div>
+
+            <div id="contentRules" class="content">
+                <h2>Rules</h2>
+                <p>Lorem ipsum</p>
+            </div>
+
+            <div id="contentStats" class="content">
+                <h2>Stats</h2>
+                <p>Lorem ipsum</p>
+            </div>
+
+            <div id="contentSettings" class="content">
+                <h2>Settings</h2>
+                <p>Lorem ipsum</p>
+            </div>
+        </main>
+    </div>
+</body>
+
+<script src="dashboard.js"></script>
+</html>
