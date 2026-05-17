@@ -12,6 +12,11 @@
     Will be fixed later 
 -->
 <style>
+    summary {
+        font-size: 30px;
+        font-weight: bold;
+        cursor: pointer;
+    }
     html, body {
         margin: 0;
         padding: 0;
@@ -78,6 +83,14 @@
         padding: 20px;
     }
     
+
+    .gridScroll {
+        overflow-y: auto;
+        max-height: 100%;
+        padding-right: 10px;
+    }
+    
+    
 </style>
 
 <body>
@@ -103,8 +116,52 @@
 
             <div id="contentRules" class="content">
                 <div class="gridRules">
-                    <div>1</div>
-                    <div>2</div>
+                    <div>
+                        <h3>Rule 1</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur varius.</p>
+                    </div>
+                    <div class="gridScroll">
+                        <details>
+                            <summary>Social Media</summary>
+                            <ul>
+                                <li>TikTok</li>
+                                <li>YouTube</li>
+                                <li>Instagram</li>
+                                <li>Add to List</li>
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Shopping</summary>
+                            <ul>
+                                <li>Alibaba</li>
+                                <li>Amazon</li>
+                                <li>Etsy</li>
+                                <li>Kleinanzeigen</li>
+                                <li>Add to List</li>
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Games</summary>
+                            <ul>
+                                <li>Cookie Clicker</li>
+                                <li>Spielaffe</li>
+                                <li>JKLM FUN</li>
+                                <li>Higher-Lower</li>
+                                <li>Add to List</li>
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Misc</summary>
+                            <ul>
+                                <li>Pinterest</li>
+                                <li>Add to List</li>
+
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Add List</summary>
+                        </details>
+                    </div>
                    
                    
                 </div>
