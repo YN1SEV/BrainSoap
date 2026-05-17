@@ -12,6 +12,12 @@
     Will be fixed later 
 -->
 <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
     .container {
         display: flex;
         height: 100vh;
@@ -35,7 +41,7 @@
     }
     .navItem:hover { background: #444;}
     .navItem.active { background: #0066cc; }
-    .navSettings { border-top: 1px solid #555; padding-top: 20px; margin-top: 20px;}
+    .navSettings {  margin-top: auto; border-top: 1px solid #555; padding-top: 20px; }
 
     .main {
         flex: 1;
@@ -52,7 +58,7 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
         width: 100%;
-        height: 95%;
+       
     }
     .gridRules > div {
         background: aqua;
