@@ -8,7 +8,7 @@ body {
 /*header*/
 header { 
     display: flex; 
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center; 
 }
 .icon-btn svg {
@@ -18,12 +18,17 @@ header {
 
 
 /*display*/
-.displayStats{ display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    text-align: center; 
+.displayStats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 12px;
+    gap: 10px;
+    box-sizing: border-box;
 }
 .timeContainer {
-    grid-column: 1 / -1;
+    width: 100%;
     height: 8px;
     background: #ddd;
     border-radius: 10px;
