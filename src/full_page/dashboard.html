@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h1>BrainSoap</h1>
+            <hr>
+            <div class="navTop">
+                <div class="navItem active" data-section="home"> Home</div>
+                <div class="navItem"        data-section="rules">Rules</div>
+                <div class="navItem"        data-section="stats">Stats</div>
+            </div>
+            <div class="navSettings">
+                <div class="navItem"        data-section="settings">Settings</div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div id="contentHome" class="content">
+                <h2>Home</h2>
+                <p>Lorem ipsum</p>
+            </div>
+
+            <div id="contentRules" class="content">
+                <div class="gridRules">
+                    <div>
+                        <h3>Rule 1</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel sapien eget nunc efficitur varius.</p>
+                    </div>
+                    <div class="gridScroll">
+                        <details>
+                            <summary>Social Media</summary>
+                            <ul>
+                                <li>TikTok</li>
+                                <li>YouTube</li>
+                                <li>Instagram</li>
+                                <li>Add to List</li>
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Shopping</summary>
+                            <ul>
+                                <li>Alibaba</li>
+                                <li>Amazon</li>
+                                <li>Etsy</li>
+                                <li>Kleinanzeigen</li>
+                                <li>Add to List</li>
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Games</summary>
+                            <ul>
+                                <li>Cookie Clicker</li>
+                                <li>Spielaffe</li>
+                                <li>JKLM FUN</li>
+                                <li>Higher-Lower</li>
+                                <li>Add to List</li>
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Misc</summary>
+                            <ul>
+                                <li>Pinterest</li>
+                                <li>Add to List</li>
+
+                            </ul>
+                        </details>
+                        <details>
+                            <summary>Add List</summary>
+                        </details>
+                    </div>
+                   
+                   
+                </div>
+            </div>
+
+            <div id="contentStats" class="content">
+                <div class="gridStats">
+                    <div><canvas id="chart"></canvas></div>
+                    <div>
+                        <h3>Stats for Nerds</h3>
+                        <p>Minutes Scrolled</p>
+                        <p>Hours Productivity</p>
+                        <p>L</p>
+                        <p>Scrolls today</p>
+                        <p>Scrolls since installation</p>
+                        <P>L</P>
+                        <p>Info5</p>
+                        <p>Info6</p>
+                        <p>Info7</p>
+                        <p>L</p>
+                        <p>Info8</p>
+                        <p>Info9</p>
+                        <p>Info10</p>
+
+                    </div>
+                    <div>
+                        <h3>Last Activity</h3>
+                        <p>Youtube 20 min</p>
+                        <p>Amazon 15 min</p>
+                        <p>Instagram 10 min</p> 
+                        <p>Facebook 5 min</p>
+                        <h5>Yesterday</h5>
+                        <p>Youtube 20 min</p>
+                        <p>Amazon 15 min</p>
+                        <p>Instagram 10 min</p> 
+                        <p>Facebook 5 min</p>
+                    </div>
+                    <div>
+                        <h>Last Activity</h>
+                        <div id="heatmap"></div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div id="contentSettings" class="content">
+                <h2>Settings</h2>
+                <p>Lorem ipsum</p>
+            </div>
+        </main>
+    </div>
+</body>
+
+<script src="charts.js"></script>
+
+<script src="dashboard.js"></script>
+<script src="widgets_stats.js"></script>
+</html>
