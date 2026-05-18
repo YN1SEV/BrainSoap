@@ -1,7 +1,3 @@
-
-
-
-
 function updateStats(streak, minutes, points) {
     document.getElementById("displayStreak").textContent = `${streak} Streak`;
     document.getElementById("displayTime").textContent = `${minutes} min left`;
