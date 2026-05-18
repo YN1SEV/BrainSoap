@@ -1,4 +1,3 @@
-
 async function getActiveTabId() {
   try {
     // Query for the tab that is active and in the current window

@@ -1,5 +1,3 @@
-
-
 const navItemsLeftBar = document.querySelectorAll('.navItem');
 const navItemsContent = document.querySelectorAll('.content');
 

@@ -1,7 +1,3 @@
-
-
-
-
 new Chart(document.getElementById('chart'), {
   type: 'line',
   data: {
@@ -17,7 +13,6 @@ new Chart(document.getElementById('chart'), {
     maintainAspectRatio: false
   }
 });
-
 
 const container = document.getElementById("heatmap");
 
