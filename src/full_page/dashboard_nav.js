@@ -2,11 +2,11 @@ const navItemsLeftBar = document.querySelectorAll('.navItem');
 const navItemsContent = document.querySelectorAll('.content');
 
 function getSectionFromHash() { return location.hash.replace('#/', '') || 'home'; }
-function setHash(section)     { location.hash = `#/${section}`;}
+function setHash(section) { location.hash = `#/${section}`;}
 
 function updateDisplay(section) {
     
-    const activeNav = document.querySelector(`[data-section="${section}"]`);
+    const activeNav     = document.querySelector(`[data-section="${section}"]`);
     const activeContent = document.getElementById(`content${section[0].toUpperCase() + section.slice(1)}`);
     // ^ This gets element by id: contentHome, contentRules, contentStats etc.
 
