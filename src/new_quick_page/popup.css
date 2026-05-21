@@ -5,7 +5,7 @@
 }
 
 body {
-  width: 320px;
+  width: 285px;
   padding: 14px;
 }
 
@@ -16,9 +16,15 @@ header {
   margin-bottom: 14px;
 }
 
-header img {
-  width: 22px;
-  height: 22px;
+header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header .header-left img, header a img{
+  width: 40px;
+  height: 40px;
 }
 
 main {
@@ -34,6 +40,18 @@ section {
   border-radius: 10px;
   background: rgba(0, 0, 0, 0.03);
   border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #time-bar {
@@ -52,7 +70,6 @@ section {
   left: 0;
   top: 0;
   height: 100%;
-  width: 40%;
   background: #4ade80;
   transition: width 0.3s ease;
 }

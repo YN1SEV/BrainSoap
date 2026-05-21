@@ -4,5 +4,3 @@ function updateStats(streak, minutes) {
   
 }
 updateStats(7, 12);
-
-document.getElementById("time-bar").style.width = "60%";
