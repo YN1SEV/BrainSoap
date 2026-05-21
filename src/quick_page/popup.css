@@ -1,120 +1,214 @@
-
-body { 
-    width: 300px; 
-    font-family: sans-serif; 
-    background-color: #f9f9f9;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: system-ui, sans-serif;
 }
 
-/*header*/
-header { 
-    display: flex; 
-    justify-content: space-between;
-    align-items: center; 
-}
-.icon-btn svg {
-    width: 30px;
-    height: 30px;
+body {
+  width: 285px;
+  padding: 14px;
 }
 
-
-/*display*/
-.displayStats {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 12px;
-    gap: 10px;
-    box-sizing: border-box;
-}
-.timeContainer {
-    width: 100%;
-    height: 8px;
-    background: #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 6px;
-}
-.timeBar {
-    height: 100%;
-    width: 0%;
-    background: #4caf50;
-    transition: width 0.3s ease;
+h1 {
+  font-size: 25px;
 }
 
-/*toggleSlider*/
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 28px;
-}
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
 }
 
-.slider {
-    position: absolute;
-    inset: 0;
-    background-color: #ccc;
-    border-radius: 34px;
-    cursor: pointer;
-    transition: 0.3s;
+header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.slider::before {
-    content: "";
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    border-radius: 50%;
-    transition: 0.3s;
+header .header-left img, header a img {
+  width: 25px;
+  height: 25px;
 }
 
-input:checked + .slider {
-    background-color: #4caf50;
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-input:checked + .slider::before {
-    transform: translateX(22px);
+section {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
 }
 
-/*sliderBox*/
-.setting {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.settingLabel h3 {
-    margin: 0;
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.settingLabel p {
-    font-size: 0.85rem;
+
+#time-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+  position: relative;
+}
+
+#time-bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #10b981;
+  transition: width 0.3s ease;
+}
+
+.control-text h2 {
+  font-size: 14px;
+}
+
+.control-text p {
+  font-size: 12px;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 42px;
+  height: 22px;
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+input[type="checkbox"]:checked {
+  border-color: #10b981;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: translateX(20px);
+  background: #10b981;
+}
+
+footer {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.dashboard-btn {
+  display: block;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f0f12;
+    color: #fff;
+  }
+
+  section {
+    background: #1a1a1f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  #time-bar {
+    background: #2a2a2f;
+  }
+
+  .control-text p {
+    color: #b4b4b8;
+  }
+
+  input[type="checkbox"] {
+    background: #2a2a2f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  input[type="checkbox"]::before {
+    background: #fff;
+  }
+
+  input[type="checkbox"]:checked {
+    background: rgba(16, 185, 129, 0.2);
+  }
+
+  .dashboard-btn {
+    background: #10b981;
+  }
+
+  .dashboard-btn:hover {
+    background: #059669;
+  }
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+  body {
+    background: #fff;
+    color: #1a1a1a;
+  }
+
+  section {
+    background: #f8f8fa;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  #time-bar {
+    background: #e5e5ea;
+  }
+
+  .control-text p {
     color: #666;
-    margin: 0;
-}
-/*footer*/
-.bigButton {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+  }
 
-.icon-btn {
-    width: 50px;
-    height: 50px;
-    border: none;
-    border: none;
-    background: transparent;
-    cursor: pointer;   
+  input[type="checkbox"] {
+    background: #f0f0f3;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  input[type="checkbox"]::before {
+    background: #1a1a1a;
+  }
+
+  input[type="checkbox"]:checked {
+    background: rgba(5, 150, 105, 0.15);
+  }
+
+  .dashboard-btn {
+    background: #059669;
+  }
+
+  .dashboard-btn:hover {
+    background: #047857;
+  }
 }
+    
