@@ -1,6 +1,9 @@
 # BrainSoap
 Browser extension to help you avoid extended scrolling by blocking your screen or redirecting you to a more productive site.
 
+# Notice
+This project was created as a learning Project for DHBW Stuttgart. 
+
 # Features
 - tracking how much time you spend on diffrent sites
 - actions when a limit is exceded
@@ -9,9 +12,17 @@ Browser extension to help you avoid extended scrolling by blocking your screen o
     - redirecting you to a diffrent URL
     - also in arbitrary combinations
 
+## planned Features 
+>[!info]
+> #### aka TO-DO list
 
-# Notice
-This project was created as a learning Project for DHBW Stuttgart. 
+- actual ui for settings
+- image popup - not just the generic one
+- better looking popup
+- adaptive ui 
+
+
+
 
 # Related repositorys
 much thanks to [MDN](https://github.com/mdn/webextensions-examples.git) and [fnya](https://github.com/fnya/firefox-extensions-template.git) for providing examples. 
@@ -19,9 +30,11 @@ this was a great help in understanding how to create an extension and what you c
 
 
 # Installation
-1.pull this repo to your local machine.
-2.get the mentioned repos for examples
-3.more material will follow soon. This project is not complete yet, but it's a start!
+
+## for contributing
+1. pull this repo to your local machine.
+2. get the mentioned repos for examples
+3. more material will follow soon. This project is not complete yet, but it's a start!
 
 ## via temporary addon (firefox)
 1. type in your url bar about:debugging 
@@ -40,7 +53,7 @@ this was a great help in understanding how to create an extension and what you c
 - the scripts in the manifest are loaded in order how they are listed. plan accordingly
 - when getting a url from the user sanitize it to turn it into the url id (see utils.js)
 - maybe rework the settings loading option fallback,- right now it's kinda bad.
-- proposed Folder structure: -DENIED
+- proposed Folder structure: - DENIED
     ```tree
     BrainSoap
     ├── src
