@@ -1,24 +1,6 @@
-function updateStats(streak, minutes, points) {
-    document.getElementById("displayStreak").textContent = `${streak} Streak`;
-    document.getElementById("displayTime").textContent = `${minutes} min left`;
+function updateStats(streak, minutes) {
+    document.getElementById("display-streak").textContent = `${streak} Streak`;
+    document.getElementById("display-time").textContent = `${minutes} min left`;
   
 }
-updateStats(7, 12, 340);
-document.getElementById("timeBar").style.width = "60%";
- 
-//---------------------- Eigentlicher Beginn
-
-const dashboardBtn = document.getElementById('dashboardOpen');
-const settingsBtn = document.querySelector('.icon-btn');
-
-dashboardBtn.addEventListener('click', () => {
-    browser.tabs.create({
-        url: browser.runtime.getURL('/src/full_page/dashboard.html#/home')
-    });
-});
-
-settingsBtn.addEventListener('click', () => {
-    browser.tabs.create({
-        url: browser.runtime.getURL('/src/full_page/dashboard.html#/settings')
-    });
-});
+updateStats(7, 12);
