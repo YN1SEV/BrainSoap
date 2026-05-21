@@ -13,27 +13,31 @@
 </head>
 
 <body>
-
+<!-- Generic Info-->
   <header>
-    <span>
-      <img src="../../assets/icons/icon48.png">
+    <div class="header-left">
+      <img src="../../assets/icons/icon48.png" alt="BrainSoap icon" width="48" height="48">
       <h1>BrainSoap</h1>
-    </span>
+    </div>
 
-    <a href="../full_page/dashboard.html#/settings" target="_blank">
+    <a href="../full_page/dashboard.html#/settings" target="_blank" aria-label="Open settings">
       <img src="../../assets/nav/gear.svg" alt="Settings">
     </a>
   </header>
 
+  
+
   <main>
-<!-- Displays most important information -->
+<!-- Displays most important Info -->
     <section class="status">
-      <span id="display-streak"></span>
-      <span id="display-time"></span>
+      <div class="status-row">
+        <span id="display-streak"></span>
+        <span id="display-time"></span>
+      </div>
       <div id="time-bar"></div>
     </section>
     
-<!-- Toggles for important features -->
+<!-- Toggles for important Features -->
     <section>
       <div class="control-text">
         <h2>Focus Mode</h2>
