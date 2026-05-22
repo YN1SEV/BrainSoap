@@ -1,5 +1,9 @@
 # BrainSoap
+--- --- --- --- --- --- --- --- --- --- --- --- --- ---
 Browser extension to help you avoid extended scrolling by blocking your screen or redirecting you to a more productive site.
+
+# Notice
+This project was created as a learning Project for DHBW Stuttgart. 
 
 # Features
 - tracking how much time you spend on diffrent sites
@@ -9,9 +13,18 @@ Browser extension to help you avoid extended scrolling by blocking your screen o
     - redirecting you to a diffrent URL
     - also in arbitrary combinations
 
+## planned Features 
+>[!info]
+> #### aka TO-DO list
 
-# Notice
-This project was created as a learning Project for DHBW Stuttgart. 
+- actual ui for settings
+- image popup - not just the generic one
+- better looking blocker popup
+- adaptive ui 
+- caching for browser storage
+
+
+
 
 # Related repositorys
 much thanks to [MDN](https://github.com/mdn/webextensions-examples.git) and [fnya](https://github.com/fnya/firefox-extensions-template.git) for providing examples. 
@@ -19,9 +32,11 @@ this was a great help in understanding how to create an extension and what you c
 
 
 # Installation
-1.pull this repo to your local machine.
-2.get the mentioned repos for examples
-3.more material will follow soon. This project is not complete yet, but it's a start!
+
+## for contributing
+1. pull this repo to your local machine.
+2. get the mentioned repos for examples
+3. more material will follow soon. This project is not complete yet, but it's a start!
 
 ## via temporary addon (firefox)
 1. type in your url bar about:debugging 
@@ -40,27 +55,45 @@ this was a great help in understanding how to create an extension and what you c
 - the scripts in the manifest are loaded in order how they are listed. plan accordingly
 - when getting a url from the user sanitize it to turn it into the url id (see utils.js)
 - maybe rework the settings loading option fallback,- right now it's kinda bad.
-- proposed Folder structure: -DENIED
+- Folder structure: 
     ```tree
     BrainSoap
-    ├── src
+    ├── assets
     │   ├── icons
     │   │   ├── icon16.png
     │   │   ├── icon32.png
     │   │   ├── icon48.png
     │   │   ├── icon128.png
     │   │   └── credits.txt
-    │   ├── browser_handlers
-    │   │   └── storage_manager.js
+    │   ├── nav
+    │   └── visuals
+    ├── docs
+    │   └── Ideas.md
+    ├── src
     │   ├── background
     │   │   └── background.js
-    │   ├── frontend
-    │   │   ├── settings.html
-    │   │   └── settings.js
-    │   └── utils
+    │   ├── blocker_popup
+    │   │   ├── blocker.js
+    │   │   └── styles.css
+    │   ├── browser_handlers
+    │   │   ├── actions_handler.js
+    │   │   ├── storage_manager.js
+    │   │   └── tab_handler.js
+    │   ├── full_page
+    │   │   ├── charts.js
+    │   │   ├── dashboard_nav.js
+    │   │   ├── dashboard.css
+    │   │   ├── dashboard.html
+    │   │   ├── dashboard.js
+    │   │   └── widgets_stats.js
+    │   ├── quick_page
+    │   │   ├── popup.css
+    │   │   ├── popup.html
+    │   │   └── popup.js
+    │   ├── utils
     │   │   ├── defaults.js
     │   │   └── utils.js
-    │   └── manifest.json
+    │   └── config.js
     ├── .gitignore
     ├── Ideas.md
     └── README.md
