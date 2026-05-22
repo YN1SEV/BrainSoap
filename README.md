@@ -62,7 +62,7 @@ this was a great help in understanding how to create an extension and what you c
     │   │   └── utils.js
     │   └── manifest.json
     ├── .gitignore
-    ├── Ideas.md.ts
+    ├── Ideas.md
     └── README.md
     ```
 - only add a feature to the list when it is done.
