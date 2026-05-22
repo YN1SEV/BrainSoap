@@ -96,3 +96,18 @@ html, body {
 .l2 { background: #40c463; }
 .l3 { background: #30a14e; }
 .l4 { background: #216e39; }
+
+/* Light Mode / Dark Mode */
+@media (prefers-color-scheme: light) {
+  body {
+    background: #fff;
+    color: #1a1a1a;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f0f12;
+    color: #fff;
+  }
+}
