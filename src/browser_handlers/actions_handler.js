@@ -37,3 +37,12 @@ async function showBlocker(redirectUrl = null) {
   }
   return;
 }
+
+async function showImage(imagePath) {
+  const tabID = await getActiveTabId();
+  freezeTab(tabID);
+  browser.tabs.sendMessage(tabID, {
+    action: "TRIGGER_BLOCK",
+    imagePath: imagePath
+  });
+}

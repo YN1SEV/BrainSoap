@@ -1,7 +1,13 @@
 // not a background script so not there!
 browser.runtime.onMessage.addListener((message) => {
   if (message.action === "TRIGGER_BLOCK") {
-    renderBlocker(message.seconds, message.redirectUrl);
+    if (message.imagePath)
+    {
+      renderImage(message.imagePath)
+    }
+    else{
+      renderBlocker(message.seconds, redirectUrl = message.redirectUrl);
+    }
   }
 });
 
@@ -49,4 +55,24 @@ function renderBlocker(seconds, redirectUrl = null) {
       url: redirectUrl 
     });
   };
+}
+
+function renderImage(imagePath){
+  // Prevent duplicate popups
+  if (document.getElementById('doom-blocker-image')) return;
+
+  // Add class to body to stop scrolling
+  document.body.classList.add('blocked-scrolling');
+
+  const overlay = document.createElement('div');
+  overlay.id = 'doom-blocker-image';
+
+  // not worth it rn to make a html file
+  overlay.innerHTML = `
+    <div class="blocker-card">
+    <img src="assets/visuals/stop.png" alt="stop what you are doing">
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
 }

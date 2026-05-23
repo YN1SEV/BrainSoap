@@ -6,11 +6,12 @@ const defaultSettings = {
   
   // available actions: "notify" = message, "popup" = popup window, "redirect":url = redirect to a different page
   timers: {"default": {"limit": 5, "actions": ["notify", "popup", "redirect"], "redirectUrl": "https://www.linkedin.com/jobs/"},
-            "example1": {"limit": 10, "actions": ["notify"], "redirectUrl": null},
+            "example1": {"limit": 15, "actions": ["image"], "imagePath": "assets/visuals/stop.png"},
             },
 
   timerMap: {"youtube.com/shorts": ["default"],
               "instagram.com/reels": ["example1"],
-              "tiktok.com": ["default"]
+              "tiktok.com": ["default"],
+              "engage.cloud.microsoft/main":["default"]
   }
 };
