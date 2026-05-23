@@ -151,11 +151,17 @@ async function actionOnLimit(time, timerObject)
 
   const hasPopup = actions.includes("popup");
   const hasRedirect = actions.includes("redirect");
+  const hasImage = actions.includes("image");
 
   if (actions.includes("notify")) {
     sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
   }
 
+  if (hasImage)
+  {
+    showImage(timerObject.imagePath);
+  }
+  
   if (hasPopup && hasRedirect) {
     showBlocker(redirectUrl = timerObject.redirectUrl); 
   } else if (hasPopup) {
