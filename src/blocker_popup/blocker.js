@@ -58,21 +58,23 @@ function renderBlocker(seconds, redirectUrl = null) {
 }
 
 function renderImage(imagePath){
+  try {
   // Prevent duplicate popups
   if (document.getElementById('doom-blocker-image')) return;
 
   // Add class to body to stop scrolling
   document.body.classList.add('blocked-scrolling');
+  
+  console.log("rendering image");
+  const img = document.createElement('img');
+  img.id = 'doom-blocker-image';
+  img.src = browser.runtime.getURL(imagePath);
 
-  const overlay = document.createElement('div');
-  overlay.id = 'doom-blocker-image';
-
-  // not worth it rn to make a html file
-  overlay.innerHTML = `
-    <div class="blocker-card">
-    <img src="assets/visuals/stop.png" alt="stop what you are doing">
-    </div>
-  `;
+  document.body.appendChild(img);
 
   document.body.appendChild(overlay);
+    
+  } catch (e) {
+    console.error(e)
+  }
 }

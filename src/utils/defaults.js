@@ -9,7 +9,7 @@ const defaultSettings = {
             "example1": {"limit": 15, "actions": ["image"], "imagePath": "assets/visuals/stop.png"},
             },
 
-  timerMap: {"youtube.com/shorts": ["default"],
+  timerMap: {"youtube.com/shorts": ["example1"],
               "instagram.com/reels": ["example1"],
               "tiktok.com": ["default"],
               "engage.cloud.microsoft/main":["default"]
