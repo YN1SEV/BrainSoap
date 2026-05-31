@@ -2,6 +2,7 @@
 // VARIABLES
 // =================================================
 let currentDomain = null;
+let BlockedDomain = null;
 let startTime = Date.now();
 
 // =================================================
@@ -80,6 +81,8 @@ browser.runtime.onMessage.addListener((message, sender) => {
       redirectTo(message.url); 
     }
     unmuteCurrentTab();
+    saveVariable(BlockedDomain, 0) // reset currently blocked domain
+    console.log(`${BlockedDomain} timer reset to 0`)
   }
 });
 
@@ -148,7 +151,7 @@ async function actionOnLimit(time, timerObject)
   const hasPopup = actions.includes("popup");
   const hasRedirect = actions.includes("redirect");
   const hasImage = actions.includes("image");
-
+  
   if (actions.includes("notify")) {
     sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
   }
@@ -165,6 +168,8 @@ async function actionOnLimit(time, timerObject)
   } else if (hasRedirect) {
     redirectTo(timerObject.redirectUrl);
   }
-
+  
+  BlockedDomain = currentDomain;
+  
   return;
 }

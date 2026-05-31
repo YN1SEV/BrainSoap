@@ -6,7 +6,7 @@ const defaultSettings = {
   
   // available actions: "notify" = message, "popup" = popup window, "redirect":url = redirect to a different page
   timers: {"default": {"limit": 5, "actions": ["notify", "popup", "redirect"], "redirectUrl": "https://www.linkedin.com/jobs/"},
-            "example1": {"limit": 15, "actions": ["image"], "imagePath": "assets/visuals/stop.png"},
+            "example1": {"limit": 5, "actions": ["image"], "imagePath": "assets/visuals/stop.png"},
             },
 
   timerMap: {"youtube.com/shorts": ["example1"],
