@@ -1,0 +1,47 @@
+
+
+
+
+:root {
+  --sidebar-width: 250px;
+  --stats-boarder-width: 500px;
+  --main-min-width: 300px;
+
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0f1a;
+    --surface: #151a2e;
+    --surface-2: #1c2240;
+
+    --text: #f4f6fb;
+    --text-muted: #9aa3b2;
+
+    --primary: #7b5cff;
+
+    --border: rgba(255,255,255,0.08);
+    --shadow: rgba(0, 0, 0, 0.45);
+
+    --sidebar-bg: rgba(0, 0, 0, 0.18);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --surface-2: #eef1f6;
+
+    --text: #111827;
+    --text-muted: #6b7280;
+
+    --primary: #6d5efc;
+
+    --border: rgba(0,0,0,0.08);
+    --shadow: rgba(0, 0, 0, 0.08);
+
+    --sidebar-bg: rgba(255,255,255,0.8);
+  }
+}
+

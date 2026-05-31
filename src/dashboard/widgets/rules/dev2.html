@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liste mit Kategorien</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 30px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .controls {
+        margin-bottom: 20px;
+    }
+
+    button {
+        padding: 10px 15px;
+        border: none;
+        background: #0077ff;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    button:hover {
+        background: #005fd1;
+    }
+
+    .category {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .category h2 {
+        margin-top: 0;
+        color: #0077ff;
+    }
+
+    .item {
+        background: #f9f9f9;
+        border-left: 5px solid #0077ff;
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 8px;
+    }
+
+    .item-name {
+        font-size: 22px;
+        font-weight: bold;
+        color: #222;
+    }
+
+    .item-info {
+        margin-top: 5px;
+        color: #666;
+    }
+
+    .add-item-btn {
+        margin-top: 15px;
+        background: #28a745;
+    }
+
+    .add-item-btn:hover {
+        background: #1e7e34;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Meine Liste</h1>
+
+<div class="controls">
+    <button onclick="addCategory()">Überkategorie hinzufügen</button>
+</div>
+
+<div id="categories"></div>
+
+<script>
+function addCategory() {
+    const categoryName = prompt("Name der Überkategorie:");
+    if (!categoryName) return;
+
+    const category = document.createElement("div");
+    category.className = "category";
+
+    category.innerHTML = `
+        <h2>${categoryName}</h2>
+        <div class="items"></div>
+        <button class="add-item-btn">Listenelement hinzufügen</button>
+    `;
+
+    const addItemBtn = category.querySelector(".add-item-btn");
+    const itemsContainer = category.querySelector(".items");
+
+    addItemBtn.addEventListener("click", () => {
+        const name = prompt("Name:");
+        const date = prompt("Datum:");
+        const number = prompt("Nummer:");
+
+        if (!name) return;
+
+        const item = document.createElement("div");
+        item.className = "item";
+
+        item.innerHTML = `
+            <div class="item-name">${name}</div>
+            <div class="item-info">
+                📅 ${date || "-"} <br>
+                🔢 Nummer: ${number || "-"}
+            </div>
+        `;
+
+        itemsContainer.appendChild(item);
+    });
+
+    document.getElementById("categories").appendChild(category);
+}
+</script>
+
+</body>
+</html>

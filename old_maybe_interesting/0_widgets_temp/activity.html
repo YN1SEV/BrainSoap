@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Responsive 1x1 Widget</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Inter, Arial, sans-serif;
+    }
+
+    body {
+        background: #f4f6fa;
+        width: 100vw;
+        height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 20px;
+    }
+
+    /*
+        Responsive Square Container
+        -> bleibt immer 1:1
+        -> wächst maximal
+        -> schrumpft automatisch
+    */
+    .widget-wrapper {
+        width: min(90vw, 90vh);
+        aspect-ratio: 1 / 1;
+
+        max-width: 700px;
+        max-height: 700px;
+    }
+
+    #activity-widget {
+        width: 100%;
+        height: 100%;
+
+        background: white;
+        border-radius: 24px;
+        border: 1px solid #e7ebf1;
+
+        box-shadow:
+            0 10px 30px rgba(0,0,0,0.06);
+
+        overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header {
+        padding: 5%;
+        border-bottom: 1px solid #eef2f6;
+    }
+
+    .title {
+        font-size: clamp(18px, 2vw, 28px);
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .subtitle {
+        margin-top: 6px;
+        font-size: clamp(11px, 1vw, 14px);
+        color: #7b8494;
+    }
+
+    .activity-list {
+        flex: 1;
+        overflow-y: auto;
+
+        padding: 3%;
+
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .activity-item {
+        display: flex;
+        align-items: center;
+
+        gap: 14px;
+
+        padding: 3%;
+
+        border-radius: 18px;
+        border: 1px solid #edf1f5;
+
+        background: white;
+
+        transition: 0.15s ease;
+    }
+
+    .activity-item:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .favicon {
+        width: clamp(34px, 4vw, 54px);
+        height: clamp(34px, 4vw, 54px);
+
+        border-radius: 12px;
+
+        background: #f3f5f9;
+        border: 1px solid #e6ebf2;
+
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .domain {
+        font-size: clamp(13px, 1.2vw, 18px);
+        font-weight: 600;
+        color: #111827;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .details {
+        margin-top: 4px;
+        font-size: clamp(11px, 1vw, 14px);
+        color: #6b7280;
+    }
+
+    .time {
+        font-size: clamp(10px, 0.9vw, 13px);
+        color: #9ca3af;
+        white-space: nowrap;
+    }
+
+    .footer {
+        padding: 3%;
+        border-top: 1px solid #eef2f6;
+
+        text-align: center;
+
+        font-size: clamp(10px, 0.9vw, 13px);
+        color: #94a3b8;
+    }
+
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #d9dee6;
+        border-radius: 999px;
+    }
+</style>
+</head>
+<body>
+
+<div class="widget-wrapper">
+
+    <div id="activity-widget">
+
+        <div class="header">
+            <div class="title">Recent Activity</div>
+
+            <div class="subtitle">
+                Dynamisches 1x1 Browser Widget
+            </div>
+        </div>
+
+        <div class="activity-list" id="activityList"></div>
+
+        <div class="footer">
+            Auto Responsive Square Layout
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const activities = [
+    {
+        domain: "youtube.com",
+        action: "Video angesehen",
+        duration: "12 min aktiv",
+        time: "vor 1 min"
+    },
+    {
+        domain: "github.com",
+        action: "Repository geöffnet",
+        duration: "7 min aktiv",
+        time: "vor 5 min"
+    },
+    {
+        domain: "openai.com",
+        action: "Chat verwendet",
+        duration: "22 min aktiv",
+        time: "vor 9 min"
+    },
+    {
+        domain: "reddit.com",
+        action: "Beiträge gelesen",
+        duration: "4 min aktiv",
+        time: "vor 14 min"
+    },
+    {
+        domain: "readoutto.me",
+        action: "Serie angesehen",
+        duration: "48 min aktiv",
+        time: "vor 27 min"
+    }
+];
+
+const container = document.getElementById("activityList");
+
+function getFavicon(domain) {
+    return `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+}
+
+activities.forEach(item => {
+
+    const el = document.createElement("div");
+
+    el.className = "activity-item";
+
+    el.innerHTML = `
+        <img
+            class="favicon"
+            src="${getFavicon(item.domain)}"
+            alt="${item.domain}"
+        />
+
+        <div class="content">
+            <div class="domain">${item.domain}</div>
+
+            <div class="details">
+                ${item.action} · ${item.duration}
+            </div>
+        </div>
+
+        <div class="time">
+            ${item.time}
+        </div>
+    `;
+
+    container.appendChild(el);
+});
+</script>
+
+</body>
+</html>

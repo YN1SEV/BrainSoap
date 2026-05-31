@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Dashboard</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html, body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial,sans-serif;
+  background:#f2f5fa;
+}
+
+/* APP */
+.app{
+  display:flex;
+  width:100%;
+  height:100%;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:250px;
+  min-width:250px;
+  max-width:250px;
+  background:#000;
+  transition:width 0.25s ease;
+  overflow:hidden;
+}
+
+.sidebar.closed{
+  width:0;
+  min-width:0;
+  max-width:0;
+}
+
+/* Button in Sidebar */
+.toggle-btn{
+  margin:10px;
+  padding:8px;
+  cursor:pointer;
+  background:#1e73ff;
+  color:white;
+  border:none;
+  border-radius:8px;
+}
+
+/* Button zum Wiederöffnen */
+.open-btn{
+  position:absolute;
+  top:10px;
+  left:10px;
+  z-index:1000;
+
+  padding:8px;
+  border:none;
+  border-radius:8px;
+  background:#1e73ff;
+  color:white;
+  cursor:pointer;
+
+  display:none;
+}
+
+/* nur sichtbar wenn Sidebar zu ist */
+.sidebar.closed ~ .open-btn{
+  display:block;
+}
+
+/* CONTENT */
+.content{
+  flex:1;
+  padding:10px;
+
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:10px;
+
+  overflow:hidden;
+  transition:all 0.2s ease;
+}
+
+/* optional: single column mode */
+.content.single{
+  grid-template-columns:1fr;
+  grid-template-rows:repeat(4,1fr);
+}
+
+/* WIDGETS */
+.window{
+  background:#1e73ff;
+  border-radius:18px;
+  color:white;
+  padding:20px;
+
+  display:flex;
+  flex-direction:column;
+
+  overflow:hidden;
+  min-width:0;
+  min-height:0;
+}
+
+.window-content{
+  flex:1;
+  overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <button class="toggle-btn">☰</button>
+  </aside>
+
+  <button class="open-btn">☰</button>
+
+  <main class="content">
+
+    <section class="window">Fenster 1</section>
+    <section class="window">Fenster 2</section>
+    <section class="window">Fenster 3</section>
+    <section class="window">Fenster 4</section>
+
+  </main>
+
+</div>
+
+<script>
+const sidebar = document.querySelector('.sidebar');
+const closeBtn = document.querySelector('.toggle-btn');
+const openBtn = document.querySelector('.open-btn');
+const content = document.querySelector('.content');
+
+/* Sidebar schließen */
+closeBtn.addEventListener('click', () => {
+  sidebar.classList.add('closed');
+  updateLayout();
+});
+
+/* Sidebar öffnen */
+openBtn.addEventListener('click', () => {
+  sidebar.classList.remove('closed');
+  updateLayout();
+});
+
+/* Layout-Anpassung (sanft, nicht aggressiv) */
+function updateLayout() {
+  const sidebarWidth = sidebar.classList.contains('closed') ? 0 : 250;
+  const available = window.innerWidth - sidebarWidth;
+
+  // nur weicher Umschalter, kein Content verstecken
+  if (available < 500) {
+    content.classList.add('single');
+  } else {
+    content.classList.remove('single');
+  }
+}
+
+window.addEventListener('resize', updateLayout);
+updateLayout();
+</script>
+
+</body>
+</html>

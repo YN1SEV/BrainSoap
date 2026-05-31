@@ -13,12 +13,12 @@ const settingsBtn = document.querySelector('.icon-btn');
 
 dashboardBtn.addEventListener('click', () => {
     browser.tabs.create({
-        url: browser.runtime.getURL('/src/full_page/dashboard.html#/home')
+        url: browser.runtime.getURL('/src/dashboard/index.html#/home')
     });
 });
 
 settingsBtn.addEventListener('click', () => {
     browser.tabs.create({
-        url: browser.runtime.getURL('/src/full_page/dashboard.html#/settings')
+        url: browser.runtime.getURL('/src/dashboard/index.html#/settings')
     });
 });
