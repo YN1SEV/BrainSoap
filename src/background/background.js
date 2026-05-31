@@ -170,6 +170,7 @@ async function actionOnLimit(time, timerObject)
   }
   
   BlockedDomain = currentDomain;
-  
+  //reset current domain
+  saveVariable(currentDomain,0);
   return;
 }
