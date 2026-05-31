@@ -14,7 +14,8 @@
     {
       "matches": ["<all_urls>"],
       "js": ["src/blocker_popup/blocker.js"],
-      "css": ["src/blocker_popup/styles.css"]
+      "css": ["src/blocker_popup/styles.css"],
+      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [

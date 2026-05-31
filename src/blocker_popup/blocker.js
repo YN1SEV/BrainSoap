@@ -1,4 +1,6 @@
 // not a background script so not there!
+if (!window.hasBlockerListener) {
+  window.hasBlockerListener = true;
 browser.runtime.onMessage.addListener((message) => {
   if (message.action === "TRIGGER_BLOCK") {
     if (message.imagePath)
@@ -8,8 +10,11 @@ browser.runtime.onMessage.addListener((message) => {
     else{
       renderBlocker(message.seconds, redirectUrl = message.redirectUrl);
     }
+    
   }
 });
+}
+
 
 function renderBlocker(seconds, redirectUrl = null) {
   // Prevent duplicate popups
@@ -52,7 +57,7 @@ function renderBlocker(seconds, redirectUrl = null) {
     overlay.remove();
     browser.runtime.sendMessage({ 
       action: "BLOCKER_CONFIRMED", 
-      url: redirectUrl 
+      redirect_url: redirectUrl
     });
   };
 }
@@ -72,7 +77,6 @@ function renderImage(imagePath){
 
   document.body.appendChild(img);
 
-  document.body.appendChild(overlay);
     
   } catch (e) {
     console.error(e)
