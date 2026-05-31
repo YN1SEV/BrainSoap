@@ -45,8 +45,64 @@
     <!-- STATS -->
     <section class="page" id="stats">
       <div id="stats_graph1"   >1</div>
+      
+      <div id="stats_all_time1">
+        <header><h1>Statistics</h1></header>
+        
+        <ul id="stats_all_time1">
+
+          <!------------------------ Focus ------------------------>
+          <li class="stat-item">
+            <span class="stat-label">Focus Hours</span>
+            <span id="focus-hours" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Focus Sessions</span>
+            <span id="focus-sessions" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Avg Focus Session</span>
+            <span id="avg-focus-session" class="stat-value"></span>
+          </li>
+
+          <!------------------------ Scroll ------------------------>
+          <li class="stat-item">
+            <span class="stat-label">Scroll Hours</span>
+            <span id="scroll-hours" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Scroll Attempts</span>
+            <span id="scroll-attempts" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Scrolls Blocked</span>
+            <span id="scrolls-blocked" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Best Streak</span>
+            <span id="best-streak" class="stat-value"></span>
+          </li>
+
+          <!------------------------ Misc  ------------------------>
+          <li class="stat-item">
+            <span class="stat-label">Sites Blocked</span>
+            <span id="sites-blocked" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Active Days</span>
+            <span id="active-days" class="stat-value"></span>
+          </li>
+        </ul>
+      </div>
+
       <div id="stats_heatmap1" >2</div>
-      <div id="stats_all_time1">3</div>
+      
 
       <div id="stats-recent"  >
         <h1>Recent Activity</h1>
@@ -65,6 +121,7 @@
 
 <script src="nav.js"></script>
 <script src="load_components.js"></script>
-<script src="stats_recent.js"></script>
 
+<script src="stats_recent.js"></script>
+<script src="stats_all_time"></script>
 </html>
