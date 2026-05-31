@@ -1,0 +1,191 @@
+/* =========================
+   Base
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* =========================
+   Layout
+========================= */
+
+main {
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+section.page {
+  padding: 26px;
+  min-height: 100vh;
+
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+}
+
+/* =========================
+   Sidebar (clean panel)
+========================= */
+
+aside.sidebar {
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+
+  padding: 18px 14px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  backdrop-filter: blur(10px);
+}
+
+/* Header */
+aside.sidebar header {
+  font-size: 1.15rem;
+  font-weight: 750;
+  padding: 8px 10px;
+}
+
+/* =========================
+   NAV CONTAINER
+========================= */
+
+aside.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* =========================
+   NAV ITEMS (modern cards)
+========================= */
+
+aside.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 12px;
+  border-radius: 12px;
+
+  color: var(--text-muted);
+
+  background: rgba(255,255,255,0.03);
+
+  border: 1px solid transparent;
+
+  position: relative;
+
+  transition: all 0.18s ease;
+}
+
+/* ICONS */
+img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.85;
+}
+
+/* HOVER */
+aside.sidebar nav a:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+
+  transform: translateX(4px);
+
+  border-color: var(--border);
+
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+/* ACTIVE STATE */
+body:has(#home:target) aside.sidebar nav a[href="#home"],
+body:has(#rules:target) aside.sidebar nav a[href="#rules"],
+body:has(#stats:target) aside.sidebar nav a[href="#stats"],
+body:has(#settings:target) aside.sidebar nav a[href="#settings"] {
+  background: linear-gradient(
+    135deg,
+    rgba(123, 92, 255, 0.18),
+    transparent
+  );
+
+  color: var(--text);
+
+  border: 1px solid rgba(123, 92, 255, 0.35);
+}
+
+/* LEFT ACTIVE BAR */
+aside.sidebar nav a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+
+  width: 3px;
+  border-radius: 6px;
+
+  background: transparent;
+  transition: 0.2s ease;
+}
+
+body:has(#home:target) aside.sidebar nav a[href="#home"]::before,
+body:has(#rules:target) aside.sidebar nav a[href="#rules"]::before,
+body:has(#stats:target) aside.sidebar nav a[href="#stats"]::before,
+body:has(#settings:target) aside.sidebar nav a[href="#settings"]::before {
+  background: var(--primary);
+}
+
+/* =========================
+   MINI BUTTON
+========================= */
+
+.mini-btn {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 10px;
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+  color: var(--text);
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 14px var(--shadow);
+
+  transition: 0.2s ease;
+}
+
+.mini-btn:hover {
+  transform: scale(1.05);
+  color: var(--primary);
+}
+
+.mini-btn:active {
+  transform: scale(0.95);
+}
+
+/* =========================
+   Sidebar hidden
+========================= */
+
+.hide-sidebar .sidebar {
+  display: none;
+}

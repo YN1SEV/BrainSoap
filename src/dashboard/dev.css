@@ -1,0 +1,24 @@
+
+
+
+aside.sidebar { background: darkblue; color: white; }
+nav { gap: 10px; }
+nav a { background-color: red; }
+.page { background-color: lightblue; }
+.mini-btn { background-color: green;}
+
+
+#rules {
+  background: lightblue;
+  align-items: center;
+  width: 90%;
+  max-width: 800px;
+}
+
+
+
+
+
+
+#stats div {background-color: bisque;}
+

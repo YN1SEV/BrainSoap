@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Website Info</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #0078ff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005fd1;
+    }
+
+    .result {
+      margin-top: 25px;
+    }
+
+    .result img {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 10px;
+    }
+
+    .name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Website Infos anzeigen</h2>
+
+  <input type="text" id="urlInput" placeholder="https://example.com">
+  <button onclick="loadInfo()">Anzeigen</button>
+
+  <div class="result" id="result" style="display:none;">
+    <img id="icon" src="" alt="Icon">
+    <div class="name" id="siteName"></div>
+  </div>
+</div>
+
+<script>
+async function loadInfo() {
+  let url = document.getElementById("urlInput").value.trim();
+
+  if (!url.startsWith("http")) {
+    url = "https://" + url;
+  }
+
+  try {
+    const domain = new URL(url).hostname;
+
+    // Favicon holen
+    const favicon = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+
+    // Titel der Website holen
+    const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`);
+    const html = await response.text();
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    const title = doc.querySelector("title")?.innerText || "Kein Titel gefunden";
+
+    document.getElementById("icon").src = favicon;
+    document.getElementById("siteName").innerText = title;
+    document.getElementById("result").style.display = "block";
+
+  } catch (err) {
+    alert("Fehler beim Laden der Website.");
+    console.error(err);
+  }
+}
+</script>
+
+</body>
+</html>

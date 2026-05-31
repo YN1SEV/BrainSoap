@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Don't Change Order -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="structure.css">
+  <link rel="stylesheet" href="frame.css">
+  <link rel="stylesheet" href="dev.css">
+</head>
+
+<body>
+  <button class="mini-btn" id="toggle-sidebar">☰</button>
+
+  <aside class="sidebar">
+    <header><img src="../../assets/icons/icon128.png" alt="BrainSoap"> BrainSoap</header>
+
+    <nav>
+      <a href="#home"    ><img src="../../assets/nav/home.svg"    >Home</a>
+      <a href="#rules"   ><img src="../../assets/nav/rules.svg"   >Rules</a>
+      <a href="#stats"   ><img src="../../assets/nav/stats.svg"   >Statistics</a>
+      <a href="#settings"><img src="../../assets/nav/settings.svg">Settings</a>
+    </nav>
+  </aside>
+
+  <!-- stats_recent =>     outsourced-->
+  <!-- stats-recent => not outsourced-->
+  <main>
+ 
+    <!-- HOME -->
+    <section class="page" id="home">
+      <div id="home_dummy1"></div>
+      <div id="home_dummy2"></div>
+      <div id="home_dummy3"></div>
+    </section>
+
+    <!-- RULES -->
+    <section class="page" id="rules">
+      <div id="rules_timer"    ></div>
+      <div id="rules_blacklist"></div>
+    </section>
+
+    <!-- STATS -->
+    <section class="page" id="stats">
+      <div id="stats_graph1"   >1</div>
+      <div id="stats_heatmap1" >2</div>
+      <div id="stats_all_time1">3</div>
+
+      <div id="stats-recent"  >
+        <h1>Recent Activity</h1>
+        <ul id="activity-list"></ul>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="page" id="settings">
+      <div id="settings_dummy1"></div>
+    </section>
+
+  </main>
+</body>
+
+
+<script src="nav.js"></script>
+<script src="load_components.js"></script>
+<script src="stats_recent.js"></script>
+
+</html>

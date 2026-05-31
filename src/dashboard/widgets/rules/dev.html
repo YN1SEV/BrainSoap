@@ -1,0 +1,46 @@
+<div class="widget rules_timer">
+  <header>
+    <h1>Blacklist Rules</h1>
+    <p>TBD</p>
+  </header>
+  
+  <main>
+    <ul id="list"></ul>
+    <form id="create-group">
+      <input id="group-input" placeholder="Neue Liste..." />
+      <button id="add-group-btn" type="submit">Liste hinzufügen</button>
+    </form>
+  </main>
+</div>
+
+<!-- This is supposed to append the inner List-->
+<!-- May God have mercy on my soul and forgive me for what I'm about to do -->
+
+<script src="https://cdn.jsdelivr.net/npm/uuid@9.0.1/dist/umd/uuidv4.min.js"></script>
+<script>
+  const form = document.querySelector("#create-group");
+  const input = document.querySelector("#group-input");
+  const list = document.querySelector("#list");
+
+  function appendElement(){
+    const id = uuidv4();
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <div>${input.value}</div>
+      <div>${input.value.toUpperCase()}</div>
+      <button id="btn-delete-${id}"    >Element löschen</button>
+      <button id="btn-deactivate-${id}">Element deaktivieren</button>
+    `;
+    list.appendChild(li);
+    
+    input.value = "";
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    appendElement();
+  });
+</script>
+
+<!-- Please forgive me for the worst is yet to come -->
