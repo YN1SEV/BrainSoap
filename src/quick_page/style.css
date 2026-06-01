@@ -1,0 +1,40 @@
+:root {
+  --accent: #10b981;
+  --dashboard-text: white;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --body-bg: #0f0f12;
+    --body-text: #fff;
+    --section-bg: #1a1a1f;
+    --section-border: rgba(255, 255, 255, 0.1);
+    --time-bar-bg: #2a2a2f;
+    --muted-text: #b4b4b8;
+    --toggle-bg: #2a2a2f;
+    --toggle-border: rgba(255, 255, 255, 0.1);
+    --toggle-knob-bg: #fff;
+    --toggle-checked-bg: rgba(16, 185, 129, 0.2);
+    --dashboard-bg: #10b981;
+    --dashboard-hover-bg: #059669;
+  }
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+  :root {
+    --body-bg: #fff;
+    --body-text: #1a1a1a;
+    --section-bg: #f8f8fa;
+    --section-border: rgba(0, 0, 0, 0.1);
+    --time-bar-bg: #e5e5ea;
+    --muted-text: #666;
+    --toggle-bg: #f0f0f3;
+    --toggle-border: rgba(0, 0, 0, 0.1);
+    --toggle-knob-bg: #1a1a1a;
+    --toggle-checked-bg: rgba(5, 150, 105, 0.15);
+    --dashboard-bg: #059669;
+    --dashboard-hover-bg: #047857;
+  }
+}
