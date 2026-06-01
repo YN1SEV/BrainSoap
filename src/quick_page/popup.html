@@ -7,7 +7,7 @@
 
   <title>BrainSoap - Quick Panel</title>
 
-  <!-- Names may Change -->
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="popup.css">
   <script src="popup.js" defer></script>
 </head>
@@ -16,48 +16,68 @@
 <!-- Generic Info-->
   <header>
     <div class="header-left">
-      <img src="../../assets/icons/icon48.png" alt="BrainSoap icon" width="48" height="48">
+      <img src="../../assets/icons/icon48.png" alt="">
       <h1>BrainSoap</h1>
     </div>
 
-    <a href="../full_page/dashboard.html#/settings" target="_blank" aria-label="Open settings">
-      <img src="../../assets/nav/gear.svg" alt="Settings">
+    <a 
+      href="../full_page/dashboard.html#/settings" 
+      target="_blank" 
+      rel="noopener" 
+      aria-label="Open settings"
+    >
+      <img src="../../assets/nav/gear.svg" alt="">
     </a>
   </header>
 
   
 
-  <main>
+  <main aria-label="Quick controls">
 <!-- Displays most important Info -->
-    <section class="status">
+    <section class="status" aria-label="Current status">
       <div class="status-row">
-        <span id="display-streak"></span>
-        <span id="display-time"></span>
+        <span id="display-streak" aria-live="polite"></span>
+        <span id="display-time" aria-live="polite"></span>
       </div>
-      <div id="time-bar"></div>
+      <div id="time-bar" aria-hidden="true"></div>
     </section>
     
 <!-- Toggles for important Features -->
     <section>
       <div class="control-text">
-        <h2>Focus Mode</h2>
-        <p>No scroll-time allowance</p>
+        <h2 id="focus-mode-title">Focus Mode</h2>
+        <p id="focus-mode-description">No scroll-time allowance</p>
       </div>
-      <input type="checkbox" id="toggle-focus"/>
+      <input
+        type="checkbox"
+        id="toggle-focus"
+        aria-labelledby="focus-mode-title"
+        aria-describedby="focus-mode-description"
+      >
     </section>
 
     <section>
       <div class="control-text">
-        <h2>Pause Extension</h2>
-        <p>Temporarily disable extension</p>
+        <h2 id="pause-extension-title">Pause Extension</h2>
+        <p id="pause-extension-description">Temporarily disable extension</p>
       </div>
-      <input type="checkbox" id="toggle-pause"/>
+      <input
+        type="checkbox"
+        id="toggle-pause"
+        aria-labelledby="pause-extension-title"
+        aria-describedby="pause-extension-description"
+      >
     </section>
   </main>  
   
 <!-- Leads to full page -->
-  <footer>
-    <a href="../full_page/dashboard.html#/home" target="_blank" class="dashboard-btn"> 
+  <footer aria-label="Dashboard navigation">
+    <a 
+      href="../full_page/dashboard.html#/home" 
+      target="_blank" 
+      rel="noopener" 
+      class="dashboard-btn"
+    >
       Dashboard
     </a>
   </footer>
