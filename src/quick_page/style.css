@@ -6,18 +6,18 @@
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --body-bg: #0f0f12;
-    --body-text: #fff;
-    --section-bg: #1a1a1f;
-    --section-border: rgba(255, 255, 255, 0.1);
-    --time-bar-bg: #2a2a2f;
-    --muted-text: #b4b4b8;
-    --toggle-bg: #2a2a2f;
-    --toggle-border: rgba(255, 255, 255, 0.1);
-    --toggle-knob-bg: #fff;
-    --toggle-checked-bg: rgba(16, 185, 129, 0.2);
-    --dashboard-bg: #10b981;
-    --dashboard-hover-bg: #059669;
+    --body-bg: #12171f;
+    --body-text: #e5e7eb;
+    --section-bg: #181f2c;
+    --section-border: rgba(226, 232, 240, 0.12);
+    --time-bar-bg: #232e3e;
+    --muted-text: #a3adc8;
+    --toggle-bg: #1f2937;
+    --toggle-border: rgba(226, 232, 240, 0.16);
+    --toggle-knob-bg: #f8fafc;
+    --toggle-checked-bg: rgba(16, 185, 129, 0.24);
+    --dashboard-bg: #0fa77f;
+    --dashboard-hover-bg: #0b8060;
   }
 }
 
