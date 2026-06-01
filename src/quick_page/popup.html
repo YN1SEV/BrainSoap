@@ -16,7 +16,7 @@
 <!-- Generic Info-->
   <header>
     <div class="header-left">
-      <img src="../../assets/icons/icon48.png" alt="">
+      <img src="../../assets/icons/icon48.png" alt="BrainSoap Logo">
       <h1>BrainSoap</h1>
     </div>
 
@@ -24,9 +24,9 @@
       href="../full_page/dashboard.html#/settings" 
       target="_blank" 
       rel="noopener" 
-      aria-label="Open settings"
+      class="icon-btn"
     >
-      <img src="../../assets/nav/gear.svg" alt="">
+      <img src="../../assets/nav/gear.svg" alt="Open Settings">
     </a>
   </header>
 
@@ -36,37 +36,31 @@
 <!-- Displays most important Info -->
     <section class="status" aria-label="Current status">
       <div class="status-row">
-        <span id="display-streak" aria-live="polite"></span>
-        <span id="display-time" aria-live="polite"></span>
+        <span id="display-streak"></span>
+        <span id="display-time"></span>
       </div>
-      <div id="time-bar" aria-hidden="true"></div>
+      <div id="time-bar"></div>
     </section>
     
 <!-- Toggles for important Features -->
     <section>
-      <div class="control-text">
-        <h2 id="focus-mode-title">Focus Mode</h2>
-        <p id="focus-mode-description">No scroll-time allowance</p>
-      </div>
-      <input
-        type="checkbox"
-        id="toggle-focus"
-        aria-labelledby="focus-mode-title"
-        aria-describedby="focus-mode-description"
-      >
+      <label class="toggle-control" for="toggle-focus">
+        <div class="control-text">
+          <h2>Focus Mode</h2>
+          <p>No scroll-time allowance</p>
+        </div>
+        <input type="checkbox" id="toggle-focus">
+      </label>
     </section>
 
     <section>
-      <div class="control-text">
-        <h2 id="pause-extension-title">Pause Extension</h2>
-        <p id="pause-extension-description">Temporarily disable extension</p>
-      </div>
-      <input
-        type="checkbox"
-        id="toggle-pause"
-        aria-labelledby="pause-extension-title"
-        aria-describedby="pause-extension-description"
-      >
+      <label class="toggle-control" for="toggle-pause">
+        <div class="control-text">
+          <h2>Pause Extension</h2>
+          <p>Temporarily disable extension</p>
+        </div>
+        <input type="checkbox" id="toggle-pause">
+      </label>
     </section>
   </main>  
   
