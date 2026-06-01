@@ -65,6 +65,21 @@ section {
   border: 1px solid var(--section-border);
 }
 
+.toggle-control {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-control .control-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
 .status {
   display: flex;
   flex-direction: column;
