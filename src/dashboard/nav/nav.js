@@ -20,8 +20,32 @@ function updateLayout() {
   if (availableMainWidth < mainMinWidth) main.classList.add("hidden"); 
   else                                   main.classList.remove("hidden");
 
-  if (availableMainWidth < statsBoarderWidth) stats.style.gridTemplateColumns = "1fr";
-  else                          stats.style.gridTemplateColumns = "1fr 1fr";
+  if (availableMainWidth < statsBoarderWidth) {
+    stats.style.gridTemplateColumns = "1fr";
+
+    const availableMainHeight = main.clientHeight || window.innerHeight;
+    
+    Array.from(stats.children || []).forEach(w => {
+      const neededPx    = Math.max(w.scrollHeight || 0, w.offsetHeight || 0);
+      const maxH        = Math.floor(availableMainHeight * 0.7);
+      const finalH      = Math.min(neededPx, maxH);
+      
+      w.style.width     = "100%";
+      w.style.boxSizing = "border-box";
+      w.style.height    = finalH + "px";
+      w.style.overflowY = "auto";
+    });
+
+  } else {
+    stats.style.gridTemplateColumns = "1fr 1fr";
+    
+    Array.from(stats.children || []).forEach(w => {
+      w.style.width     = "";
+      w.style.height    = "";
+      w.style.boxSizing = "";
+      w.style.overflowY = "";
+    });
+  }
 
 }
 
@@ -36,4 +60,5 @@ toggleBtn.addEventListener("click", () => {
 });
 
 window.addEventListener("resize", updateLayout);
-updateLayout();
+window.addEventListener("load", updateLayout);
+requestAnimationFrame(updateLayout);
