@@ -1,0 +1,269 @@
+/* =========================
+   Stats Dashboard
+========================= */
+
+#stats {
+  align-content: stretch;
+}
+
+/* children are now sections with class "subsection" */
+#stats > .subsection {
+  background: var(--surface) !important;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 36px var(--shadow);
+  color: var(--text);
+}
+
+#stats > .subsection:not(#stats_graph) {
+  padding: var(--panel-padding);
+}
+
+#stats h1,
+#stats h2,
+#stats h3,
+#stats p {
+  margin: 0;
+}
+
+#stats h1 {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+#stats ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#stats_graph {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: var(--panel-padding);
+  overflow: hidden;
+  color: transparent;
+}
+
+#stats_graph::before {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+#stats_graph::after {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+#stats_graph {
+  background:
+    linear-gradient(180deg, transparent 0 78%, var(--accent-soft) 78% 100%),
+    repeating-linear-gradient(90deg, transparent 0 46px, var(--border) 47px 48px),
+    repeating-linear-gradient(0deg, transparent 0 42px, var(--border) 43px 44px),
+    var(--surface) !important;
+}
+
+
+
+#stats_all_time {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#stats_all_time header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+#stats_all_time ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stat-item {
+  display: grid;
+  gap: 7px;
+  min-height: 78px;
+  padding: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.stat-delta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.stat-value {
+  color: var(--text);
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  font-weight: 780;
+  line-height: 1.1;
+}
+
+/* removed unused data-group modifiers (no elements set data-group in HTML) */
+
+#stats-recent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#stats-recent h1 {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+#activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#stats .activity-item {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  padding: 10px 12px;
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+#stats .activity-item .favicon {
+  width: 36px;
+  height: 36px;
+  padding: 7px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+#stats .activity-item .content {
+  min-width: 0;
+  background: transparent !important;
+}
+
+#stats .activity-item .domain {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#stats .activity-item .duration {
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+#stats .activity-item .time {
+  justify-self: end;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 720;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  section.page {
+    padding: 16px;
+  }
+
+  #stats_all_time ul {
+    grid-template-columns: 1fr;
+  }
+
+  #stats .activity-item {
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  #stats .activity-item .time {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* Week summary (Last 7 Days) */
+.week-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+/* Week-summary small items: label + delta on one line, value below */
+.week-summary .stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: unset;
+  padding: 8px;
+}
+.week-summary .stat-item .stat-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.week-summary .stat-item .stat-delta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.week-summary .stat-item .stat-value {
+  margin-top: 4px;
+}
+
+/* Week graph container + responsive canvas */
+.week-graph-container {
+  position: relative;
+  width: 100%;
+  /* allow the graph to scale but keep a reasonable min/max height */
+  height: clamp(180px, 28vh, 420px);
+  min-height: 140px;
+  max-height: 600px;
+  padding: 8px;
+  overflow: hidden;
+  display: block;
+}
+
+#week-canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  box-sizing: border-box;
+}

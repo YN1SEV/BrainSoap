@@ -28,16 +28,15 @@ function loadComponent(path, targetId) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  
   //    /* Home */
   //    loadComponent("widgets/home/home_dummy1.html", "home_dummy1");
   //    loadComponent("widgets/home/home_dummy2.html", "home_dummy2");
   //    loadComponent("widgets/home/home_dummy3.html", "home_dummy3");
-//    
+  //    
   //    /* Rules */
   //    loadComponent("widgets/rules/rules_timer.html", "rules_timer");
   //    loadComponent("widgets/rules/rules_blacklist.html", "rules_blacklist");
-//    
+  //    
   //    /* Stats */
   //    loadComponent("widgets/stats/stats_graph.html", "stats_graph");
   //    loadComponent("widgets/stats/stats_heatmap.html", "stats_heatmap");

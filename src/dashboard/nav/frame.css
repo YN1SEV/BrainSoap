@@ -15,13 +15,49 @@
 
 * {
   box-sizing: border-box;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border: 2px solid var(--scrollbar-track);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
 }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    linear-gradient(135deg, rgba(47, 201, 168, 0.08), transparent 34%),
+    linear-gradient(315deg, rgba(93, 124, 255, 0.07), transparent 42%),
+    var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
 }
 
 /* =========================
@@ -29,27 +65,24 @@ body {
 ========================= */
 
 main {
-  background: var(--bg);
+  background: transparent;
   overflow-y: auto;
 }
 
 section.page {
-  padding: 26px;
+  padding: 24px;
   min-height: 100vh;
 
-  background: var(--surface);
+  background: transparent;
   border-left: 1px solid var(--border);
 }
 
-/* =========================
-   Sidebar (clean panel)
-========================= */
 
 aside.sidebar {
   background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
 
-  padding: 18px 14px;
+  padding: 18px 12px;
 
   display: flex;
   flex-direction: column;
@@ -58,11 +91,22 @@ aside.sidebar {
   backdrop-filter: blur(10px);
 }
 
-/* Header */
 aside.sidebar header {
-  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 6px 10px 12px;
+  color: var(--text);
+  font-size: 1rem;
   font-weight: 750;
-  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+aside.sidebar header img {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
 }
 
 /* =========================
@@ -72,7 +116,7 @@ aside.sidebar header {
 aside.sidebar nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 
 /* =========================
@@ -84,18 +128,19 @@ aside.sidebar nav a {
   align-items: center;
   gap: 12px;
 
-  padding: 12px 12px;
-  border-radius: 12px;
+  min-height: 42px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
 
   color: var(--text-muted);
 
-  background: rgba(255,255,255,0.03);
+  background: transparent;
 
   border: 1px solid transparent;
 
   position: relative;
 
-  transition: all 0.18s ease;
+  transition: background var(--ease), border-color var(--ease), color var(--ease), transform var(--ease);
 }
 
 /* ICONS */
@@ -105,16 +150,20 @@ img {
   opacity: 0.85;
 }
 
+aside.sidebar nav img {
+  filter: var(--nav-icon-filter);
+}
+
 /* HOVER */
 aside.sidebar nav a:hover {
-  background: rgba(255,255,255,0.06);
+  background: var(--surface-2);
   color: var(--text);
 
-  transform: translateX(4px);
+  transform: translateX(2px);
 
   border-color: var(--border);
 
-  box-shadow: 0 6px 18px var(--shadow);
+  box-shadow: none;
 }
 
 /* ACTIVE STATE */
@@ -122,15 +171,11 @@ body:has(#home:target) aside.sidebar nav a[href="#home"],
 body:has(#rules:target) aside.sidebar nav a[href="#rules"],
 body:has(#stats:target) aside.sidebar nav a[href="#stats"],
 body:has(#settings:target) aside.sidebar nav a[href="#settings"] {
-  background: linear-gradient(
-    135deg,
-    rgba(123, 92, 255, 0.18),
-    transparent
-  );
+  background: var(--primary-soft);
 
   color: var(--text);
 
-  border: 1px solid rgba(123, 92, 255, 0.35);
+  border: 1px solid color-mix(in srgb, var(--primary), transparent 62%);
 }
 
 /* LEFT ACTIVE BAR */
@@ -138,20 +183,20 @@ aside.sidebar nav a::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 10px;
-  bottom: 10px;
+  top: 9px;
+  bottom: 9px;
 
   width: 3px;
-  border-radius: 6px;
+  border-radius: 999px;
 
   background: transparent;
   transition: 0.2s ease;
 }
 
-body:has(#home:target) aside.sidebar nav a[href="#home"]::before,
-body:has(#rules:target) aside.sidebar nav a[href="#rules"]::before,
-body:has(#stats:target) aside.sidebar nav a[href="#stats"]::before,
-body:has(#settings:target) aside.sidebar nav a[href="#settings"]::before {
+body:has(#home:target)      aside.sidebar nav a[href="#home"]::before,
+body:has(#rules:target)     aside.sidebar nav a[href="#rules"]::before,
+body:has(#stats:target)     aside.sidebar nav a[href="#stats"]::before,
+body:has(#settings:target)  aside.sidebar nav a[href="#settings"]::before {
   background: var(--primary);
 }
 
@@ -164,10 +209,10 @@ body:has(#settings:target) aside.sidebar nav a[href="#settings"]::before {
   top: 12px;
   left: 12px;
 
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
 
-  border-radius: 10px;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
 
   background: var(--surface);
@@ -179,9 +224,9 @@ body:has(#settings:target) aside.sidebar nav a[href="#settings"]::before {
   align-items: center;
   justify-content: center;
 
-  box-shadow: 0 4px 14px var(--shadow);
+  box-shadow: 0 10px 24px var(--shadow);
 
-  transition: 0.2s ease;
+  transition: transform var(--ease), color var(--ease), border-color var(--ease);
 }
 
 .mini-btn:hover {

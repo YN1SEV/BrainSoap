@@ -4,55 +4,88 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- Don't Change Order -->
+  <!-- keep styles first, structure second, dev last -->
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="structure.css">
-  <link rel="stylesheet" href="frame.css">
-  <link rel="stylesheet" href="dev.css">
+  
+  <link rel="stylesheet" href="nav/frame.css">
+  <link rel="stylesheet" href="stats/stats.css">
+  <link rel="stylesheet" href="dev/dev.css">
+  
 </head>
 
 <body>
+  <!--================================================= Sidebar ==================================================-->
+  <!--============================================================================================================-->
   <button class="mini-btn" id="toggle-sidebar">☰</button>
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <header><img src="../../assets/icons/icon128.png" alt="BrainSoap"> BrainSoap</header>
+    <header><img src="../../assets/icons/icon128.png" alt="">BrainSoap</header>
 
     <nav>
-      <a href="#home"    ><img src="../../assets/nav/home.svg"    >Home</a>
-      <a href="#rules"   ><img src="../../assets/nav/rules.svg"   >Rules</a>
-      <a href="#stats"   ><img src="../../assets/nav/stats.svg"   >Statistics</a>
-      <a href="#settings"><img src="../../assets/nav/settings.svg">Settings</a>
+      <a href="#home"    ><img src="../../assets/nav/home.svg"    >Home       </a>
+      <a href="#rules"   ><img src="../../assets/nav/rules.svg"   >Rules      </a>
+      <a href="#stats"   ><img src="../../assets/nav/stats.svg"   >Statistics </a>
+      <a href="#settings"><img src="../../assets/nav/settings.svg">Settings   </a>
     </nav>
   </aside>
 
   <main>
  
-    <!-- HOME -->
-    <section class="page" id="home">
-      <div id="home_dummy1"></div>
-      <div id="home_dummy2"></div>
-      <div id="home_dummy3"></div>
-    </section>
+    <!--================================================== HOME  ===================================================-->
+    <!--============================================================================================================-->
+    <section class="page" id="home"></section>
 
-    <!-- RULES -->
+    <!--================================================== RULES ===================================================-->
+    <!--============================================================================================================-->
     <section class="page" id="rules">
-      <div id="rules_timer"    ></div>
-      <div id="rules_blacklist"></div>
+     
     </section>
 
-    <!-- STATS -->
+    <!--================================================== STATS ===================================================-->
+    <!--============================================================================================================-->
     <section class="page" id="stats">
-      <!-- Top left -->
-      <div id="stats_graph1"   >1</div>
-      
-      <!-- Top right -->
-      <div id="stats_all_time1">
-        <header><h1>Statistics</h1></header>
-        
-        <ul id="stats_all_time1">
+      <!----------------------------------------------- Week-Graph --------------------------------------------------->
+      <section class="subsection"id="stats_graph">
+        <h1>Last 7 Days</h1>
 
-          <!------------------------ Focus ------------------------>
+        <div class="week-summary">
+
+          <!------------------ Focus Activity  ------------------->
+          <div class="stat-item">
+            <div class="stat-top">
+              <span class="stat-label">Hours in Focus Time:</span>
+              <span class="stat-delta" id="focus-delta">Couldn't be loaded</span>
+            </div>
+            <div class="stat-value value" data-count="0">Couldn't be loaded</div>
+          </div>
+
+          <!------------------ Scroll Activity ------------------->
+          <div class="stat-item">
+            <div class="stat-top">
+              <span class="stat-label">Hours in Scroll Time:</span>
+              <span class="stat-delta" id="scroll-delta">Couldn't be loaded</span>
+            </div>
+
+            <div class="stat-value value" data-count="0">Couldn't be loaded</div>
+          </div>
+        </div>
+
+        <!------------------ Graph last week ------------------->
+        <div class="week-graph-container">
+            <canvas id="week-canvas"></canvas> 
+        </div>
+
+      </section>
+      
+      <!------------------------------------------------ All-Time Stats ---------------------------------------------->
+      <section class="subsection" id="stats_all_time">
+        <h1>Statistics</h1>
+        
+        <ul>
+
+          <!----------------------- Focus ------------------------>
           <li class="stat-item">
             <span class="stat-label">Focus Hours</span>
             <span id="focus-hours" class="stat-value"></span>
@@ -62,13 +95,8 @@
             <span class="stat-label">Focus Sessions</span>
             <span id="focus-sessions" class="stat-value"></span>
           </li>
-
-          <li class="stat-item">
-            <span class="stat-label">Avg Focus Session</span>
-            <span id="avg-focus-session" class="stat-value"></span>
-          </li>
-
-          <!------------------------ Scroll ------------------------>
+          
+          <!----------------------- Scroll ----------------------->
           <li class="stat-item">
             <span class="stat-label">Scroll Hours</span>
             <span id="scroll-hours" class="stat-value"></span>
@@ -88,8 +116,8 @@
             <span class="stat-label">Best Streak</span>
             <span id="best-streak" class="stat-value"></span>
           </li>
-
-          <!------------------------ Misc  ------------------------>
+         
+          <!----------------------- Misc  ------------------------>
           <li class="stat-item">
             <span class="stat-label">Sites Blocked</span>
             <span id="sites-blocked" class="stat-value"></span>
@@ -100,30 +128,39 @@
             <span id="active-days" class="stat-value"></span>
           </li>
         </ul>
-      </div>
-
-      <!-- Bot left -->
-      <div id="stats_heatmap1" >2</div>
-      
-      <!-- Bot right -->
-      <div id="stats-recent"  >
+      </section>
+      <!-------------------------------------------------- TBD ------------------------------------------------------->
+      <section class="subsection" id="">
+        <h1>TBD</h1>
+      </section>
+      <!---------------------------------------------- Recent Stats -------------------------------------------------->
+      <section class="subsection" id="stats-recent">
         <h1>Recent Activity</h1>
         <ul id="activity-list"></ul>
-      </div>
+      </section>
     </section>
 
-    <!-- SETTINGS -->
+    <!--================================================ SETTINGS  =================================================-->
+    <!--============================================================================================================-->
     <section class="page" id="settings">
-      <div id="settings_dummy1"></div>
+      <div id="settings_dummy"></div>
     </section>
 
   </main>
 </body>
 
+<!-- Load first -->
+<script src="imported/chart.js"></script>
+<script src="imported/countUp.js"></script>
 
+<!-- Load second -->
+<script src="dev/dev.js"></script>
 <script src="nav/nav.js"></script>
 <script src="load_components.js"></script>
 
+<!-- Load last -->
 <script src="stats/recent.js"></script>
 <script src="stats/all_time.js"></script>
+<script src="stats/week.js"></script>
+
 </html>
