@@ -2,6 +2,7 @@
 // VARIABLES
 // =================================================
 let currentDomain = null;
+let BlockedDomain = null;
 let startTime = Date.now();
 
 // =================================================
@@ -80,6 +81,8 @@ browser.runtime.onMessage.addListener((message, sender) => {
       redirectTo(message.url); 
     }
     unmuteCurrentTab();
+    saveVariable(BlockedDomain, 0) // reset currently blocked domain
+    console.log(`${BlockedDomain} timer reset to 0`)
   }
 });
 
@@ -122,9 +125,6 @@ async function checkThresholds() {
   const timersList = await getSetting("timers");
   const activeTimerKeys = timerMap[currentDomain] || ["default"];
 
-  // need to reset bevore actions because redirect
-  await saveVariable(currentDomain, 0);
-
   // performe actions
   for (const t of activeTimerKeys) {
     const timerObject = timersList[t];
@@ -139,7 +139,6 @@ async function checkThresholds() {
       actionOnLimit(timeSpent, timerObject);
     }
   }
-
 }
 
 // action depending on settings
@@ -151,11 +150,17 @@ async function actionOnLimit(time, timerObject)
 
   const hasPopup = actions.includes("popup");
   const hasRedirect = actions.includes("redirect");
-
+  const hasImage = actions.includes("image");
+  
   if (actions.includes("notify")) {
     sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
   }
 
+  if (hasImage)
+  {
+    showImage(timerObject.imagePath);
+  }
+  
   if (hasPopup && hasRedirect) {
     showBlocker(redirectUrl = timerObject.redirectUrl); 
   } else if (hasPopup) {
@@ -163,6 +168,9 @@ async function actionOnLimit(time, timerObject)
   } else if (hasRedirect) {
     redirectTo(timerObject.redirectUrl);
   }
-
+  
+  BlockedDomain = currentDomain;
+  //reset current domain
+  saveVariable(currentDomain,0);
   return;
 }
