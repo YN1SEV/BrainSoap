@@ -71,6 +71,7 @@ this was a great help in understanding how to create an extension and what you c
     │   │   ├── settings.svg
     │   │   └── stats.svg
     │   └── visuals
+    │   │   └── stop.png
     ├── docs
     │   └── ideas.md
     ├── src
@@ -105,7 +106,8 @@ this was a great help in understanding how to create an extension and what you c
     │   ├── quick_page
     │   │   ├── popup.css
     │   │   ├── popup.html
-    │   │   └── popup.js
+    │   │   ├── popup.js
+    │   │   └── style.css
     │   └── utils
     │       ├── defaults.js
     │       └── utils.js
