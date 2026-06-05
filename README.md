@@ -66,11 +66,14 @@ this was a great help in understanding how to create an extension and what you c
     │   │   ├── icon128.png
     │   │   └── credits.txt
     │   ├── nav
-    │   │   └── gear.svg
+    │   │   ├── home.svg
+    │   │   ├── rules.svg
+    │   │   ├── settings.svg
+    │   │   └── stats.svg
     │   └── visuals
     │   │   └── stop.png
     ├── docs
-    │   └── Ideas.md
+    │   └── ideas.md
     ├── src
     │   ├── background
     │   │   └── background.js
@@ -81,24 +84,34 @@ this was a great help in understanding how to create an extension and what you c
     │   │   ├── actions_handler.js
     │   │   ├── storage_manager.js
     │   │   └── tab_handler.js
-    │   ├── full_page
-    │   │   ├── charts.js
-    │   │   ├── dashboard_nav.js
-    │   │   ├── dashboard.css
-    │   │   ├── dashboard.html
-    │   │   ├── dashboard.js
-    │   │   └── widgets_stats.js
+    │   ├── dashboard
+    │   │   ├── index.html
+    │   │   ├── load_components.js
+    │   │   ├── structure.css
+    │   │   ├── styles.css
+    │   │   ├── dev
+    │   │   │   ├── dev.css
+    │   │   │   └── dev.js
+    │   │   ├── imported
+    │   │   │   ├── chart.js
+    │   │   │   └── countUp.js
+    │   │   ├── nav
+    │   │   │   ├── frame.css
+    │   │   │   └── nav.js
+    │   │   └── stats
+    │   │       ├── all_time.js
+    │   │       ├── recent.js
+    │   │       ├── stats.css
+    │   │       └── week.js
     │   ├── quick_page
     │   │   ├── popup.css
     │   │   ├── popup.html
     │   │   ├── popup.js
     │   │   └── style.css
-    │   ├── utils
-    │   │   ├── defaults.js
-    │   │   └── utils.js
-    │   └── config.js
-    ├── .gitignore
-    ├── Ideas.md
+    │   └── utils
+    │       ├── defaults.js
+    │       └── utils.js
+    ├── manifest.json
     └── README.md
     ```
 - only add a feature to the list when it is done.
