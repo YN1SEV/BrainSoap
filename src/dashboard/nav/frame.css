@@ -1,0 +1,247 @@
+
+
+
+/*
+** This file is still AI slop
+** Will be changed, can be changed
+** Will be sorted later on
+*/
+
+
+
+/* =========================
+   Base
+========================= */
+
+* {
+  box-sizing: border-box;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border: 2px solid var(--scrollbar-track);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+body {
+  margin: 0;
+  background:
+    linear-gradient(135deg, rgba(47, 201, 168, 0.08), transparent 34%),
+    linear-gradient(315deg, rgba(93, 124, 255, 0.07), transparent 42%),
+    var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* =========================
+   Layout
+========================= */
+
+main {
+  background: transparent;
+  overflow-y: auto;
+}
+
+section.page {
+  padding: 24px;
+  min-height: 100vh;
+
+  background: transparent;
+  border-left: 1px solid var(--border);
+}
+
+
+aside.sidebar {
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+
+  padding: 18px 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  backdrop-filter: blur(10px);
+}
+
+aside.sidebar header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 6px 10px 12px;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 750;
+  border-bottom: 1px solid var(--border);
+}
+
+aside.sidebar header img {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+}
+
+/* =========================
+   NAV CONTAINER
+========================= */
+
+aside.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* =========================
+   NAV ITEMS (modern cards)
+========================= */
+
+aside.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-height: 42px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+
+  color: var(--text-muted);
+
+  background: transparent;
+
+  border: 1px solid transparent;
+
+  position: relative;
+
+  transition: background var(--ease), border-color var(--ease), color var(--ease), transform var(--ease);
+}
+
+/* ICONS */
+img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.85;
+}
+
+aside.sidebar nav img {
+  filter: var(--nav-icon-filter);
+}
+
+/* HOVER */
+aside.sidebar nav a:hover {
+  background: var(--surface-2);
+  color: var(--text);
+
+  transform: translateX(2px);
+
+  border-color: var(--border);
+
+  box-shadow: none;
+}
+
+/* ACTIVE STATE */
+body:has(#home:target) aside.sidebar nav a[href="#home"],
+body:has(#rules:target) aside.sidebar nav a[href="#rules"],
+body:has(#stats:target) aside.sidebar nav a[href="#stats"],
+body:has(#settings:target) aside.sidebar nav a[href="#settings"] {
+  background: var(--primary-soft);
+
+  color: var(--text);
+
+  border: 1px solid color-mix(in srgb, var(--primary), transparent 62%);
+}
+
+/* LEFT ACTIVE BAR */
+aside.sidebar nav a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+
+  width: 3px;
+  border-radius: 999px;
+
+  background: transparent;
+  transition: 0.2s ease;
+}
+
+body:has(#home:target)      aside.sidebar nav a[href="#home"]::before,
+body:has(#rules:target)     aside.sidebar nav a[href="#rules"]::before,
+body:has(#stats:target)     aside.sidebar nav a[href="#stats"]::before,
+body:has(#settings:target)  aside.sidebar nav a[href="#settings"]::before {
+  background: var(--primary);
+}
+
+/* =========================
+   MINI BUTTON
+========================= */
+
+.mini-btn {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+  color: var(--text);
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 10px 24px var(--shadow);
+
+  transition: transform var(--ease), color var(--ease), border-color var(--ease);
+}
+
+.mini-btn:hover {
+  transform: scale(1.05);
+  color: var(--primary);
+}
+
+.mini-btn:active {
+  transform: scale(0.95);
+}
+
+/* =========================
+   Sidebar hidden
+========================= */
+
+.hide-sidebar .sidebar {
+  display: none;
+}
