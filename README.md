@@ -66,7 +66,9 @@ this was a great help in understanding how to create an extension and what you c
     │   │   ├── icon128.png
     │   │   └── credits.txt
     │   ├── nav
+    │   │   └── gear.svg
     │   └── visuals
+    │   │   └── stop.png
     ├── docs
     │   └── Ideas.md
     ├── src
@@ -89,7 +91,8 @@ this was a great help in understanding how to create an extension and what you c
     │   ├── quick_page
     │   │   ├── popup.css
     │   │   ├── popup.html
-    │   │   └── popup.js
+    │   │   ├── popup.js
+    │   │   └── style.css
     │   ├── utils
     │   │   ├── defaults.js
     │   │   └── utils.js

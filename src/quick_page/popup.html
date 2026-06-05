@@ -7,7 +7,7 @@
 
   <title>BrainSoap - Quick Panel</title>
 
-  <!-- Names may Change -->
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="popup.css">
   <script src="popup.js" defer></script>
 </head>
@@ -16,20 +16,25 @@
 <!-- Generic Info-->
   <header>
     <div class="header-left">
-      <img src="../../assets/icons/icon48.png" alt="BrainSoap icon" width="48" height="48">
+      <img src="../../assets/icons/icon48.png" alt="BrainSoap Logo">
       <h1>BrainSoap</h1>
     </div>
 
-    <a href="../full_page/dashboard.html#/settings" target="_blank" aria-label="Open settings">
-      <img src="../../assets/nav/gear.svg" alt="Settings">
+    <a 
+      href="../full_page/dashboard.html#/settings" 
+      target="_blank" 
+      rel="noopener" 
+      class="icon-btn"
+    >
+      <img src="../../assets/nav/gear.svg" alt="Open Settings">
     </a>
   </header>
 
   
 
-  <main>
+  <main aria-label="Quick controls">
 <!-- Displays most important Info -->
-    <section class="status">
+    <section class="status" aria-label="Current status">
       <div class="status-row">
         <span id="display-streak"></span>
         <span id="display-time"></span>
@@ -39,25 +44,34 @@
     
 <!-- Toggles for important Features -->
     <section>
-      <div class="control-text">
-        <h2>Focus Mode</h2>
-        <p>No scroll-time allowance</p>
-      </div>
-      <input type="checkbox" id="toggle-focus"/>
+      <label class="toggle-control" for="toggle-focus">
+        <div class="control-text">
+          <h2>Focus Mode</h2>
+          <p>No scroll-time allowance</p>
+        </div>
+        <input type="checkbox" id="toggle-focus">
+      </label>
     </section>
 
     <section>
-      <div class="control-text">
-        <h2>Pause Extension</h2>
-        <p>Temporarily disable extension</p>
-      </div>
-      <input type="checkbox" id="toggle-pause"/>
+      <label class="toggle-control" for="toggle-pause">
+        <div class="control-text">
+          <h2>Pause Extension</h2>
+          <p>Temporarily disable extension</p>
+        </div>
+        <input type="checkbox" id="toggle-pause">
+      </label>
     </section>
   </main>  
   
 <!-- Leads to full page -->
-  <footer>
-    <a href="../full_page/dashboard.html#/home" target="_blank" class="dashboard-btn"> 
+  <footer aria-label="Dashboard navigation">
+    <a 
+      href="../full_page/dashboard.html#/home" 
+      target="_blank" 
+      rel="noopener" 
+      class="dashboard-btn"
+    >
       Dashboard
     </a>
   </footer>
