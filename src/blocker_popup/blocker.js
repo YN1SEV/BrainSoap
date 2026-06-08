@@ -1,22 +1,11 @@
 // not a background script so not there!
-if (!window.hasBlockerListener) {
-  window.hasBlockerListener = true;
 browser.runtime.onMessage.addListener((message) => {
   if (message.action === "TRIGGER_BLOCK") {
-    if (message.imagePath)
-    {
-      renderImage(message.imagePath)
-    }
-    else{
-      renderBlocker(message.seconds, message.redirectUrl);
-    }
-    
+    renderBlocker(message.seconds, message.redirectUrl);
   }
 });
-}
 
-
-function renderBlocker(seconds, redirectUrl = undefined) {
+function renderBlocker(seconds, redirectUrl = null) {
   // Prevent duplicate popups
   if (document.getElementById('doom-blocker-overlay')) return;
 
@@ -57,28 +46,7 @@ function renderBlocker(seconds, redirectUrl = undefined) {
     overlay.remove();
     browser.runtime.sendMessage({ 
       action: "BLOCKER_CONFIRMED", 
-      url: redirectUrl
+      url: redirectUrl 
     });
   };
-}
-
-function renderImage(imagePath){
-  try {
-  // Prevent duplicate popups
-  if (document.getElementById('doom-blocker-image')) return;
-
-  // Add class to body to stop scrolling
-  document.body.classList.add('blocked-scrolling');
-  
-  console.log("rendering image");
-  const img = document.createElement('img');
-  img.id = 'doom-blocker-image';
-  img.src = browser.runtime.getURL(imagePath);
-
-  document.body.appendChild(img);
-
-    
-  } catch (e) {
-    console.error(e)
-  }
 }

@@ -2,7 +2,6 @@
 // VARIABLES
 // =================================================
 let currentDomain = null;
-let BlockedDomain = null;
 let startTime = Date.now();
 
 // =================================================
@@ -36,16 +35,15 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
   await updateTime();
   const tab = await browser.tabs.get(activeInfo.tabId);
   currentDomain = getCleanedIdentifier(tab.url);
-  console.log(`Tab ${activeInfo.tabId} activated. Current domain: ${currentDomain}`);
 });
 
 // on install, set default settings 
 browser.runtime.onInstalled.addListener(async (details) => {
-  await storage.clearLocalStorage(); 
-  await storage.resetSettings(); // TODO: delete later, dont overwrite user settings on update
+  await clearLocalStorage(); 
+  await resetSettings(); // TODO: delete later, dont overwrite user settings on update
   if (details.reason === "install") 
     {
-      await storage.resetSettings();
+      await resetSettings();
       console.log("Default settings initialized.");
     }
 });
@@ -70,21 +68,18 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 // listenfer for browser startupo
 browser.runtime.onStartup.addListener(async () => {
     console.log("Browser started, checking settings...");
-    await storage.checkSettingsExists();
-    await storage.clearLocalStorage(); 
+    await checkSettingsExists();
+    await clearLocalStorage(); 
 
 });
 
 // can listen to all messages, add more if blocks/switch
 browser.runtime.onMessage.addListener((message, sender) => {
   if (message.action === "BLOCKER_CONFIRMED") {
-    if(message.url !== undefined){
-      console.log(`redirecting to ${message.url}`)
+    if(message.url){
       redirectTo(message.url); 
     }
     unmuteCurrentTab();
-    storage.saveVariable(BlockedDomain, 0) // reset currently blocked domain
-    console.log(`${BlockedDomain} timer reset to 0`)
   }
 });
 
@@ -93,7 +88,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
 // =================================================
 const checkIfTracked = async (url) => {
   if (!url) return false;
-  const timerMap = await storage.getSetting("timerMap");
+  const timerMap = await getSetting("timerMap");
   const trackedUrls = Object.keys(timerMap);
   console.log(`Checking if ${url} is tracked among:`, trackedUrls);
   return trackedUrls.some(trackedUrl => url.includes(trackedUrl));
@@ -107,10 +102,10 @@ async function updateTime() {
   const delta = Math.floor((now - startTime) / 1000);
   
   // Storage usage with Promises
-  const data = await storage.getVariable(currentDomain);
+  const data = await getVariable(currentDomain);
   const total = (data || 0) + delta;
 
-  await storage.saveVariable(currentDomain, total);
+  await saveVariable(currentDomain, total);
 
   startTime = now; 
 }
@@ -120,12 +115,15 @@ async function checkThresholds() {
   if (!currentDomain) return;
   if (!await checkIfTracked(currentDomain)) return;
 
-  const timeSpent = await storage.getVariable(currentDomain);
+  const timeSpent = await getVariable(currentDomain);
   console.log(`Time spent on ${currentDomain}: ${timeSpent} seconds`);
 
-  const timerMap = await storage.getSetting("timerMap");
-  const timersList = await storage.getSetting("timers");
+  const timerMap = await getSetting("timerMap");
+  const timersList = await getSetting("timers");
   const activeTimerKeys = timerMap[currentDomain] || ["default"];
+
+  // need to reset bevore actions because redirect
+  await saveVariable(currentDomain, 0);
 
   // performe actions
   for (const t of activeTimerKeys) {
@@ -141,6 +139,7 @@ async function checkThresholds() {
       actionOnLimit(timeSpent, timerObject);
     }
   }
+
 }
 
 // action depending on settings
@@ -152,27 +151,18 @@ async function actionOnLimit(time, timerObject)
 
   const hasPopup = actions.includes("popup");
   const hasRedirect = actions.includes("redirect");
-  const hasImage = actions.includes("image");
-  
+
   if (actions.includes("notify")) {
     sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
   }
 
-  if (hasImage)
-  {
-    showImage(timerObject.imagePath);
-  }
-  
   if (hasPopup && hasRedirect) {
-    showBlocker(timerObject.redirectUrl); 
+    showBlocker(redirectUrl = timerObject.redirectUrl); 
   } else if (hasPopup) {
     showBlocker();
   } else if (hasRedirect) {
     redirectTo(timerObject.redirectUrl);
   }
-  
-  BlockedDomain = currentDomain;
-  //reset current domain
-  storage.saveVariable(currentDomain,0);
+
   return;
 }
