@@ -1,4 +1,4 @@
-class storageManager {
+class StorageManager {
     constructor() {
         this.localCache = {};
         this.syncCache = {};
@@ -175,3 +175,4 @@ class storageManager {
     }
 
 }
+let storage = new StorageManager();
