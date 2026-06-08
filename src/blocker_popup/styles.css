@@ -60,16 +60,3 @@
 body.blocked-scrolling {
   overflow: hidden !important;
 }
-
-#doom-blocker-image {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(128, 128, 128, 0.8); /* Grayed out background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2147483647;
-  border-radius: 8px; /* Optional: rounds the corners of the container */
-}
