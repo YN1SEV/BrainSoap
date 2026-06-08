@@ -8,7 +8,7 @@ browser.runtime.onMessage.addListener((message) => {
       renderImage(message.imagePath)
     }
     else{
-      renderBlocker(message.seconds, redirectUrl = message.redirectUrl);
+      renderBlocker(message.seconds, message.redirectUrl);
     }
     
   }
@@ -16,7 +16,7 @@ browser.runtime.onMessage.addListener((message) => {
 }
 
 
-function renderBlocker(seconds, redirectUrl = null) {
+function renderBlocker(seconds, redirectUrl = undefined) {
   // Prevent duplicate popups
   if (document.getElementById('doom-blocker-overlay')) return;
 
@@ -57,7 +57,7 @@ function renderBlocker(seconds, redirectUrl = null) {
     overlay.remove();
     browser.runtime.sendMessage({ 
       action: "BLOCKER_CONFIRMED", 
-      redirect_url: redirectUrl
+      url: redirectUrl
     });
   };
 }
