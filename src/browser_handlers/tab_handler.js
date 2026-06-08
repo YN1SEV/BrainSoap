@@ -1,3 +1,4 @@
+
 async function getActiveTabId() {
   try {
     // Query for the tab that is active and in the current window
@@ -40,17 +41,5 @@ async function unmuteCurrentTab() {
     console.log(`Tab ${tabId} has been unmuted.`);
   } catch (error) {
     console.error("Failed to unfreeze tab:", error);
-  }
-}
-
-// A robust message sender with a retry mechanism
-async function sendMessageWithRetry(tabId, message, retries = 3, delay = 100) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      return await browser.tabs.sendMessage(tabId, message);
-    } catch (err) {
-      if (i === retries - 1) throw err; // Out of retries, propagate error
-      await new Promise(resolve => setTimeout(resolve, delay)); // Wait before retrying
-    }
   }
 }

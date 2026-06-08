@@ -24,33 +24,16 @@ async function showBlocker(redirectUrl = null) {
   freezeTab(tabID);
   if(redirectUrl)
   {
-    sendMessageWithRetry(tabID, {
+    browser.tabs.sendMessage(tabID, {
       action: "TRIGGER_BLOCK",
-      seconds: 3,
+      seconds: 1,
       redirectUrl: redirectUrl
-    }); 
-
+    });
   }else{
-    sendMessageWithRetry(tabID, {
+    browser.tabs.sendMessage(tabID, {
       action: "TRIGGER_BLOCK",
       seconds: 10 
     });
   }
   return;
-}
-
-
-// Usage inside your showImage function:
-async function showImage(imagePath) {
-  const tabID = await getActiveTabId();
-  freezeTab(tabID);
-  
-  try {
-    await sendMessageWithRetry(tabID, {
-      action: "TRIGGER_BLOCK",
-      imagePath: imagePath
-    });
-  } catch (error) {
-    console.error("Message failed after multiple attempts:", error);
-  }
 }
