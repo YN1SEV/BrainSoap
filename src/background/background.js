@@ -4,7 +4,6 @@
 let currentDomain = null;
 let BlockedDomain = null;
 let startTime = Date.now();
-let storage = new StorageManager();
 
 // =================================================
 // EVENT LISTENERS - maybe make they'r own file?
@@ -37,6 +36,7 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
   await updateTime();
   const tab = await browser.tabs.get(activeInfo.tabId);
   currentDomain = getCleanedIdentifier(tab.url);
+  console.log(`Tab ${activeInfo.tabId} activated. Current domain: ${currentDomain}`);
 });
 
 // on install, set default settings 
