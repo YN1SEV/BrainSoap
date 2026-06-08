@@ -78,7 +78,8 @@ browser.runtime.onStartup.addListener(async () => {
 // can listen to all messages, add more if blocks/switch
 browser.runtime.onMessage.addListener((message, sender) => {
   if (message.action === "BLOCKER_CONFIRMED") {
-    if(message.url){
+    if(message.url !== undefined){
+      console.log(`redirecting to ${message.url}`)
       redirectTo(message.url); 
     }
     unmuteCurrentTab();
@@ -163,7 +164,7 @@ async function actionOnLimit(time, timerObject)
   }
   
   if (hasPopup && hasRedirect) {
-    showBlocker(redirectUrl = timerObject.redirectUrl); 
+    showBlocker(timerObject.redirectUrl); 
   } else if (hasPopup) {
     showBlocker();
   } else if (hasRedirect) {

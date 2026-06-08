@@ -26,7 +26,7 @@ async function showBlocker(redirectUrl = null) {
   {
     sendMessageWithRetry(tabID, {
       action: "TRIGGER_BLOCK",
-      seconds: 1,
+      seconds: 3,
       redirectUrl: redirectUrl
     }); 
 

@@ -28,12 +28,12 @@ class StorageManager {
     // save new or update variable in browser storage
     async saveVariable(name, value) 
     {
-        if(!name || !value){throw new Error('Name and value must be defined');}
+        if(name === undefined || value === undefined) {throw new Error('Name and value must be defined');}
         if (!this.isInitialized) { return undefined; }
         
         this.syncCache[name] = value;
         // write async for fast
-        this._writeToLocal(name, value);
+        await this._writeToLocal(name, value);
     }
 
     // get variable from browser storage, may return undefined if variable doesnt exist.
