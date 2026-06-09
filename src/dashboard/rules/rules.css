@@ -1,0 +1,253 @@
+/* Rules styles for dashboard */
+
+#rules {
+  padding: var(--panel-padding, 20px);
+  color: var(--text);
+}
+
+#rules h1 {
+  font-size: 1.4rem;
+  margin: 0 0 12px 0;
+  color: var(--text);
+}
+
+
+#categories {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.category {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px var(--shadow);
+  padding: 12px;
+  color: var(--text);
+}
+
+.category header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.category h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.cat-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.cat-timer {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.cat-status,
+.cat-menu-btn,
+.item-status,
+.cat-add-item-btn {
+  background: var(--primary);
+  color: var(--text);
+  border: none;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.cat-status.active,
+.item-status.active {
+  background: var(--primary);
+  color: var(--text);
+}
+
+.cat-status.inactive,
+.item-status.inactive {
+  background: var(--surface-3);
+  color: var(--text-muted);
+}
+
+.items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.item-left-content {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.item-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-weight: 600;
+}
+
+.item-url {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.cat-add-item {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.cat-add-item-input {
+  flex: 1;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.controls {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#add-category-btn {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--primary);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.add-category-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.add-category-row input#add-category-input {
+  flex: 1;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.add-category-row button#add-category-btn {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--primary);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.cat-add-item-btn,
+.add-category-row button#add-category-btn {
+  background: var(--surface-3);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.cat-menu-btn {
+  background: var(--surface-3);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+}
+
+.cat-menu-btn:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.cat-menu-popup {
+  position: fixed;
+  z-index: 10000;
+  background: var(--surface, #ffffff);
+  color: var(--text, #111111);
+  border: 1px solid var(--border, #c0c0c0);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+  border-radius: 8px;
+  padding: 6px;
+  min-width: 180px;
+}
+
+.cat-menu-popup ul { 
+  list-style: none; 
+  margin: 0; 
+  padding: 6px; 
+}
+
+.cat-menu-popup li { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  padding: 4px 6px; 
+}
+
+.cat-menu-popup li button.cat-menu-action { 
+  background: transparent; 
+  border: none; 
+  color: var(--text); 
+  cursor: pointer; 
+  padding: 4px 6px; 
+  border-radius: 6px; 
+}
+
+  .cat-menu-popup li button.cat-menu-action:hover { 
+  background: var(--surface-2); 
+  color: var(--text); 
+}
+
+.cat-menu-submenu { 
+  display: none; 
+  list-style: none; 
+  margin: 6px 0 0 10px; 
+  padding: 6px; 
+  border-left: 1px dashed var(--border); 
+}
+
+.cat-menu-popup li .has-submenu + .cat-menu-submenu { 
+  display: block; 
+}
+
+.cat-menu-submenu li { 
+  display: flex; 
+  justify-content: 
+  space-between; 
+  gap: 8px; 
+  padding: 4px 0; 
+}
+
