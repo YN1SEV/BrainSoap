@@ -10,6 +10,7 @@
   
   <link rel="stylesheet" href="nav/frame.css">
   <link rel="stylesheet" href="stats/stats.css">
+  <link rel="stylesheet" href="rules/rules.css">
   <link rel="stylesheet" href="dev/dev.css">
   
 </head>
@@ -40,7 +41,15 @@
     <!--================================================== RULES ===================================================-->
     <!--============================================================================================================-->
     <section class="page" id="rules">
-     
+      <h1>Recent Activity</h1>
+        <ul id="categories"></ul>
+
+        <div class="controls">
+          <div class="add-category-row">
+            <input id="add-category-input" placeholder="Add new Category...">
+            <button id="add-category-btn">Add</button>
+          </div>
+        </div>
     </section>
 
     <!--================================================== STATS ===================================================-->
@@ -159,6 +168,11 @@
 <script src="load_components.js"></script>
 
 <!-- Load last -->
+<script src="../utils/utils.js"></script>
+<script src="rules/render_rules.js"></script>
+<script src="rules/menu.js"></script>
+<script src="rules/cat_menu.js"></script>
+<script src="rules/handlers.js"></script>
 <script src="stats/recent.js"></script>
 <script src="stats/all_time.js"></script>
 <script src="stats/week.js"></script>
