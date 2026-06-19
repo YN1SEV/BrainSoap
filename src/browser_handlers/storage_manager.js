@@ -1,4 +1,4 @@
-class StorageManager {
+export class StorageManager {
     constructor() {
         this.localCache = {};
         this.syncCache = {};
@@ -175,4 +175,4 @@ class StorageManager {
     }
 
 }
-let storage = new StorageManager();
+export let custom_storage = new StorageManager();

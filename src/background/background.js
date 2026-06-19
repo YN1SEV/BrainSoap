@@ -41,11 +41,11 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
 
 // on install, set default settings 
 browser.runtime.onInstalled.addListener(async (details) => {
-  await storage.clearLocalStorage(); 
-  await storage.resetSettings(); // TODO: delete later, dont overwrite user settings on update
+  await custom_storage.clearLocalStorage(); 
+  await custom_storage.resetSettings(); // TODO: delete later, dont overwrite user settings on update
   if (details.reason === "install") 
     {
-      await storage.resetSettings();
+      await custom_storage.resetSettings();
       console.log("Default settings initialized.");
     }
 });
@@ -70,8 +70,8 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 // listenfer for browser startupo
 browser.runtime.onStartup.addListener(async () => {
     console.log("Browser started, checking settings...");
-    await storage.checkSettingsExists();
-    await storage.clearLocalStorage(); 
+    await custom_storage.checkSettingsExists();
+    await custom_storage.clearLocalStorage(); 
 
 });
 
@@ -83,7 +83,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
       redirectTo(message.url); 
     }
     unmuteCurrentTab();
-    storage.saveVariable(BlockedDomain, 0) // reset currently blocked domain
+    custom_storage.saveVariable(BlockedDomain, 0) // reset currently blocked domain
     console.log(`${BlockedDomain} timer reset to 0`)
   }
 });
@@ -93,7 +93,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
 // =================================================
 const checkIfTracked = async (url) => {
   if (!url) return false;
-  const timerMap = await storage.getSetting("timerMap");
+  const timerMap = await custom_storage.getSetting("timerMap");
   const trackedUrls = Object.keys(timerMap);
   console.log(`Checking if ${url} is tracked among:`, trackedUrls);
   return trackedUrls.some(trackedUrl => url.includes(trackedUrl));
@@ -107,10 +107,10 @@ async function updateTime() {
   const delta = Math.floor((now - startTime) / 1000);
   
   // Storage usage with Promises
-  const data = await storage.getVariable(currentDomain);
+  const data = await custom_storage.getVariable(currentDomain);
   const total = (data || 0) + delta;
 
-  await storage.saveVariable(currentDomain, total);
+  await custom_storage.saveVariable(currentDomain, total);
 
   startTime = now; 
 }
@@ -120,11 +120,11 @@ async function checkThresholds() {
   if (!currentDomain) return;
   if (!await checkIfTracked(currentDomain)) return;
 
-  const timeSpent = await storage.getVariable(currentDomain);
+  const timeSpent = await custom_storage.getVariable(currentDomain);
   console.log(`Time spent on ${currentDomain}: ${timeSpent} seconds`);
 
-  const timerMap = await storage.getSetting("timerMap");
-  const timersList = await storage.getSetting("timers");
+  const timerMap = await custom_storage.getSetting("timerMap");
+  const timersList = await custom_storage.getSetting("timers");
   const activeTimerKeys = timerMap[currentDomain] || ["default"];
 
   // performe actions
@@ -173,6 +173,6 @@ async function actionOnLimit(time, timerObject)
   
   BlockedDomain = currentDomain;
   //reset current domain
-  storage.saveVariable(currentDomain,0);
+  custom_storage.saveVariable(currentDomain,0);
   return;
 }
