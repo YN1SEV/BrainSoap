@@ -1,4 +1,4 @@
-// Handlers for rules UI (delegated). Relies on global `appData` and `renderCategories` from render_rules.js
+// Handlers for rules UI (delegated). Relies on global `appData` and `renderCategories` and focus helpers.
 
 function attachRulesHandlers(){
   const container = document.getElementById('categories');
@@ -64,17 +64,41 @@ function attachRulesHandlers(){
         renderCategories();
       }
     }
+
+    if (el.matches('.items')) {
+      const idx = Number(el.dataset.catIndex);
+      focusedCategoryIndex = idx;
+      applyRulesFocusState();
+    }
   });
 
-  // submit item when pressing Tab or Enter in the input
+  // submit item when pressing Enter in the input
   container.addEventListener('keydown', (e) => {
     const el = e.target;
     if (!el || !el.matches) return;
     if (el.matches('.cat-add-item-input')){
-      if (e.key === 'Tab' || e.key === 'Enter'){
+      if (e.key === 'Enter'){
         e.preventDefault();
         const idx = Number(el.dataset.catIndex);
         addItemFromInputByIndex(idx);
+        focusNextCategoryList(idx);
+      }
+    }
+
+    if (el.matches('.items')) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const idx = Number(el.dataset.catIndex);
+        focusCategoryList(idx);
+        const firstButton = container.querySelector(`.category .item-status[data-cat-index="${idx}"]`);
+        if (firstButton) firstButton.focus();
+      }
+    }
+
+    if (el.matches('.item-status')) {
+      if (e.key === 'Escape') {
+        const idx = Number(el.dataset.catIndex);
+        focusCategoryList(idx);
       }
     }
   });
@@ -97,9 +121,11 @@ function attachRulesHandlers(){
 
     if (addCatInput){
       addCatInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab' || e.key === 'Enter'){
+        if (e.key === 'Enter'){
           e.preventDefault();
           doAddCategory();
+          const lastIndex = appData.length - 1;
+          focusCategoryList(lastIndex);
         }
       });
     }
