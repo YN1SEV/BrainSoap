@@ -21,23 +21,21 @@ function updateLayout() {
   else                                   main.classList.remove("hidden");
 
   if (availableMainWidth < statsBoarderWidth) {
+    document.body.classList.add("stats-1x4");
     stats.style.gridTemplateColumns = "1fr";
+    stats.style.gridAutoRows = "auto";
 
-    const availableMainHeight = main.clientHeight || window.innerHeight;
-    
     Array.from(stats.children || []).forEach(w => {
-      const neededPx    = Math.max(w.scrollHeight || 0, w.offsetHeight || 0);
-      const maxH        = Math.floor(availableMainHeight * 0.7);
-      const finalH      = Math.min(neededPx, maxH);
-      
       w.style.width     = "100%";
       w.style.boxSizing = "border-box";
-      w.style.height    = finalH + "px";
-      w.style.overflowY = "auto";
+      w.style.height    = "auto";
+      w.style.overflowY = "visible";
     });
 
   } else {
+    document.body.classList.remove("stats-1x4");
     stats.style.gridTemplateColumns = "1fr 1fr";
+    stats.style.gridAutoRows = "";
     
     Array.from(stats.children || []).forEach(w => {
       w.style.width     = "";
