@@ -1,4 +1,4 @@
-import { custom_storage } from "../../browser_handlers/storage_manager";
+import { custom_storage } from "../../browser_handlers/storage_manager.js";
 let appData = []
 
 let timerMap
