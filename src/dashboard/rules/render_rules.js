@@ -41,7 +41,7 @@ function addCategory(catName, catIndex){
         </div>
       </header>
 
-      <ul class="items">${itemsHTML}</ul>
+      <ul class="items" data-cat-index="${catIndex}" tabindex="0" aria-label="${category.name} items">${itemsHTML}</ul>
 
       <div class="cat-add-item">
         
