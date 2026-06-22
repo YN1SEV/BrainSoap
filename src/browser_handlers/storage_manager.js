@@ -1,179 +1,81 @@
-import { defaultSettings } from "../utils/defaults.js";
+// storage_manager.js
+
 class StorageManager {
     constructor() {
         this.localCache = {};
         this.syncCache = {};
-        this.isInitialized = this.initCache();
+        this.isReady = false;
+        
+        // Startet die asynchrone Initialisierung der Caches
+        this.initPromise = this._initCache();
+
+        // Dieser Listener sorgt dafür, dass FE und BE immer synchronisierte Caches haben!
         chrome.storage.onChanged.addListener((changes, areaName) => {
             if (areaName === 'local') {
                 for (let [key, { newValue }] of Object.entries(changes)) {
-                    if (newValue === undefined) {
-                    delete this.localCache[key]; // Falls gelöscht wurde
-                    } else {
-                    this.localCache[key] = newValue; // Aktualisieren
-                    }
+                    if (newValue === undefined) delete this.localCache[key];
+                    else this.localCache[key] = newValue;
                 }
             }
             if (areaName === 'sync') {
                 for (let [key, { newValue }] of Object.entries(changes)) {
-                    if (newValue === undefined) {
-                        delete this.syncCache[key]; // Falls gelöscht wurde
-                    } else {
-                        this.syncCache[key] = newValue; // Aktualisieren
-                    }
+                    if (newValue === undefined) delete this.syncCache[key];
+                    else this.syncCache[key] = newValue;
                 }
             }
         });
     }
 
-    // save new or update variable in browser storage
-    async saveVariable(name, value) 
-    {
-        if(name === undefined || value === undefined) {throw new Error('Name and value must be defined');}
-        if (!this.isInitialized) { return undefined; }
+    async _ensureInitialized() {
+        if (!this.isReady) await this.initPromise;
+    }
+
+    // --- LOKALER SPEICHER (Variables / Stats) ---
+    async setLocal(key, value) {
+        await this._ensureInitialized();
+        this.localCache[key] = value;
+        await chrome.storage.local.set({ [key]: value });
+    }
+
+    async getLocal(key) {
+        await this._ensureInitialized();
+        if (this.localCache[key] !== undefined) return this.localCache[key];
         
-        this.syncCache[name] = value;
-        // write async for fast
-        await this._writeToLocal(name, value);
+        const result = await chrome.storage.local.get(key);
+        return result[key];
     }
 
-    // get variable from browser storage, may return undefined if variable doesnt exist.
-    async getVariable(name) 
-    {
-        if (!this.isInitialized) { return undefined; }
-        if(this.localCache[name] !== undefined) {return this.localCache[name];}
+    // --- SYNCHRONISIERTER SPEICHER (Settings / Blacklist) ---
+    async setSync(key, value) {
+        await this._ensureInitialized();
+        this.syncCache[key] = value;
+        await chrome.storage.sync.set({ [key]: value });
+    }
+
+    async getSync(key) {
+        await this._ensureInitialized();
+        if (this.syncCache[key] !== undefined) return this.syncCache[key];
+
+        const result = await chrome.storage.sync.get(key);
+        return result[key];
+    }
+
+    // --- INITIALISIERUNG ---
+    async _initCache() {
         try {
-            const result = await browser.storage.local.get(name);
-            return result[name];
-        } catch (e) {
-            console.error("Storage read error:", e);
-            return undefined;
-        }
-    }
-
-    // save setting to synced storage or create new if not eist
-    // this trusts the user input. 
-    async saveSetting(name, value) 
-    {
-        if(!name || !value){throw new Error('Name and value must be defined');}
-        if(!this.isInitialized) { return undefined; }
-
-        this.syncCache[name] = value;
-        // write async for fast
-        this._writeToSync(name, value);
-    }
-
-    // get setting from synced storage, restores default if user deleted browser data
-    async getSetting(name) 
-    {
-        if (!this.isInitialized) {return undefined;}
-        if (this.syncCache[name] !== undefined) {return this.syncCache[name];}
-
-        try {
-            const result = await browser.storage.sync.get(name);
-            const value = result[name];
-
-            if (value !== undefined) 
-            {
-                return value;
-            }
-            else // TODO: change if updates required
-            {
-                await checkSettingsExists()
-                return defaultSettings[name];
-            }
-        } catch (error) {
-            console.error("Storage read error:", e);
-        }
-    }
-
-    async checkSettingsExists()
-    {
-        const result = await browser.storage.sync.get("exist").then((result) => result.exist);
-        if (result === undefined)
-        {
-            await resetSettings();
-        }
-    }
-
-    async clearLocalStorage() {
-        try {
-            await browser.storage.local.clear();
-            console.log("All storage cleared.");
-        } catch (e) {
-            console.error("Storage clear error:", e);
-        }
-    }
-
-    async resetSettings() {
-        try {
-            await browser.storage.sync.set(defaultSettings);
-            console.log("Settings reset to default.");
-        }
-        catch (e) {
-            console.error("Settings reset error:", e);
-        }
-    }
-
-    async initCache() {
-        try {
-            // Fetch everything from both local and sync storage concurrently
             const [localData, syncData] = await Promise.all([
-                browser.storage.local.get(null),
-                browser.storage.sync.get(null)
+                chrome.storage.local.get(null),
+                chrome.storage.sync.get(null)
             ]);
-
-            // Populate the in-memory caches
             this.localCache = localData || {};
             this.syncCache = syncData || {};
-
-            // If it's a first-time run or settings were cleared, initialize defaults
-            if (this.syncCache["exist"] === undefined) {
-                await this.resetSettings();
-            }
-
-            console.log("Storage cache successfully initialized.");
-            return true;
+            this.isReady = true;
         } catch (e) {
-            console.error("Failed to initialize storage cache:", e);
-            return false;
+            console.error("StorageManager Init Failed:", e);
         }
     }
-
-    async _writeToLocal(key, value) {
-        try {
-            await browser.storage.local.set({ [key]: value });
-            console.log(`Wrote to local storage: ${key}=${value}`);
-        } catch (e) {
-            console.error("Failed to write to local storage:", e);
-        }
-    }
-    async _writeToSync(key, value) {
-        try {
-            await browser.storage.sync.set({ [key]: value });
-            console.log(`Wrote to sync storage: ${key}=${value}`);
-        } catch (e) {
-            console.error("Failed to write to sync storage:", e);
-        }
-    }
-    async _readFromLocal(key) {
-        try {
-            const item = await browser.storage.local.get([key]);
-            return item[key];
-        } catch (e) {
-            console.error("Failed to read from local storage:", e);
-            return null;
-        }
-    }
-    async _readFromSync(key) {
-        try {
-            const item = await browser.storage.sync.get([key]);
-            return item[key];
-        } catch (e) {
-            console.error("Failed to read from sync storage:", e);
-            return null;
-        }
-    }
-
 }
+
 export const custom_storage = new StorageManager();
+// Expose globally for non-module UI scripts
+try { window.custom_storage = custom_storage; } catch (e) {}

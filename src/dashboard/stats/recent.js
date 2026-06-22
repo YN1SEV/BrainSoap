@@ -1,52 +1,68 @@
-const activities = [
-  { domain: "youtube.com", duration: "12 min aktiv" },
-  { domain: "github.com", duration: "7 min aktiv" },
-  { domain: "openai.com", duration: "22 min aktiv" },
-  { domain: "reddit.com", duration: "4 min aktiv" },
-  { domain: "readoutto.me", duration: "48 min aktiv" },
-  { domain: "youtube.com", duration: "12 min aktiv" },
-  { domain: "github.com", duration: "7 min aktiv" },
-  { domain: "openai.com", duration: "22 min aktiv" },
-  { domain: "reddit.com", duration: "4 min aktiv" },
-  { domain: "readoutto.me", duration: "48 min aktiv" }
-];
+import { custom_storage } from "../../browser_handlers/storage_manager.js";
 
-const container = document.getElementById("activity-list");
-
-function getFavicon(domain) {
-  return `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+/**
+ * Generiert die URL für das Favicon via DuckDuckGo
+ */
+function getFaviconUrl(url) {
+  return `https://icons.duckduckgo.com/ip3/${url}.ico`;
 }
 
+/**
+ * Erstellt ein einzelnes Activity-Element mittels modernem DOM-Parsing
+ */
 function createActivityItem(item) {
-  const el = document.createElement("div");
-  el.className = "activity-item";
+  const minutes = Math.round(item.durationSeconds / 60);
+  const template = document.createElement('template');
+  
+  // HTML-Struktur als cleaner String (einfacher zu stylen und zu lesen)
+  template.innerHTML = `
+    <div class="activity-item">
+      <img class="favicon" src="${getFaviconUrl(item.url)}" alt="${item.url}" />
+      <h1 class="domain">${item.url}</h1>
+      <p class="duration">${minutes} min aktiv</p>
+    </div>
+  `.trim();
 
-  const img = document.createElement("img");
-  img.className = "favicon";
-  img.src = getFavicon(item.domain);
-  img.alt = item.domain;
-
-  const domain = document.createElement("h1");
-  domain.className = "domain";
-  domain.textContent = item.domain;
-
-  const duration = document.createElement("p");
-  duration.className = "duration";
-  duration.textContent = item.duration;
-
-  el.append(img, domain, duration);
-
-  return el;
+  return template.content.firstChild;
 }
 
-function renderActivities(list) {
+/**
+ * Holt die Daten und rendert die exakt 10 letzten Aktivitäten
+ */
+async function renderActivities() {
+  const recentStats = await custom_storage.getLocal('recentStats');
+  
+  if (!recentStats || !Array.isArray(recentStats)) {
+    console.warn('No valid recent stats found in storage');
+    return;
+  }
+
+  const container = document.getElementById("activity-list");
+  if (!container) return;
+
+  // 1. Container leeren (falls vorher schon mal gerendert wurde)
+  container.innerHTML = "";
+
+  // 2. Fragment erstellen, um DOM-Operationen zu bündeln (Performance)
   const fragment = document.createDocumentFragment();
 
-  list.forEach(item => {
+  // 3. Nur die ersten 10 Elemente verarbeiten (.slice ist hier super)
+  recentStats.slice(0, 10).forEach(item => {
     fragment.appendChild(createActivityItem(item));
   });
 
+  // 4. Alles auf einmal ins DOM jagen
   container.appendChild(fragment);
 }
 
-renderActivities(activities);
+// --- Event Listeners ---
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await renderActivities();
+
+  // Intervall für automatische Updates alle 10 Sekunden
+  setInterval(async () => {
+    console.log("Updating Activities...");
+    await renderActivities();
+  }, 10000);
+});

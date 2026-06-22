@@ -1,137 +1,93 @@
-// Handlers for rules UI (delegated). Relies on global `appData` and `renderCategories` and focus helpers.
+import { appData, renderCategories, saveRules, loadAndRenderRules } from "./render_rules.js";
+import { showCategoryMenu } from "./cat_menu.js";
 
-function attachRulesHandlers(){
+function attachRulesHandlers() {
   const container = document.getElementById('categories');
   if (!container) return;
 
-  function addItemFromInputByIndex(idx){
+  function addItemFromInputByIndex(idx) {
     const input = container.querySelector(`.cat-add-item-input[data-cat-index="${idx}"]`);
     if (!input) return;
 
-    const val = input.value && input.value.trim();
+    const val = input.value.trim();
     if (!val) return;
 
-    const newItem = {
-      name: getCleanedIdentifier(val) || val,
-      url: val,
-      active: true
-    };
+    const newItem = { name: val, url: val, active: true };
 
-    if (!appData[idx]) appData[idx] = { name: 'Unknown', minutesRemaining: 15, items: [] };
-    if (!Array.isArray(appData[idx].items)) appData[idx].items = [];
+    if (!appData[idx]) appData[idx] = { timerName: 'Unknown', maxTime: 60, minRemaining: 0, items: [] };
     appData[idx].items.push(newItem);
-    input.value = '';
-    renderCategories();
+    
+    saveRules(); 
   }
-
-  // category menu UI lives in rules/menu.js (exposes window.showCategoryMenu)
 
   container.addEventListener('click', (e) => {
     const el = e.target;
 
-    // add item
-    if (el.matches('.cat-add-item-btn')){
-      const idx = Number(el.dataset.catIndex);
-      addItemFromInputByIndex(idx);
+    if (el.matches('.cat-add-item-btn')) {
+      addItemFromInputByIndex(Number(el.dataset.catIndex));
     }
 
-    // open category menu
-    if (el.matches('.cat-menu-btn')){
-      const idx = Number(el.dataset.catIndex);
-      showCategoryMenu(idx, el);
-    }
-
-    // toggle item status
-    if (el.matches('.item-status')){
-      const c = Number(el.dataset.catIndex);
-      const i = Number(el.dataset.itemIndex);
-      if (appData[c] && appData[c].items && appData[c].items[i]){
-        appData[c].items[i].active = !appData[c].items[i].active;
-        renderCategories();
-      }
-    }
-
-    // toggle category status -> set all child items accordingly
-    if (el.matches('.cat-status')){
-      const c = Number(el.dataset.catIndex);
-      if (appData[c] && Array.isArray(appData[c].items)){
-        const items = appData[c].items;
-        const hasActive = items.some(it => it && it.active);
-        const newState = !hasActive; // if any active -> turn all off, else turn all on
-        for (let j = 0; j < items.length; j++){
-          if (items[j]) items[j].active = newState;
-        }
-        renderCategories();
-      }
-    }
-
-    if (el.matches('.items')) {
-      const idx = Number(el.dataset.catIndex);
-      focusedCategoryIndex = idx;
-      applyRulesFocusState();
-    }
-  });
-
-  // submit item when pressing Enter in the input
-  container.addEventListener('keydown', (e) => {
-    const el = e.target;
-    if (!el || !el.matches) return;
-    if (el.matches('.cat-add-item-input')){
-      if (e.key === 'Enter'){
-        e.preventDefault();
-        const idx = Number(el.dataset.catIndex);
-        addItemFromInputByIndex(idx);
-        focusNextCategoryList(idx);
-      }
-    }
-
-    if (el.matches('.items')) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const idx = Number(el.dataset.catIndex);
-        focusCategoryList(idx);
-        const firstButton = container.querySelector(`.category .item-status[data-cat-index="${idx}"]`);
-        if (firstButton) firstButton.focus();
-      }
+    if (el.matches('.cat-menu-btn')) {
+      showCategoryMenu(Number(el.dataset.catIndex), el);
     }
 
     if (el.matches('.item-status')) {
-      if (e.key === 'Escape') {
-        const idx = Number(el.dataset.catIndex);
-        focusCategoryList(idx);
+      const c = Number(el.dataset.catIndex);
+      const i = Number(el.dataset.itemIndex);
+      if (appData[c] && appData[c].items[i]) {
+        appData[c].items[i].active = !appData[c].items[i].active;
+        saveRules(); 
+      }
+    }
+
+    if (el.matches('.cat-status')) {
+      const c = Number(el.dataset.catIndex);
+      if (appData[c] && Array.isArray(appData[c].items)) {
+        const items = appData[c].items;
+        const hasActive = items.some(it => it.active);
+        const newState = !hasActive; 
+        items.forEach(it => it.active = newState);
+        saveRules(); 
       }
     }
   });
 
-  // add category button in page controls
+  // Enter in Input fangen
+  container.addEventListener('keydown', (e) => {
+    if (e.target.matches('.cat-add-item-input') && e.key === 'Enter') {
+      e.preventDefault();
+      addItemFromInputByIndex(Number(e.target.dataset.catIndex));
+    }
+  });
+
+  // Neue Kategorie anlegen (Top-Level Button)
   const addCatBtn = document.getElementById('add-category-btn');
-  if (addCatBtn){
-    const addCatInput = document.getElementById('add-category-input');
-
-    function doAddCategory(){
-      const name = addCatInput && addCatInput.value && addCatInput.value.trim();
+  const addCatInput = document.getElementById('add-category-input');
+  if (addCatBtn && addCatInput) {
+    addCatBtn.addEventListener('click', () => {
+      const name = addCatInput.value.trim();
       if (!name) return;
-      const newCat = { name: name, minutesRemaining: 0, items: [] };
-      appData.push(newCat);
-      if (addCatInput) addCatInput.value = '';
-      renderCategories();
-    }
-
-    addCatBtn.addEventListener('click', doAddCategory);
-
-    if (addCatInput){
-      addCatInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter'){
-          e.preventDefault();
-          doAddCategory();
-          const lastIndex = appData.length - 1;
-          focusCategoryList(lastIndex);
-        }
-      });
-    }
+      
+      appData.push({ timerName: name, maxTime: 60, minRemaining: 0, items: [] });
+      addCatInput.value = '';
+      saveRules();
+    });
   }
 }
 
+// Initialisieren & Lifecycle
+document.addEventListener('DOMContentLoaded', async () => {
+  attachRulesHandlers();
+  await loadAndRenderRules();
 
-attachRulesHandlers();
-
+  setInterval(async () => {
+    const activeEl = document.activeElement;
+   
+    const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.isContentEditable);
+    
+    if (!isTyping) {
+      console.log("Aktualisiere Rules...");
+      await loadAndRenderRules();
+    }
+  }, 10000);
+});
