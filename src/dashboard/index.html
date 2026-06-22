@@ -161,22 +161,26 @@
   </main>
 </body>
 
-<!-- Load first -->
-<script src="imported/chart.js"></script>
-<script src="imported/countUp.js"></script>
+<!-- Load utilities and defaults first -->
+<script src="../utils/defaults.js"></script>
+<script src="../utils/utils.js"></script>
 
-<!-- Load second -->
+<!-- Load libraries -->
+<script src="imported/chart.js"></script>
+
+<!-- Load UI components -->
 <script src="dev/dev.js"></script>
 <script src="nav/nav.js"></script>
 <script src="load_components.js"></script>
 
-<!-- Load last -->
-<script src="../utils/utils.js"></script>
+<!-- Load rules -->
 <script src="rules/render_rules.js"></script>
 <script src="rules/focus_rules.js"></script>
 <script src="rules/menu.js"></script>
 <script src="rules/cat_menu.js"></script>
 <script src="rules/handlers.js"></script>
+
+<!-- Load statistics -->
 <script src="stats/recent.js"></script>
 <script src="stats/all_time.js"></script>
 <script src="stats/week.js"></script>

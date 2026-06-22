@@ -1,12 +1,34 @@
-const dStreak  = document.getElementById("display-streak");
-const dTime    = document.getElementById("display-time");
-const dTimeBar = document.getElementById("time-bar");
 
+const storageAPI = (typeof browser !== 'undefined') ? browser.storage.local : chrome.storage.local;
 
-function updateStats(streak, minutes, percentage) {
-    dStreak.textContent = `${streak} Streak`;
-    dTime.textContent = `${minutes} min left`;
-    dTimeBar.style.setProperty("--time-bar-progress", `${percentage*100}%`);
+const focusCheckbox = document.getElementById('toggle-focus');
+const pauseCheckbox = document.getElementById('toggle-pause');
+
+// 1. Zustand laden (Simpel und direkt)
+async function readState() {
+    const data = await storageAPI.get(['focusMode', 'paused']);
+    focusCheckbox.checked = !!data.focusMode;
+    pauseCheckbox.checked = !!data.paused;
 }
 
-updateStats(7, 12, 0.5);
+// 2. Zustand speichern (Zentralisiert)
+function saveState() {
+    storageAPI.set({
+        focusMode: focusCheckbox.checked,
+        paused: pauseCheckbox.checked
+    });
+}
+
+// 3. Die "Gegenseitiger Ausschluss"-Logik (Dumm und effektiv)
+focusCheckbox.addEventListener('change', () => {
+    if (focusCheckbox.checked) pauseCheckbox.checked = false; // Wenn ich aktiv, mach den anderen aus
+    saveState();
+});
+
+pauseCheckbox.addEventListener('change', () => {
+    if (pauseCheckbox.checked) focusCheckbox.checked = false; // Wenn ich aktiv, mach den anderen aus
+    saveState();
+});
+
+// Initialisieren
+readState();

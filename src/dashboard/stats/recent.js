@@ -1,46 +1,34 @@
-const activities = [
-  { domain: "youtube.com", duration: "12 min aktiv" },
-  { domain: "github.com", duration: "7 min aktiv" },
-  { domain: "openai.com", duration: "22 min aktiv" },
-  { domain: "reddit.com", duration: "4 min aktiv" },
-  { domain: "readoutto.me", duration: "48 min aktiv" },
-  { domain: "youtube.com", duration: "12 min aktiv" },
-  { domain: "github.com", duration: "7 min aktiv" },
-  { domain: "openai.com", duration: "22 min aktiv" },
-  { domain: "reddit.com", duration: "4 min aktiv" },
-  { domain: "readoutto.me", duration: "48 min aktiv" }
-];
 
-const container = document.getElementById("activity-list");
 
-function getFavicon(domain) {
-  return `https://icons.duckduckgo.com/ip3/${domain}.ico`;
+function getFavicon(url) {
+  return `https://icons.duckduckgo.com/ip3/${url}.ico`;
 }
 
 function createActivityItem(item) {
   const el = document.createElement("div");
-  el.className = "activity-item";
+  el.cla  ssName = "activity-item";
 
   const img = document.createElement("img");
-  img.className = "favicon";
-  img.src = getFavicon(item.domain);
-  img.alt = item.domain;
+    img.className = "favicon";
+    img.src = getFavicon(item.url);
+    img.alt = item.url;
 
   const domain = document.createElement("h1");
-  domain.className = "domain";
-  domain.textContent = item.domain;
+    domain.className = "domain";
+    domain.textContent = item.url;
 
   const duration = document.createElement("p");
-  duration.className = "duration";
-  duration.textContent = item.duration;
-
-  el.append(img, domain, duration);
+    duration.className = "duration";
+    const minutes = Math.round(item.durationSeconds / 60);
+    duration.textContent = `${minutes} min aktiv`;
+    el.append(img, url, duration);
 
   return el;
 }
 
 function renderActivities(list) {
-  const fragment = document.createDocumentFragment();
+  const container = document.getElementById("activity-list");
+  if (!container) return;
 
   list.forEach(item => {
     fragment.appendChild(createActivityItem(item));
@@ -49,4 +37,6 @@ function renderActivities(list) {
   container.appendChild(fragment);
 }
 
-renderActivities(activities);
+document.addEventListener("DOMContentLoaded", () => {
+  renderActivities(sampleRecentStats);
+});

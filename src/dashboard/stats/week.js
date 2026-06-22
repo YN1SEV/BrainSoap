@@ -1,23 +1,8 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function initWeekStats(today, data) {
+function initWeekStats(data) {
   // Update week-summary values (total hours)
-  const totalFocus = (data.sampleFocus || []).reduce((a, b) => a + b, 0);
-  const totalScroll = (data.sampleScroll || []).reduce((a, b) => a + b, 0);
+  const totalFocus = (data.chart.focus || []).reduce((a, b) => a + b, 0);
+  const totalScroll = (data.chart.scroll || []).reduce((a, b) => a + b, 0);
 
   const vals = document.querySelectorAll(".week-summary .stat-value");
   if (vals && vals.length >= 2) {
@@ -66,9 +51,6 @@ function setWeekDeltas(focusPercent, scrollPercent) {
 
 // Example
 document.addEventListener('DOMContentLoaded', () => {
-  const sampleFocus = [1.2, 2.5, 0.8, 3.0, 4.1, 0.0, 0.3];
-  const sampleScroll = [0.5, 1.0, 0.2, 1.8, 0.9, 0.1, 0.0];
-  initWeekStats(new Date().getDay(), { sampleFocus, sampleScroll });
-  
+  initWeekStats(sampleUsageStats);
   setWeekDeltas(-15, 20);
 });

@@ -1,7 +1,4 @@
 
-
-
-
 :root {
   --sidebar-width: 250px;
   --stats-boarder-width: 800px;
@@ -13,7 +10,7 @@
   --ease: 160ms ease;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark){
   :root {
     --bg: #0d1117;
     --surface: #121821;
@@ -43,7 +40,7 @@
   }
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: light){
   :root {
     --bg: #f4f6f8;
     --surface: #ffffff;
