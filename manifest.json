@@ -22,6 +22,10 @@
     {
       "resources": ["assets/visuals/stop.png"],
       "matches": ["<all_urls>"]
+    },
+    {
+      "resources": ["src/browser_handlers/storage_manager.js"],
+      "extension_ids": ["*"]
     }
   ],
   "background": {
@@ -29,11 +33,10 @@
       "src/utils/utils.js",
       "src/utils/defaults.js",
       "src/browser_handlers/tab_handler.js",
-      "src/browser_handlers/storage_manager.js",
       "src/browser_handlers/actions_handler.js",
       "src/background/background.js"
-    
-    ]
+    ],
+    "type": "module"
   },
   "action": {
     "default_popup": "src/quick_page/popup.html"

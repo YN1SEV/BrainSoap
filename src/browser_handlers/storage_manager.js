@@ -1,4 +1,5 @@
-export class StorageManager {
+import { defaultSettings } from "../utils/defaults.js";
+class StorageManager {
     constructor() {
         this.localCache = {};
         this.syncCache = {};
@@ -175,4 +176,4 @@ export class StorageManager {
     }
 
 }
-export let custom_storage = new StorageManager();
+export const custom_storage = new StorageManager();

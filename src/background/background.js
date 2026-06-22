@@ -1,3 +1,5 @@
+import { custom_storage } from "../browser_handlers/storage_manager.js";
+
 // =================================================
 // VARIABLES
 // =================================================
