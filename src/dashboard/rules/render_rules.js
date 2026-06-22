@@ -1,21 +1,39 @@
+import { custom_storage } from "../../browser_handlers/storage_manager.js";
 let appData = []
 
-function addCategory(category, catIndex){
-  if (!Array.isArray(category.items)) category.items = [];
+let timerMap
+let timers 
 
-  const timerText = `${category.minutesRemaining ?? 0} min left`;
-  let itemsHTML = '';
-
-  for (let i = 0; i < category.items.length; i++)
-    itemsHTML += addItem(category.items[i], catIndex, i);
+function addCategory(catName, catIndex){
   
+  //if (!Array.isArray(category.items)) category.items = [];
+
+  //catagory name v
+  // timertext v
+  // statusclass
+  // itemsHTML
+  // min remaining
+  
+  const timerText = `${custom_storage.getVariable(catName) ?? 0} min left`;
+  let itemsHTML = '';
+  url_list = getUrlsForTimer(catName)
+
+  for (let i = 0; i < url_list.length; i++){
+    const item = {
+      url: url_list[i],
+      name: url_list[i],
+      active: true // TODO change this
+      //timer: timers[catName]
+    }
+    itemsHTML += addItem(category.items[i], catIndex, i);
+  }
   const hasActiveItem = category.items.some(i => i && i.active);
   const statusClass = hasActiveItem ? 'active' : 'inactive';
 
   return `
     <li class="category">
       <header>
-        <h2>${category.name}</h2>
+        <h2>${catName}</h2>
         <div class="cat-controls">
           <span class="cat-timer">${timerText}</span>
           <button class="cat-status ${statusClass}" data-cat-index="${catIndex}"></button>
@@ -69,14 +87,23 @@ function addItem(item, catIndex, itemIndex) {
   `;
 }
 
+function getUrlsForTimer(timerKey) {
+    return Object.entries(timerMap)
+        .filter(([url, timers]) => timers.includes(timerKey))
+        .map(([url]) => url);
+}
 
 async function init() {
   try {
+
+    timerMap = custom_storage.getSetting("timerMap")
+    timers = custom_storage.getSetting("timers") 
+
     const res = await fetch('rules/blacklist.json');
     if (!res.ok) throw new Error('Failed to fetch rules: ' + res.status);
     appData = await res.json();
   } catch (err) {
-    console.error('Could not load blacklist.json', err);
+    console.error('Could not load blacklist', err);
     appData = [];
   }
 
@@ -84,14 +111,22 @@ async function init() {
 }
 
 function renderCategories() {
+
   const container = document.getElementById('categories');
   if (!container) return;
   container.innerHTML = '';
+  
+  let cat_name = Object.keys(groups);
+  cat_name.forEach(cat, idx => {
+    container.insertAdjacentHTML('beforeend', addCategory(cat, groups[cat], idx));
+  });
+  /* 
   if (!Array.isArray(appData)) return;
-
+  
   appData.forEach((cat, idx) => {
     container.insertAdjacentHTML('beforeend', addCategory(cat, idx));
   });
+  */
 }
 
 

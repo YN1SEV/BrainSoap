@@ -1,3 +1,4 @@
+import { defaultSettings } from "../utils/defaults.js";
 class StorageManager {
     constructor() {
         this.localCache = {};
@@ -175,4 +176,4 @@ class StorageManager {
     }
 
 }
-let storage = new StorageManager();
+export const custom_storage = new StorageManager();
