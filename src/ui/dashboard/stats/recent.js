@@ -1,5 +1,5 @@
-import { custom_storage } from "../../browser_handlers/storage_manager.js";
-import { escapeHtml } from "../../utils/sanitize.js";
+import { custom_storage } from "../../../browser/storage.js";
+import { escapeHtml } from "../../../utils/sanitize.js";
 
 /**
  * Generiert die URL für das Favicon via DuckDuckGo
@@ -32,7 +32,7 @@ function createActivityItem(item) {
  */
 async function renderActivities() {
   const recentStats = await custom_storage.getLocal('recentStats');
-  
+
   if (!recentStats || !Array.isArray(recentStats)) {
     console.warn('No valid recent stats found in storage');
     container.innerHTML = `<li class="activity-empty">No activity tracked yet.</li>`;
@@ -44,7 +44,7 @@ async function renderActivities() {
 
   // 1. Container leeren (falls vorher schon mal gerendert wurde)
   container.innerHTML = "";
-  
+
   // 2. Fragment erstellen, um DOM-Operationen zu bündeln (Performance)
   const fragment = document.createDocumentFragment();
 

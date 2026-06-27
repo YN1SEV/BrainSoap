@@ -1,5 +1,5 @@
-import { custom_storage } from "../../browser_handlers/storage_manager.js";
-import { escapeHtml } from "../../utils/sanitize.js";
+import { custom_storage } from "../../../browser/storage.js";
+import { escapeHtml } from "../../../utils/sanitize.js";
 
 export let appData = [];
 

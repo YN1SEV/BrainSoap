@@ -60,57 +60,24 @@ this was a great help in understanding how to create an extension and what you c
     BrainSoap
     ├── assets
     │   ├── icons
-    │   │   ├── icon16.png
-    │   │   ├── icon32.png
-    │   │   ├── icon48.png
-    │   │   ├── icon128.png
-    │   │   └── credits.txt
     │   ├── nav
-    │   │   ├── home.svg
-    │   │   ├── rules.svg
-    │   │   ├── settings.svg
-    │   │   └── stats.svg
     │   └── visuals
-    │   │   └── stop.png
     ├── docs
     │   └── ideas.md
     ├── src
     │   ├── background
-    │   │   └── background.js
-    │   ├── blocker_popup
-    │   │   ├── blocker.js
-    │   │   └── styles.css
-    │   ├── browser_handlers
-    │   │   ├── actions_handler.js
-    │   │   ├── storage_manager.js
-    │   │   └── tab_handler.js
-    │   ├── dashboard
-    │   │   ├── index.html
-    │   │   ├── load_components.js
-    │   │   ├── structure.css
-    │   │   ├── styles.css
-    │   │   ├── dev
-    │   │   │   ├── dev.css
-    │   │   │   └── dev.js
-    │   │   ├── imported
-    │   │   │   ├── chart.js
-    │   │   │   └── countUp.js
-    │   │   ├── nav
-    │   │   │   ├── frame.css
-    │   │   │   └── nav.js
-    │   │   └── stats
-    │   │       ├── all_time.js
-    │   │       ├── recent.js
-    │   │       ├── stats.css
-    │   │       └── week.js
-    │   ├── quick_page
-    │   │   ├── popup.css
-    │   │   ├── popup.html
-    │   │   ├── popup.js
-    │   │   └── style.css
+    │   ├── content
+    │   ├── browser
+    │   ├── services
+    │   ├── ui
+    │   │   ├── popup
+    │   │   └── dashboard
+    │   │       ├── nav
+    │   │       ├── rules
+    │   │       ├── stats
+    │   │       ├── dev
+    │   │       └── imported
     │   └── utils
-    │       ├── defaults.js
-    │       └── utils.js
     ├── manifest.json
     └── README.md
     ```

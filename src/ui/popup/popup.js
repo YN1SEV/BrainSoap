@@ -1,6 +1,6 @@
-import { custom_storage } from "../browser_handlers/storage_manager.js";
-import { getCleanedIdentifier, isTrackableUrl } from "../utils/utils.js";
-import { logFocusSessionEnd, shortestTimer, computeAndSaveStats } from "../services/stats-service.js";
+import { custom_storage } from "../../browser/storage.js";
+import { getCleanedIdentifier, isTrackableUrl } from "../../utils/url.js";
+import { logFocusSessionEnd, shortestTimer, computeAndSaveStats } from "../../services/stats-service.js";
 
 globalThis.browser ??= globalThis.chrome;
 
