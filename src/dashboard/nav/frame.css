@@ -3,7 +3,10 @@
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   scrollbar-width: thin;
 }
-
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-sm); }
+.skip-link { position: absolute; left: -9999px; top: 0; z-index: 100000; padding: 10px 16px; background: var(--primary); color: #fff; border-radius: var(--radius); }
+.skip-link:focus { left: 12px; top: 12px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
