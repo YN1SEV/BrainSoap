@@ -29,13 +29,7 @@
     }
   ],
   "background": {
-    "scripts": [
-      "src/utils/utils.js",
-      "src/utils/defaults.js",
-      "src/browser_handlers/tab_handler.js",
-      "src/browser_handlers/actions_handler.js",
-      "src/background/background.js"
-    ],
+    "scripts": ["src/background/background.js"],
     "type": "module"
   },
   "action": {
