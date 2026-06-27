@@ -147,6 +147,11 @@ input[type="checkbox"]::before {
   transition: transform 0.2s;
 }
 
+input[type="checkbox"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 input[type="checkbox"]:checked {
   background: var(--toggle-checked-bg);
   border-color: var(--accent);

@@ -1,4 +1,5 @@
 import { custom_storage } from "../../browser_handlers/storage_manager.js";
+import { computeAndSaveStats } from "../../services/stats-service.js";
 
 // --- Hilfsfunktionen für bessere Lesbarkeit und Struktur ---
 
@@ -73,6 +74,7 @@ function renderChart(canvasElement, focusData, scrollData) {
 // --- Hauptfunktion ---
 
 async function renderStats() {
+  await computeAndSaveStats();
   const stats = await custom_storage.getLocal('usageStats');
   if (!stats) {
     console.warn('No usageStats found in storage');
@@ -85,7 +87,7 @@ async function renderStats() {
     "focus-sessions": stats.focusSessions ?? 0,
     "scroll-hours": stats.scrollHours ?? 0,
     "scroll-attempts": stats.scrollAttempts ?? 0,
-    "scrolls-blocked": stats.scrollBlocks ?? 0,
+    "scrolls-blocked": stats.currentStreak ?? 0,
     "best-streak": stats.bestStreak ?? 0,
     "sites-blocked": stats.blockedSites ?? 0,
     "active-days": stats.activeDays ?? 0
