@@ -1,4 +1,6 @@
-async function redirectTo(url) {
+import { getActiveTabId, freezeTab, sendMessageWithRetry } from "./tab_handler.js";
+
+export async function redirectTo(url) {
   try {
     await browser.tabs.update({url: url, loadReplace: false});
   } catch (e) {
@@ -6,7 +8,7 @@ async function redirectTo(url) {
   }
 }
 
-async function sendMessage(title, content, name) {
+export async function sendMessage(title, content, name) {
     try {
         browser.notifications.create(name, {
         "type": "basic",
@@ -19,7 +21,7 @@ async function sendMessage(title, content, name) {
     }
 }
 
-async function showBlocker(redirectUrl = null) {
+export async function showBlocker(redirectUrl = null) {
   const tabID = await getActiveTabId();
   freezeTab(tabID);
   if(redirectUrl)
@@ -41,7 +43,7 @@ async function showBlocker(redirectUrl = null) {
 
 
 // Usage inside your showImage function:
-async function showImage(imagePath) {
+export async function showImage(imagePath) {
   const tabID = await getActiveTabId();
   freezeTab(tabID);
   

@@ -5,7 +5,7 @@ class StorageManager {
         this.localCache = {};
         this.syncCache = {};
         this.isReady = false;
-        
+
         // Startet die asynchrone Initialisierung der Caches
         this.initPromise = this._initCache();
 
@@ -40,7 +40,7 @@ class StorageManager {
     async getLocal(key) {
         await this._ensureInitialized();
         if (this.localCache[key] !== undefined) return this.localCache[key];
-        
+
         const result = await chrome.storage.local.get(key);
         return result[key];
     }
@@ -58,6 +58,23 @@ class StorageManager {
 
         const result = await chrome.storage.sync.get(key);
         return result[key];
+    }
+
+    async resetSettings(defaults) {
+        await this.setSync('settings', defaults);
+    }
+
+    async checkSettingsExists(defaults) {
+        const settings = await this.getSync('settings');
+        if (!settings?.exist) await this.setSync('settings', defaults);
+    }
+
+    async clearLocalStorage() {
+        const KEEP = new Set(['dayLog', 'domainLog', 'categoryLog', 'usageStats', 'recentStats', 'activeDates', 'installDate']);
+        const toDelete = Object.keys(this.localCache).filter((key) => !KEEP.has(key));
+        if (!toDelete.length) return;
+        await chrome.storage.local.remove(toDelete);
+        for (const key of toDelete) delete this.localCache[key];
     }
 
     // --- INITIALISIERUNG ---

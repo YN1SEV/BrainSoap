@@ -1,11 +1,10 @@
 import { custom_storage } from "../browser_handlers/storage_manager.js";
-
-// =================================================
-// VARIABLES
-// =================================================
-let currentDomain = null;
-let BlockedDomain = null;
-let startTime = Date.now();
+import { defaultSettings, defaultBlacklist } from "../utils/defaults.js";
+import { getCleanedIdentifier, isTrackableUrl } from "../utils/utils.js";
+import { unmuteCurrentTab } from "../browser_handlers/tab_handler.js";
+import { redirectTo, sendMessage, showBlocker, showImage } from "../browser_handlers/actions_handler.js";
+import { matchingCategories, remainingMinutes } from "../services/timer-service.js";
+import { logDomainTime, logFocusMinute, logBlock, logActiveDay, computeAndSaveStats } from "../services/stats-service.js";
 
 // =================================================
 // EVENT LISTENERS - maybe make they'r own file?
@@ -14,167 +13,131 @@ window.addEventListener("unhandledrejection", (event) => {
   console.error("Unhandled Promise Rejection:", event.reason);
 });
 
-// 1. Setup the Heartbeat (Every 1 minute)
-browser.alarms.create("checkLimit", { periodInMinutes: 1 });
-browser.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name === "checkLimit") {
-    await updateTime(); 
-    await checkThresholds();
+globalThis.browser ??= globalThis.chrome;
+
+const today = () => new Date().toISOString().slice(0, 10);
+const trackable = (url) => (isTrackableUrl(url) ? getCleanedIdentifier(url) : null);
+
+browser.runtime.onInstalled.addListener(async (details) => {
+  await custom_storage.resetSettings(defaultSettings);
+  if (details.reason === "install") {
+    await custom_storage.setSync('blacklist', defaultBlacklist);
+    await custom_storage.setLocal('installDate', today());
   }
+  await custom_storage.clearLocalStorage();
 });
 
-// 4. Handle State Changes (Idle/Active)
+browser.runtime.onStartup.addListener(async () => {
+  await custom_storage.checkSettingsExists(defaultSettings);
+  await custom_storage.clearLocalStorage();
+});
+
+browser.alarms.create("tick", { periodInMinutes: 1 });
+browser.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name !== "tick") return;
+  try {
+    if (await custom_storage.getLocal('paused')) return;
+    await flushSession();
+    if (await custom_storage.getLocal('focusMode')) await logFocusMinute();
+    await logActiveDay();
+    await checkThresholds(false);
+    await publishTimerState();
+    await computeAndSaveStats();
+  } catch (e) { console.error("tick failed:", e); }
+});
+
+browser.tabs.onActivated.addListener(async ({ tabId }) => {
+  try {
+    const tab = await browser.tabs.get(tabId);
+    await startSession(trackable(tab.url));
+  } catch (e) { console.error("onActivated failed:", e); }
+});
+
+browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (changeInfo.url) await startSession(trackable(tab.url));
+}, { properties: ["url"] });
+
 browser.idle.onStateChanged.addListener(async (state) => {
   if (state === "active") {
-    startTime = Date.now();
+    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
+    await startSession(trackable(tab?.url));
   } else {
-    await updateTime();
-    currentDomain = null;
+    await flushSession();
+    await custom_storage.setLocal('session', null);
   }
 });
 
-// 5. Track Tab Switching
-browser.tabs.onActivated.addListener(async (activeInfo) => {
-  await updateTime();
-  const tab = await browser.tabs.get(activeInfo.tabId);
-  currentDomain = getCleanedIdentifier(tab.url);
-  console.log(`Tab ${activeInfo.tabId} activated. Current domain: ${currentDomain}`);
-});
-
-// on install, set default settings 
-browser.runtime.onInstalled.addListener(async (details) => {
-  await custom_storage.clearLocalStorage(); 
-  await custom_storage.resetSettings(); // TODO: delete later, dont overwrite user settings on update
-  if (details.reason === "install") 
-    {
-      await custom_storage.resetSettings();
-      console.log("Default settings initialized.");
-    }
-});
-
-// Listen for URL changes in the active tab
-browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-    // changeInfo.url will only be present if the URL actually changed
-    if (changeInfo.url) {
-      console.log("URL changed to:", tab.url);
-      try {
-        currentDomain = getCleanedIdentifier(tab.url);
-        console.log("Current domain ID set to:", currentDomain);
-        await updateTime();
-        await checkThresholds();
-      } catch (e) {
-        console.error(e);
-        
-      }
-    }
-},{properties: ["url"]});
-
-// listenfer for browser startupo
-browser.runtime.onStartup.addListener(async () => {
-    console.log("Browser started, checking settings...");
-    await custom_storage.checkSettingsExists();
-    await custom_storage.clearLocalStorage(); 
-
-});
-
-// can listen to all messages, add more if blocks/switch
-browser.runtime.onMessage.addListener((message, sender) => {
+browser.runtime.onMessage.addListener((message) => {
   if (message.action === "BLOCKER_CONFIRMED") {
-    if(message.url !== undefined){
-      console.log(`redirecting to ${message.url}`)
-      redirectTo(message.url); 
-    }
+    if(message.url !== undefined)redirectTo(message.url);
     unmuteCurrentTab();
-    custom_storage.saveVariable(BlockedDomain, 0) // reset currently blocked domain
-    console.log(`${BlockedDomain} timer reset to 0`)
   }
 });
 
-// =================================================
-// FUNCTIONS
-// =================================================
-const checkIfTracked = async (url) => {
-  if (!url) return false;
-  const timerMap = await custom_storage.getSetting("timerMap");
-  const trackedUrls = Object.keys(timerMap);
-  console.log(`Checking if ${url} is tracked among:`, trackedUrls);
-  return trackedUrls.some(trackedUrl => url.includes(trackedUrl));
+async function startSession(domain) {
+  await flushSession();
+  await custom_storage.setLocal('session', domain ? { domain, since: Date.now() } : null);
+  await checkThresholds(true);
 }
 
-// save logic
-async function updateTime() {
-  if (!currentDomain) return;
-
-  const now = Date.now();
-  const delta = Math.floor((now - startTime) / 1000);
-  
-  // Storage usage with Promises
-  const data = await custom_storage.getVariable(currentDomain);
-  const total = (data || 0) + delta;
-
-  await custom_storage.saveVariable(currentDomain, total);
-
-  startTime = now; 
+async function flushSession() {
+  if (await custom_storage.getLocal('paused')) return;
+  const session = await custom_storage.getLocal('session');
+  if (!session?.domain) return;
+  const delta = Math.floor((Date.now() - session.since) / 1000);
+  if (delta > 0) {
+    const focusMode = !!(await custom_storage.getLocal('focusMode'));
+    await logDomainTime(session.domain, delta, focusMode);
+  }
+  await custom_storage.setLocal('session', { domain: session.domain, since: Date.now() });
 }
 
-// check current time spent
-async function checkThresholds() {
-  if (!currentDomain) return;
-  if (!await checkIfTracked(currentDomain)) return;
+async function getBlacklist() {
+  return (await custom_storage.getSync('blacklist')) ?? [];
+}
 
-  const timeSpent = await custom_storage.getVariable(currentDomain);
-  console.log(`Time spent on ${currentDomain}: ${timeSpent} seconds`);
-
-  const timerMap = await custom_storage.getSetting("timerMap");
-  const timersList = await custom_storage.getSetting("timers");
-  const activeTimerKeys = timerMap[currentDomain] || ["default"];
-
-  // performe actions
-  for (const t of activeTimerKeys) {
-    const timerObject = timersList[t];
-    
-    if (!timerObject) continue;
-
-    const limit = timerObject.limit;
-    
-    if (timeSpent >= limit) 
-    {
-      // dont need to wait on result
-      actionOnLimit(timeSpent, timerObject);
-    }
+async function checkThresholds(isVisit) {
+  const session = await custom_storage.getLocal('session');
+  const domain = session?.domain;
+  if (!domain) return;
+  const cats = matchingCategories(await getBlacklist(), domain);
+  if (!cats.length) return;
+  const focusMode = !!(await custom_storage.getLocal('focusMode'));
+  const categoryLog = (await custom_storage.getLocal('categoryLog')) ?? {};
+  const t = today();
+  for (const cat of cats) {
+    const used = categoryLog[cat.timerName]?.date === t ? categoryLog[cat.timerName].usedSeconds : 0;
+    if (!focusMode && used < cat.maxTime * 60) continue;
+    triggerBlock(cat, focusMode);
+    if (isVisit) await logBlock();
+    if (focusMode) break;
   }
 }
 
-// action depending on settings
-async function actionOnLimit(time, timerObject)
-{  
-  console.log(`Limit reached for ${currentDomain}: ${time} seconds out of ${timerObject.limit} allowed.`);
-  
-  const actions = timerObject.actions;
-
-  const hasPopup = actions.includes("popup");
-  const hasRedirect = actions.includes("redirect");
-  const hasImage = actions.includes("image");
-  
-  if (actions.includes("notify")) {
-    sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
-  }
-
-  if (hasImage)
+function triggerBlock(cat, focusMode) {
+  const actions = focusMode ? ["popup"] : (cat.actions ?? ["popup"]);
+  if (actions.includes("notify")) sendMessage("BrainSoap: Limit Reached", `Time's up on ${cat.timerName}!`, "limit-notify");
+  if (actions.includes("image")) 
   {
-    showImage(timerObject.imagePath);
+    showImage(cat.imagePath);
   }
-  
-  if (hasPopup && hasRedirect) {
-    showBlocker(timerObject.redirectUrl); 
-  } else if (hasPopup) {
+  if (actions.includes("popup") && actions.includes("redirect")) {
+    showBlocker(cat.redirectUrl);
+  } else if (actions.includes("popup"))  {
     showBlocker();
-  } else if (hasRedirect) {
-    redirectTo(timerObject.redirectUrl);
+  } else if (actions.includes("redirect")) {
+    redirectTo(cat.redirectUrl);
   }
-  
-  BlockedDomain = currentDomain;
-  //reset current domain
-  custom_storage.saveVariable(currentDomain,0);
-  return;
+}
+
+async function publishTimerState() {
+  const blacklist = await getBlacklist();
+  const categoryLog = (await custom_storage.getLocal('categoryLog')) ?? {};
+  const t = today();
+  const state = {};
+  for (const cat of blacklist) {
+    const used = categoryLog[cat.timerName]?.date === t ? categoryLog[cat.timerName].usedSeconds : 0;
+    state[cat.timerName] = { remaining: remainingMinutes(cat.maxTime, used), maxTime: cat.maxTime };
+  }
+  await custom_storage.setLocal('timerState', state);
 }
