@@ -1,5 +1,5 @@
-import { custom_storage } from "../../browser_handlers/storage_manager.js";
-import { computeAndSaveStats } from "../../services/stats-service.js";
+import { custom_storage } from "../../../browser/storage.js";
+import { computeAndSaveStats } from "../../../services/stats-service.js";
 
 // --- Hilfsfunktionen für bessere Lesbarkeit und Struktur ---
 
@@ -63,10 +63,10 @@ function renderChart(canvasElement, focusData, scrollData) {
         { label: "Scroll-Time", data: scrollData, borderColor: "#ef4444", fill: false },
       ],
     },
-    options: { 
-      responsive: true, 
-      maintainAspectRatio: false, 
-      scales: { y: { beginAtZero: true } } 
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: { y: { beginAtZero: true } }
     }
   });
 }

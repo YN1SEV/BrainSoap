@@ -1,8 +1,8 @@
-import { custom_storage } from "../browser_handlers/storage_manager.js";
+import { custom_storage } from "../browser/storage.js";
 import { defaultSettings, defaultBlacklist } from "../utils/defaults.js";
-import { getCleanedIdentifier, isTrackableUrl } from "../utils/utils.js";
-import { unmuteCurrentTab } from "../browser_handlers/tab_handler.js";
-import { redirectTo, sendMessage, showBlocker, showImage } from "../browser_handlers/actions_handler.js";
+import { getCleanedIdentifier, isTrackableUrl } from "../utils/url.js";
+import { unmuteCurrentTab } from "../browser/tabs.js";
+import { redirectTo, sendMessage, showBlocker, showImage } from "../browser/actions.js";
 import { matchingCategories, remainingMinutes } from "../services/timer-service.js";
 import { logDomainTime, logFocusMinute, logBlock, logActiveDay, computeAndSaveStats } from "../services/stats-service.js";
 

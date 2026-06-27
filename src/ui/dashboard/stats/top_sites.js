@@ -1,6 +1,6 @@
-import { custom_storage } from "../../browser_handlers/storage_manager.js";
-import { formatDuration } from "../../utils/time.js";
-import { computeAndSaveStats, removeDomain } from "../../services/stats-service.js";
+import { custom_storage } from "../../../browser/storage.js";
+import { formatDuration } from "../../../utils/time.js";
+import { computeAndSaveStats, removeDomain } from "../../../services/stats-service.js";
 
 const getFaviconUrl = (domain) => `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico`;
 

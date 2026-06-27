@@ -1,4 +1,4 @@
-import { custom_storage } from "../browser_handlers/storage_manager.js";
+import { custom_storage } from "../browser/storage.js";
 import { toDateKey, last7DateKeys, calcStreak } from "../utils/time.js";
 import { buildTimerMap, categoriesForDomain, remainingMinutes } from "./timer-service.js";
 

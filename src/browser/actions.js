@@ -1,4 +1,4 @@
-import { getActiveTabId, freezeTab, sendMessageWithRetry } from "./tab_handler.js";
+import { getActiveTabId, freezeTab, sendMessageWithRetry } from "./tabs.js";
 
 export async function redirectTo(url) {
   try {
@@ -30,12 +30,12 @@ export async function showBlocker(redirectUrl = null) {
       action: "TRIGGER_BLOCK",
       seconds: 3,
       redirectUrl: redirectUrl
-    }); 
+    });
 
   }else{
     sendMessageWithRetry(tabID, {
       action: "TRIGGER_BLOCK",
-      seconds: 10 
+      seconds: 10
     });
   }
   return;
@@ -46,7 +46,7 @@ export async function showBlocker(redirectUrl = null) {
 export async function showImage(imagePath) {
   const tabID = await getActiveTabId();
   freezeTab(tabID);
-  
+
   try {
     await sendMessageWithRetry(tabID, {
       action: "TRIGGER_BLOCK",
