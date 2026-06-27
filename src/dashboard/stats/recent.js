@@ -1,10 +1,11 @@
 import { custom_storage } from "../../browser_handlers/storage_manager.js";
+import { escapeHtml } from "../../utils/sanitize.js";
 
 /**
  * Generiert die URL für das Favicon via DuckDuckGo
  */
-function getFaviconUrl(url) {
-  return `https://icons.duckduckgo.com/ip3/${url}.ico`;
+function getFaviconUrl(domain) {
+  return `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico`;
 }
 
 /**
@@ -12,15 +13,15 @@ function getFaviconUrl(url) {
  */
 function createActivityItem(item) {
   const minutes = Math.round(item.durationSeconds / 60);
+  const url = escapeHtml(item.url);
   const template = document.createElement('template');
-  
-  // HTML-Struktur als cleaner String (einfacher zu stylen und zu lesen)
+
   template.innerHTML = `
-    <div class="activity-item">
-      <img class="favicon" src="${getFaviconUrl(item.url)}" alt="${item.url}" />
-      <h1 class="domain">${item.url}</h1>
-      <p class="duration">${minutes} min aktiv</p>
-    </div>
+    <li class="activity-item">
+      <img class="favicon" src="${getFaviconUrl(item.url)}" alt="" />
+      <span class="domain">${url}</span>
+      <span class="duration">${minutes} min</span>
+    </li>
   `.trim();
 
   return template.content.firstChild;
@@ -34,6 +35,7 @@ async function renderActivities() {
   
   if (!recentStats || !Array.isArray(recentStats)) {
     console.warn('No valid recent stats found in storage');
+    container.innerHTML = `<li class="activity-empty">No activity tracked yet.</li>`;
     return;
   }
 
@@ -42,7 +44,7 @@ async function renderActivities() {
 
   // 1. Container leeren (falls vorher schon mal gerendert wurde)
   container.innerHTML = "";
-
+  
   // 2. Fragment erstellen, um DOM-Operationen zu bündeln (Performance)
   const fragment = document.createDocumentFragment();
 

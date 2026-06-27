@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="popup.css">
 
-  <script src="popup.js" defer></script>
+  <script type="module" src="popup.js"></script>
 </head>
 
 <body>
@@ -35,22 +35,22 @@
 
   <main aria-label="Quick controls">
 <!-- Displays most important Info -->
-    <section class="status" aria-label="Current status">
-      <div class="status-row">
-        <span id="display-streak"></span>
+    <section class="status" aria-label="Current page and remaining time">
+      <div class="status-row" aria-live="polite">
+        <span id="display-streak">Loading…</span>
         <span id="display-time"></span>
       </div>
-      <div id="time-bar"></div>
+      <div id="time-bar" role="presentation"></div>
     </section>
-    
+
 <!-- Toggles for important Features -->
     <section>
       <label class="toggle-control" for="toggle-focus">
         <div class="control-text">
           <h2>Focus Mode</h2>
-          <p>No scroll-time allowance</p>
+          <p id="focus-desc">No scroll-time allowance</p>
         </div>
-        <input type="checkbox" id="toggle-focus">
+        <input type="checkbox" id="toggle-focus" aria-describedby="focus-desc">
       </label>
     </section>
 
@@ -58,9 +58,9 @@
       <label class="toggle-control" for="toggle-pause">
         <div class="control-text">
           <h2>Pause Extension</h2>
-          <p>Temporarily disable extension</p>
+          <p id="pause-desc">Temporarily disable extension</p>
         </div>
-        <input type="checkbox" id="toggle-pause">
+        <input type="checkbox" id="toggle-pause" aria-describedby="pause-desc">
       </label>
     </section>
   </main>  

@@ -1,5 +1,5 @@
 :root {
-  --accent: #10b981;
+  --accent: #4969e8;
   --dashboard-text: white;
 }
 
@@ -15,7 +15,8 @@
     --toggle-bg:#202b39;
     --toggle-border:rgba(218,228,240,0.18);
     --toggle-knob-bg:#f4f7fb;
-    --toggle-checked-bg:rgba(47,201,168,0.24);
+    --toggle-checked-bg:rgba(93,124,255,0.24);
+    --accent:#5d7cff;
     --dashboard-bg: #3554d1;
     --dashboard-hover-bg: #5d7cff;
   }
@@ -33,7 +34,8 @@
     --toggle-bg:#e2e8ef;
     --toggle-border:rgba(24,35,48,0.18);
     --toggle-knob-bg:#17202a;
-    --toggle-checked-bg:rgba(22,143,120,0.12);
+    --toggle-checked-bg:rgba(73,105,232,0.14);
+    --accent:#4969e8;
     --dashboard-bg:#4969e8;
     --dashboard-hover-bg: #3554d1;
   }

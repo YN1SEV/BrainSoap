@@ -1,9 +1,9 @@
 #stats {
   gap: 10px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-rows: 1fr;
-  height: 100%;
-  min-height: 0;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  height: auto;
+  min-height: 100vh;
 }
 
 #stats > .subsection {
@@ -39,31 +39,29 @@
 #stats_graph {
   gap: 14px;
   padding: var(--panel-padding);
-  overflow: hidden;
 }
 
 #stats_graph,
 #stats_all_time,
+#stats_top,
 #stats-recent,
 #activity-list,
+#top-sites-list,
 .week-summary .stat-item {
   display: flex;
   flex-direction: column;
 }
 
 #stats_all_time,
+#stats_top,
 #stats-recent {
   gap: 16px;
-}
-
-#stats-recent {
-  overflow: hidden;
 }
 
 #stats_all_time ul,
 .week-summary {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -109,9 +107,6 @@
 
 #activity-list {
   gap: 10px;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -153,66 +148,51 @@
   white-space: nowrap;
 }
 
-@media (max-width: 760px) {
-  section.page {
-    padding: 16px;
+@media (min-width: 560px) {
+  #stats_all_time ul,.week-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
+}
+@media (min-width: 900px) {
   #stats {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
-  #stats_all_time ul {
-    grid-template-columns: 1fr;
+  #stats > .subsection {
+    min-height: 0;
+    overflow-y: auto;
   }
 
-  #stats .activity-item {
-    grid-template-columns: 32px minmax(0, 1fr) auto;
+  #activity-list,
+  #top-sites-list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
   }
 }
 
-body.stats-1x4 #stats {
-  grid-template-columns: 1fr;
-  grid-template-rows: auto;
-  height: auto;
-  min-height: 100vh;
+/* Large desktop: a touch more breathing room */
+@media (min-width: 1280px) {
+  #stats {
+    gap: 14px;
+  }
 }
 
-body.stats-1x4 #stats_graph,
-body.stats-1x4 #stats_all_time,
-body.stats-1x4 #stats-recent {
-  overflow: visible;
-}
-
-body.stats-1x4 #activity-list {
-  flex: initial;
-  min-height: initial;
-  overflow: visible;
-}
-
-.week-summary .stat-item {
-  gap: 6px;
-  min-height: unset;
-}
-.week-summary .stat-item .stat-top {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.week-summary .stat-item .stat-value {
-  margin-top: 4px;
-}
-
-.week-graph-container {
-  position: relative;
-  width: 100%;
-  height: clamp(180px, 28vh, 420px);
-  overflow: hidden;
-}
-
-#week-canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
-}
+.week-summary .stat-item { gap: 6px; min-height: unset; }
+.week-summary .stat-item .stat-top { display: flex; align-items: center; gap: 8px; }
+.week-summary .stat-item .stat-value { margin-top: 4px; }
+#top-sites-list { gap: 10px; overflow-x: hidden; }
+#stats .top-site { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto auto auto; align-items: center; gap: 8px; min-height: 50px; padding: 5px 10px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); }
+#stats .top-site .favicon { width: 32px; height: 32px; padding: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+#stats .top-site .domain { min-width: 0; overflow: hidden; font-size: 0.92rem; font-weight: 720; text-overflow: ellipsis; white-space: nowrap; }
+#stats .top-site .duration { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
+.top-add, .top-remove { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-3); color: var(--text-muted); font-size: 1rem; line-height: 1; cursor: pointer; }
+.top-add:hover { color: var(--primary); border-color: var(--primary); }
+.top-remove:hover { color: var(--danger); border-color: var(--danger); }
+.top-empty { padding: 4px 2px; color: var(--text-muted); font-size: 0.85rem; }
+.week-graph-container { position: relative; width: 100%; height: clamp(180px, 28vh, 420px); overflow: hidden; }
+#week-canvas { display: block; width: 100% !important; height: 100% !important; }

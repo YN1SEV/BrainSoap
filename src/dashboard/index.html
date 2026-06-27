@@ -3,33 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <title>BrainSoap — Dashboard</title>
+  <meta name="description" content="BrainSoap dashboard: manage site rules and view your focus & scroll statistics.">
+
   <!-- keep variables first, page styles last -->
   <link rel="stylesheet" href="styles.css">
-  
+
   <link rel="stylesheet" href="nav/frame.css">
   <link rel="stylesheet" href="stats/stats.css">
   <link rel="stylesheet" href="rules/rules.css">
   <link rel="stylesheet" href="dev/dev.css">
-  
+
 </head>
 
 <body>
   <!--================================================= Sidebar ==================================================-->
   <!--============================================================================================================-->
-  <button class="mini-btn" id="toggle-sidebar">☰</button>
+  <button class="mini-btn" id="toggle-sidebar" aria-label="Toggle navigation sidebar" aria-expanded="true">☰</button>
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <header><img src="../../assets/icons/icon128.png" alt="">BrainSoap</header>
 
-    <nav>
-      <!-- 
-      <a href="#home"    ><img src="../../assets/nav/home.svg"    >Home       </a> 
+    <nav aria-label="Main navigation">
+      <!--
+      <a href="#home"    ><img src="../../assets/nav/home.svg"    alt="">Home       </a>
       -->
-      <a href="#rules"   ><img src="../../assets/nav/rules.svg"   >Rules      </a>
-      <a href="#stats"   ><img src="../../assets/nav/stats.svg"   >Statistics </a>
-      <a href="#settings"><img src="../../assets/nav/settings.svg">Settings   </a>
+      <a href="#rules"   ><img src="../../assets/nav/rules.svg"    alt="">Rules      </a>
+      <a href="#stats"   ><img src="../../assets/nav/stats.svg"    alt="">Statistics </a>
+      <a href="#settings"><img src="../../assets/nav/settings.svg" alt="">Settings   </a>
     </nav>
   </aside>
 
@@ -43,12 +45,13 @@
 
     <!--================================================== RULES ===================================================-->
     <!--============================================================================================================-->
-    <section class="page" id="rules">
-      <h1>Recent Activity</h1>
+    <section class="page" id="rules" aria-labelledby="rules-heading">
+      <h1 id="rules-heading">Rules</h1>
         <ul id="categories"></ul>
 
         <div class="controls">
           <div class="add-category-row">
+            <label class="visually-hidden" for="add-category-input">New category name</label>
             <input id="add-category-input" placeholder="Add new Category...">
             <button id="add-category-btn">Add</button>
           </div>
@@ -86,7 +89,8 @@
 
         <!------------------ Graph last week ------------------->
         <div class="week-graph-container">
-            <canvas id="week-canvas"></canvas> 
+            <canvas id="week-canvas" role="img"
+                    aria-label="Line chart of focus and scroll hours over the last 7 days"></canvas>
         </div>
 
       </section>
@@ -120,7 +124,7 @@
           </li>
 
           <li class="stat-item">
-            <span class="stat-label">Scrolls Blocked</span>
+            <span class="stat-label">Current Streak</span>
             <span id="scrolls-blocked" class="stat-value"></span>
           </li>
 
@@ -141,9 +145,10 @@
           </li>
         </ul>
       </section>
-      <!-------------------------------------------------- TBD ------------------------------------------------------->
-      <section class="subsection" id="">
-        <h1>TBD</h1>
+      <!---------------------------------------------- Most time spent on -------------------------------------------->
+      <section class="subsection" id="stats_top" aria-labelledby="top-heading">
+        <h1 id="top-heading">Most time spent on</h1>
+        <ul id="top-sites-list"></ul>
       </section>
       <!---------------------------------------------- Recent Stats -------------------------------------------------->
       <section class="subsection" id="stats-recent">
@@ -161,10 +166,6 @@
   </main>
 </body>
 
-<!-- Load utilities and defaults first -->
-<script type="module" src="../utils/defaults.js"></script>
-<script src="../utils/utils.js"></script>
-
 <!-- Load libraries -->
 <script src="imported/chart.js"></script>
 
@@ -181,5 +182,6 @@
 <!-- Load statistics -->
 <script type="module" src="stats/recent.js"></script>
 <script type="module" src="stats/stats.js"></script>
+<script type="module" src="stats/top_sites.js"></script>
 
 </html>
