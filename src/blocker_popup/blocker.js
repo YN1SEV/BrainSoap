@@ -1,4 +1,6 @@
 // not a background script so not there!
+globalThis.browser ??= globalThis.chrome;
+
 if (!window.hasBlockerListener) {
   window.hasBlockerListener = true;
 browser.runtime.onMessage.addListener((message) => {
@@ -25,6 +27,9 @@ function renderBlocker(seconds, redirectUrl = undefined) {
 
   const overlay = document.createElement('div');
   overlay.id = 'doom-blocker-overlay';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Focus reminder');
 
   // not worth it rn to make a html file
   overlay.innerHTML = `
@@ -49,6 +54,7 @@ function renderBlocker(seconds, redirectUrl = undefined) {
       btn.disabled = false;
       btn.innerText = "Continue to site";
       btn.style.background = "#28a745"; // Change to green when ready
+      btn.focus(); // move keyboard focus to the now-actionable button
     }
   }, 1000);
 
@@ -74,6 +80,7 @@ function renderImage(imagePath){
   const img = document.createElement('img');
   img.id = 'doom-blocker-image';
   img.src = browser.runtime.getURL(imagePath);
+  img.alt = "Time is up — take a break from this site.";
 
   document.body.appendChild(img);
 

@@ -5,6 +5,10 @@
   margin: 0 0 12px 0;
 }
 
+.rules-hint { margin: 0 0 12px; color: var(--text-muted); font-size: 0.85rem; }
+.category:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.category.kbd-open { box-shadow: 0 0 0 2px var(--primary-soft), 0 1px 3px var(--shadow); }
+
 #categories {
   display: grid;
   gap: 12px;

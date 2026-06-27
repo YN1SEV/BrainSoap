@@ -17,6 +17,8 @@
 </head>
 
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
   <!--================================================= Sidebar ==================================================-->
   <!--============================================================================================================-->
   <button class="mini-btn" id="toggle-sidebar" aria-label="Toggle navigation sidebar" aria-expanded="true">☰</button>
@@ -35,7 +37,7 @@
     </nav>
   </aside>
 
-  <main>
+  <main id="main-content">
  
     <!--================================================== HOME  ===================================================-->
     <!--============================================================================================================-->
@@ -47,6 +49,7 @@
     <!--============================================================================================================-->
     <section class="page" id="rules" aria-labelledby="rules-heading">
       <h1 id="rules-heading">Rules</h1>
+        <p class="rules-hint">Keyboard: ↑/↓ move between categories, Enter opens one, Esc goes back.</p>
         <ul id="categories"></ul>
 
         <div class="controls">
@@ -172,6 +175,7 @@
 <!-- Load UI components -->
 <script src="dev/dev.js"></script>
 <script src="nav/nav.js"></script>
+<script src="rules/keyboard_nav.js"></script>
 
 <!-- Load rules -->
 <script type="module" src="rules/render_rules.js"></script>
