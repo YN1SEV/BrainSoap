@@ -1,7 +1,9 @@
+// date as a YYYY-MM-DD key
 export function toDateKey(date = new Date()) {
   return date.toISOString().slice(0, 10);
 }
 
+// the last 7 date keys oldest first ending on today
 export function last7DateKeys(today = new Date()) {
   return Array.from({ length: 7 }, (_, i) => {
     const d = new Date(today);
@@ -16,6 +18,7 @@ export function formatDuration(seconds) {
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 }
 
+// longest run of back to back active days plus the current streak
 export function calcStreak(activeDates) {
   if (!activeDates.length) return { current: 0, best: 0 };
 

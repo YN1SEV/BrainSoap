@@ -3,9 +3,7 @@ export async function getActiveTabId() {
     // Query for the tab that is active and in the current window
     const tabs = await browser.tabs.query({ active: true, currentWindow: true });
 
-    if (tabs.length > 0) {
-      return tabs[0].id;
-    }
+    if (tabs.length > 0) return tabs[0].id;
   } catch (error) {
     console.error("Error finding active tab:", error);
   }
@@ -14,10 +12,10 @@ export async function getActiveTabId() {
 
 export async function freezeTab(tabId) {
   try {
-    // 1. Mute the tab (Still via the tabs API)
+    // mute tab via tabs API
     await browser.tabs.update(tabId, { muted: true });
 
-    // 2. Pause media (Using the new scripting API)
+    // pause media via manifest V3 scripting API
     await browser.scripting.executeScript({
       target: { tabId: tabId },
       func: () => {
@@ -28,6 +26,7 @@ export async function freezeTab(tabId) {
     });
 
     console.log(`Tab ${tabId} frozen.`);
+
   } catch (error) {
     console.error("MV3 Freeze Error:", error);
   }
@@ -43,7 +42,7 @@ export async function unmuteCurrentTab() {
   }
 }
 
-// A robust message sender with a retry mechanism
+// message sender with retry
 export async function sendMessageWithRetry(tabId, message, retries = 3, delay = 100) {
   for (let i = 0; i < retries; i++) {
     try {

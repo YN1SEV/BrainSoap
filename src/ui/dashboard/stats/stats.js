@@ -1,11 +1,8 @@
 import { custom_storage } from "../../../browser/storage.js";
 import { computeAndSaveStats } from "../../../services/stats-service.js";
 
-// --- Hilfsfunktionen für bessere Lesbarkeit und Struktur ---
 
-/**
- * Holt die Wochentage rotiert basierend auf dem aktuellen Tag, sodass heute ganz rechts steht.
- */
+// weekday names in order ending on today
 function getRotatedWeekLabels() {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const todayIndex = new Date().getDay();
@@ -15,9 +12,6 @@ function getRotatedWeekLabels() {
   ];
 }
 
-/**
- * Aktualisiert Textinhalte im DOM basierend auf einer ID-Mapping-Tabelle.
- */
 function updateDOMText(mapping) {
   for (const [elementId, value] of Object.entries(mapping)) {
     const element = document.getElementById(elementId);
@@ -27,9 +21,6 @@ function updateDOMText(mapping) {
   }
 }
 
-/**
- * Setzt die Prozentabweichungen (Deltas) im Dashboard.
- */
 function setWeekDeltas(focusPercent, scrollPercent) {
   const focusEl = document.getElementById('focus-delta');
   const scrollEl = document.getElementById('scroll-delta');
@@ -38,22 +29,18 @@ function setWeekDeltas(focusPercent, scrollPercent) {
   if (scrollEl) scrollEl.textContent = `${scrollPercent > 0 ? '+' : ''}${scrollPercent}% this week`;
 }
 
-/**
- * Aktualisiert oder erstellt das ChartJS-Liniendiagramm.
- */
+// draw the weekly line chart or update it if it already exists
 function renderChart(canvasElement, focusData, scrollData) {
   const existingChart = Chart.getChart(canvasElement);
 
-  // Performance-Optimierung: Wenn das Chart existiert, updaten wir nur die Daten statt es neu zu erstellen
   if (existingChart) {
     existingChart.data.labels = getRotatedWeekLabels();
     existingChart.data.datasets[0].data = focusData;
     existingChart.data.datasets[1].data = scrollData;
-    existingChart.update('none'); // 'none' verhindert unruhige Animationen beim Auto-Refresh
+    existingChart.update('none'); 
     return;
   }
 
-  // Initiales Rendern
   new Chart(canvasElement, {
     type: "line",
     data: {
@@ -71,8 +58,6 @@ function renderChart(canvasElement, focusData, scrollData) {
   });
 }
 
-// --- Hauptfunktion ---
-
 async function renderStats() {
   await computeAndSaveStats();
   const stats = await custom_storage.getLocal('usageStats');
@@ -81,7 +66,6 @@ async function renderStats() {
     return;
   }
 
-  // 1. All-Time Stats im DOM verteilen
   updateDOMText({
     "focus-hours": stats.focusHours ?? 0,
     "focus-sessions": stats.focusSessions ?? 0,
@@ -93,36 +77,28 @@ async function renderStats() {
     "active-days": stats.activeDays ?? 0
   });
 
-  // 2. Wochendaten verarbeiten
   const focusChartData = stats.chart?.focus || [];
   const scrollChartData = stats.chart?.scroll || [];
 
   const totalFocus = focusChartData.reduce((a, b) => a + b, 0);
   const totalScroll = scrollChartData.reduce((a, b) => a + b, 0);
 
-  // Wöchentliche Zusammenfassung eintragen
   const summaryElements = document.querySelectorAll(".week-summary .stat-value");
   if (summaryElements?.length >= 2) {
     summaryElements[0].textContent = `${totalFocus.toFixed(1)} h`;
     summaryElements[1].textContent = `${totalScroll.toFixed(1)} h`;
   }
 
-  // 3. Chart rendern oder aktualisieren
   const canvasElement = document.querySelector("#week-canvas");
   if (canvasElement) {
     renderChart(canvasElement, focusChartData, scrollChartData);
   }
 
-  // 4. Deltas setzen
   setWeekDeltas(-15, 20);
 }
 
-// --- Event Listeners ---
-
 document.addEventListener('DOMContentLoaded', async () => {
   await renderStats();
-
-  // Intervall für automatische Updates alle 10 Sekunden
   setInterval(async () => {
     console.log("Updating Stats...");
     await renderStats();

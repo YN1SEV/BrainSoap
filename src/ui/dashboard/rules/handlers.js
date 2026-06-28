@@ -1,6 +1,7 @@
 import { appData, saveRules, saveAndRender, refreshTimers, loadAndRenderRules } from "./render_rules.js";
 import { showCategoryMenu } from "./cat_menu.js";
 
+// reflect on or off state on a toggle button
 function paintStatus(button, active) {
   if (!button) return;
   button.classList.toggle('active', active);
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const activeEl = document.activeElement;
     const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.isContentEditable);
     if (!isTyping) {
-      console.log("Aktualisiere Rules...");
+      console.log("refreshing rules...");
       await loadAndRenderRules();
     }
   }, 10000);
