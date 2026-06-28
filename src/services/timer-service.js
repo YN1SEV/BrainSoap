@@ -1,3 +1,4 @@
+//timer map is slightly faster in backend
 
 export function buildTimerMap(blacklist = []) {
   const map = {};

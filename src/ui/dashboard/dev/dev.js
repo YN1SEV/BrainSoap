@@ -1,3 +1,4 @@
+// dev only button to flip between the light and dark theme
 const devThemeButton = document.createElement("button");
 devThemeButton.textContent = "Theme";
 document.body.appendChild(devThemeButton);

@@ -1,4 +1,5 @@
 
+// show or hide the sidebar when the button is clicked
 const toggleBtn = document.getElementById("toggle-sidebar");
 
 toggleBtn?.addEventListener("click", () => {

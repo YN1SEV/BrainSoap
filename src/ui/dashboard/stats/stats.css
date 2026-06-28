@@ -182,17 +182,103 @@
   }
 }
 
-.week-summary .stat-item { gap: 6px; min-height: unset; }
-.week-summary .stat-item .stat-top { display: flex; align-items: center; gap: 8px; }
-.week-summary .stat-item .stat-value { margin-top: 4px; }
-#top-sites-list { gap: 10px; overflow-x: hidden; }
-#stats .top-site { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto auto auto; align-items: center; gap: 8px; min-height: 50px; padding: 5px 10px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); }
-#stats .top-site .favicon { width: 32px; height: 32px; padding: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
-#stats .top-site .domain { min-width: 0; overflow: hidden; font-size: 0.92rem; font-weight: 720; text-overflow: ellipsis; white-space: nowrap; }
-#stats .top-site .duration { font-size: 0.78rem; color: var(--text-muted); white-space: nowrap; }
-.top-add, .top-remove { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-3); color: var(--text-muted); font-size: 1rem; line-height: 1; cursor: pointer; }
-.top-add:hover { color: var(--primary); border-color: var(--primary); }
-.top-remove:hover { color: var(--danger); border-color: var(--danger); }
-.top-empty { padding: 4px 2px; color: var(--text-muted); font-size: 0.85rem; }
-.week-graph-container { position: relative; width: 100%; height: clamp(180px, 28vh, 420px); overflow: hidden; }
-#week-canvas { display: block; width: 100% !important; height: 100% !important; }
+.week-summary .stat-item {
+  gap: 6px;
+  min-height: unset;
+}
+
+.week-summary .stat-item .stat-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.week-summary .stat-item .stat-value {
+  margin-top: 4px;
+}
+
+#top-sites-list {
+  gap: 10px;
+  overflow-x: hidden;
+}
+
+#stats .top-site {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 50px;
+  padding: 5px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+#stats .top-site .favicon {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+#stats .top-site .domain {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.92rem;
+  font-weight: 720;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#stats .top-site .duration {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.top-add, 
+.top-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-3);
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.top-add:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.top-remove:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.top-empty {
+  padding: 4px 2px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.week-graph-container {
+  position: relative;
+  width: 100%;
+  height: clamp(180px, 28vh, 420px);
+  overflow: hidden;
+}
+
+#week-canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}

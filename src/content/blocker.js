@@ -1,28 +1,26 @@
-// not a background script so not there!
+//file needs rework
+
+
+//cross browser compatibility
 globalThis.browser ??= globalThis.chrome;
 
+//prevent duplicates
 if (!window.hasBlockerListener) {
   window.hasBlockerListener = true;
-browser.runtime.onMessage.addListener((message) => {
-  if (message.action === "TRIGGER_BLOCK") {
-    if (message.imagePath)
-    {
-      renderImage(message.imagePath)
-    }
-    else{
-      renderBlocker(message.seconds, message.redirectUrl);
-    }
-    
-  }
-});
-}
 
+  browser.runtime.onMessage.addListener((message) => {
+    if (message.action === "TRIGGER_BLOCK") {                   // chooses when time exceeded
+      if (message.imagePath) renderImage(message.imagePath)
+      else renderBlocker(message.seconds, message.redirectUrl);
+    }
+  });
+}
 
 function renderBlocker(seconds, redirectUrl = undefined) {
   // Prevent duplicate popups
   if (document.getElementById('doom-blocker-overlay')) return;
 
-  // Add class to body to stop scrolling
+  // Build body, needs rework
   document.body.classList.add('blocked-scrolling');
 
   const overlay = document.createElement('div');
@@ -45,16 +43,16 @@ function renderBlocker(seconds, redirectUrl = undefined) {
   const btn = document.getElementById('close-blocker');
   let timeLeft = seconds;
 
+  // wait before ignoring limit
   const timer = setInterval(() => {
-    timeLeft--;
-    if (timeLeft > 0) {
-      btn.innerText = `Wait (${timeLeft}s)`;
-    } else {
+    timeLeft--;      //cnt down every second
+    if (timeLeft > 0) btn.innerText = `Wait (${timeLeft}s)`;
+    else {
       clearInterval(timer);
       btn.disabled = false;
       btn.innerText = "Continue to site";
-      btn.style.background = "#28a745"; // Change to green when ready
-      btn.focus(); // move keyboard focus to the now-actionable button
+      btn.style.background = "#28a745"; 
+      btn.focus(); 
     }
   }, 1000);
 
@@ -68,7 +66,8 @@ function renderBlocker(seconds, redirectUrl = undefined) {
   };
 }
 
-function renderImage(imagePath){
+// covers whole page with single image
+function renderImage(imagePath) {
   try {
   // Prevent duplicate popups
   if (document.getElementById('doom-blocker-image')) return;
@@ -85,7 +84,5 @@ function renderImage(imagePath){
   document.body.appendChild(img);
 
     
-  } catch (e) {
-    console.error(e)
-  }
+  } catch (e) {console.error(e)}
 }
