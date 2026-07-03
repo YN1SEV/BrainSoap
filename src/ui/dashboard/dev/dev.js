@@ -1,0 +1,63 @@
+// dev only button to flip between the light and dark theme
+const devThemeButton = document.createElement("button");
+devThemeButton.textContent = "Theme";
+document.body.appendChild(devThemeButton);
+
+const devThemes = {
+  light: {
+    "--bg": "#f4f6f8",
+    "--surface": "#ffffff",
+    "--surface-2": "#eef2f6",
+    "--surface-3": "#e2e8ef",
+    "--text": "#17202a",
+    "--text-muted": "#6b7280",
+    "--text-soft": "#3f4b5a",
+    "--primary": "#4969e8",
+    "--primary-soft": "rgba(73, 105, 232, 0.12)",
+    "--accent": "#168f78",
+    "--accent-soft": "rgba(22, 143, 120, 0.12)",
+    "--warning": "#b7791f",
+    "--danger": "#c2414b",
+    "--border": "rgba(24, 35, 48, 0.1)",
+    "--border-strong": "rgba(24, 35, 48, 0.18)",
+    "--shadow": "rgba(24, 35, 48, 0.1)",
+    "--sidebar-bg": "rgba(255,255,255,0.88)",
+    "--nav-icon-filter": "none",
+    "--scrollbar-thumb": "#c7d0dc",
+    "--scrollbar-thumb-hover": "#aebaca",
+    "--scrollbar-track": "#eef2f6",
+  },
+  dark: {
+    "--bg": "#0d1117",
+    "--surface": "#121821",
+    "--surface-2": "#18212d",
+    "--surface-3": "#202b39",
+    "--text": "#f4f7fb",
+    "--text-muted": "#9aa6b2",
+    "--text-soft": "#c9d2dd",
+    "--primary": "#5d7cff",
+    "--primary-soft": "rgba(93, 124, 255, 0.14)",
+    "--accent": "#2fc9a8",
+    "--accent-soft": "rgba(47, 201, 168, 0.14)",
+    "--warning": "#f2b84b",
+    "--danger": "#ef6b73",
+    "--border": "rgba(218, 228, 240, 0.1)",
+    "--border-strong": "rgba(218, 228, 240, 0.18)",
+    "--shadow": "rgba(0, 0, 0, 0.38)",
+    "--sidebar-bg": "rgba(13, 17, 23, 0.88)",
+    "--nav-icon-filter": "invert(1)",
+    "--scrollbar-thumb": "#3a4657",
+    "--scrollbar-thumb-hover": "#4f5f73",
+    "--scrollbar-track": "#121821",
+  },
+};
+
+let devTheme = "light";
+
+devThemeButton.addEventListener("click", () => {
+  devTheme = devTheme === "light" ? "dark" : "light";
+
+  for (const [name, value] of Object.entries(devThemes[devTheme])) {
+    document.documentElement.style.setProperty(name, value);
+  }
+});

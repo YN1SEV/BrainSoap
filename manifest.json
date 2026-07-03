@@ -13,8 +13,8 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["src/blocker_popup/blocker.js"],
-      "css": ["src/blocker_popup/styles.css"],
+      "js": ["src/content/blocker.js"],
+      "css": ["src/content/blocker.css"],
       "run_at": "document_start"
     }
   ],
@@ -24,22 +24,16 @@
       "matches": ["<all_urls>"]
     },
     {
-      "resources": ["src/browser_handlers/storage_manager.js"],
+      "resources": ["src/browser/storage.js"],
       "extension_ids": ["*"]
     }
   ],
   "background": {
-    "scripts": [
-      "src/utils/utils.js",
-      "src/utils/defaults.js",
-      "src/browser_handlers/tab_handler.js",
-      "src/browser_handlers/actions_handler.js",
-      "src/background/background.js"
-    ],
+    "scripts": ["src/background/background.js"],
     "type": "module"
   },
   "action": {
-    "default_popup": "src/quick_page/popup.html"
+    "default_popup": "src/ui/popup/popup.html"
   },
   "browser_specific_settings": {
     "gecko": {
@@ -47,4 +41,3 @@
     }
   }
 }
-
