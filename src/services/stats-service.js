@@ -9,6 +9,7 @@ const getDomainLog   = () => custom_storage.getLocal("domainLog")  .then(v => v 
 const getCategoryLog = () => custom_storage.getLocal("categoryLog").then(v => v ?? {});
 const getActiveDates = () => custom_storage.getLocal("activeDates").then(v => v ?? []);
 const getBlacklist   = () => custom_storage.getSync("blacklist")   .then(v => v ?? []);
+const getTopExcluded = () => custom_storage.getLocal("topExcluded") .then(v => v ?? []);
 
 const emptyDay       = () => ({ 
   focusSeconds: 0, 
@@ -117,11 +118,12 @@ export async function shortestTimer(domain) {
 }
 
 export async function computeAndSaveStats() {
-  const [dayLog, domainLog, activeDates, blacklist, installDate] = await Promise.all([
-    getDayLog(), 
-    getDomainLog(), 
-    getActiveDates(), 
+  const [dayLog, domainLog, activeDates, blacklist, topExcluded, installDate] = await Promise.all([
+    getDayLog(),
+    getDomainLog(),
+    getActiveDates(),
     getBlacklist(),
+    getTopExcluded(),
     custom_storage.getLocal("installDate"),
   ]);
 
@@ -161,11 +163,14 @@ export async function computeAndSaveStats() {
       lastVisit: data.lastVisit ?? 0 
     }));
 
+  // recent activity = the last 10 visited websites
   const recentStats = [...trackedDomains]
     .sort((a, b) => b.lastVisit - a.lastVisit)
     .slice(0, 10);
 
-  const topSites = [...trackedDomains]
+  const inRules = domain => [...uniqueUrls].some(url => url && domain.includes(url));
+  const topSites = trackedDomains
+    .filter(d => !inRules(d.url) && !topExcluded.includes(d.url))
     .sort((a, b) => b.durationSeconds - a.durationSeconds)
     .slice(0, 10);
 
@@ -179,12 +184,12 @@ export async function computeAndSaveStats() {
   return usageStats;
 }
 
-export async function removeDomain(url) {
-  const domainLog = await getDomainLog();
+// blacklist domain from "Most time spent on" only
+export async function excludeFromTopSites(url) {
+  const topExcluded = await getTopExcluded();
 
-  if (!(url in domainLog)) return;
+  if (topExcluded.includes(url)) return;
 
-  delete domainLog[url];
-  await custom_storage.setLocal("domainLog", domainLog);
+  await custom_storage.setLocal("topExcluded", [...topExcluded, url]);
   await computeAndSaveStats();
 }
