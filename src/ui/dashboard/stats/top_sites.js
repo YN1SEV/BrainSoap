@@ -1,7 +1,7 @@
 import { custom_storage } from "../../../browser/storage.js";
 import { formatDuration } from "../../../utils/time.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
-import { computeAndSaveStats, removeDomain } from "../../../services/stats-service.js";
+import { computeAndSaveStats, excludeFromTopSites } from "../../../services/stats-service.js";
 
 const getFaviconUrl = (domain) => `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico`;
 
@@ -76,7 +76,7 @@ function setupActions() {
       await copyToClipboard(url);
       window.location.hash = "rules";
     } else if (e.target.matches(".top-remove")) {
-      await removeDomain(url);
+      await excludeFromTopSites(url);
       await renderTopSites();
     }
   });
