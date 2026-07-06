@@ -49,7 +49,17 @@ class StorageManager {
 
 	// wipes session
 	async clearLocalStorage() {
-		const KEEP = new Set(['dayLog', 'domainLog', 'categoryLog', 'usageStats', 'recentStats', 'activeDates', 'installDate']);
+		const KEEP = new Set([
+      'dayLog', 
+      'domainLog', 
+      'categoryLog', 
+      'usageStats', 
+      'recentStats', 
+      'topExcluded', 
+      'activeDates', 
+      'installDate'
+    ]);
+
 		const toDelete = Object.keys(this.localCache).filter((key) => !KEEP.has(key));
 		if (!toDelete.length) return;
 		await chrome.storage.local.remove(toDelete);
