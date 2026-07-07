@@ -1,5 +1,6 @@
 import { custom_storage } from "../../../browser/storage.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
+import { getRefreshMs } from "../../../utils/settings.js";
 
 function getFaviconUrl(domain) {
   return `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico`;
@@ -36,9 +37,9 @@ async function renderActivities() {
 document.addEventListener('DOMContentLoaded', async () => {
   await renderActivities();
 
-  // refresh every 10 seconds
+  // refresh on the configured interval
   setInterval(async () => {
     console.log("Updating Activities...");
     await renderActivities();
-  }, 10000);
+  }, await getRefreshMs());
 });
