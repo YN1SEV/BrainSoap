@@ -114,6 +114,8 @@ main section#settings:target {
 
 /* toggle switch */
 .toggle {
+  appearance: none;
+  margin: 0;
   position: relative;
   flex-shrink: 0;
   width: 44px;
@@ -138,12 +140,12 @@ main section#settings:target {
   transition: transform var(--ease), background var(--ease);
 }
 
-.toggle[aria-checked="true"] {
+.toggle:checked {
   background: var(--primary-soft);
   border-color: var(--primary);
 }
 
-.toggle[aria-checked="true"]::after {
+.toggle:checked::after {
   transform: translateX(18px);
   background: var(--primary);
 }

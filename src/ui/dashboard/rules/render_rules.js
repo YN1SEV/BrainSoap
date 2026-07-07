@@ -92,10 +92,10 @@ function createCategoryHTML(category, catIndex, timerState = {}) {
       <ul class="items" data-cat-index="${catIndex}">
         ${itemsHTML}
       </ul>
-      <div class="cat-add-item">
+      <form class="cat-add-item" data-cat-index="${catIndex}">
         <input class="cat-add-item-input" data-cat-index="${catIndex}" aria-label="Add a site to ${name}" placeholder="Add a new URL or name...">
         <button class="cat-add-item-btn" data-cat-index="${catIndex}">Add</button>
-      </div>
+      </form>
     </li>
   `;
 }
