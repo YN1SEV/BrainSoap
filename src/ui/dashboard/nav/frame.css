@@ -4,8 +4,6 @@
   scrollbar-width: thin;
 }
 :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-sm); }
-.skip-link { position: absolute; left: -9999px; top: 0; z-index: 100000; padding: 10px 16px; background: var(--primary); color: #fff; border-radius: var(--radius); }
-.skip-link:focus { left: 12px; top: 12px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 *::-webkit-scrollbar {
   width: 10px;
@@ -174,6 +172,19 @@ body:has(#rules:target) aside.sidebar nav a[href="#rules"]::before,
 body:has(#stats:target) aside.sidebar nav a[href="#stats"]::before,
 body:has(#settings:target) aside.sidebar nav a[href="#settings"]::before {
   background: var(--primary);
+}
+
+.nav-hint { display: none; margin: 0; padding: 8px 10px; color: var(--text-muted); font-size: 0.8rem; }
+aside.sidebar:has(nav :focus-visible) .nav-hint { display: block; }
+
+/* native popover, moved from center to top and rounded like the rest of the UI */
+#copy-toast:popover-open {
+  margin: 16px auto auto;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
 }
 
 .mini-btn {

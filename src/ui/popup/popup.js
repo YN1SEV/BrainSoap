@@ -75,10 +75,6 @@ async function onFocusChange(e) {
   if (e.target.checked) {
     await custom_storage.setLocal('focusMode', true);
   } else {
-    if (!confirm('Turn off Focus Mode?')) {
-      e.target.checked = true;
-      return;
-    }
     await turnFocusOff();
   }
   await updateStatus();
@@ -86,11 +82,6 @@ async function onFocusChange(e) {
 
 async function onPauseChange(e) {
   if (e.target.checked) {
-    if (!confirm('Pause BrainSoap? This disables all tracking and blocking.')) {
-      e.target.checked = false;
-      return;
-    }
-    
     await custom_storage.setLocal('paused', true);
     
     if (focusToggle().checked) {

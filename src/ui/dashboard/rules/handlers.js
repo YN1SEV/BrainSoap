@@ -39,11 +39,16 @@ function attachRulesHandlers() {
     saveAndRender();
   }
 
+  // the add-site rows are <form>s, so Enter and the Add button both submit natively
+  container.addEventListener('submit', (e) => {
+    if (e.target.matches('.cat-add-item')) {
+      e.preventDefault();
+      addItemFromInputByIndex(Number(e.target.dataset.catIndex));
+    }
+  });
+
   container.addEventListener('click', (e) => {
     const el = e.target;
-    if (el.matches('.cat-add-item-btn')) {
-      addItemFromInputByIndex(Number(el.dataset.catIndex));
-    }
     if (el.matches('.cat-menu-btn')) {
       showCategoryMenu(Number(el.dataset.catIndex), el);
     }
@@ -77,17 +82,11 @@ function attachRulesHandlers() {
     }
   });
 
-  container.addEventListener('keydown', (e) => {
-    if (e.target.matches('.cat-add-item-input') && e.key === 'Enter') {
-      e.preventDefault();
-      addItemFromInputByIndex(Number(e.target.dataset.catIndex));
-    }
-  });
-
-  const addCatBtn = document.getElementById('add-category-btn');
+  const addCatForm = document.getElementById('add-category-form');
   const addCatInput = document.getElementById('add-category-input');
-  if (addCatBtn && addCatInput) {
-    addCatBtn.addEventListener('click', async () => {
+  if (addCatForm && addCatInput) {
+    addCatForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
       const name = addCatInput.value.trim();
       if (!name) return;
       appData.push(await makeCategory(name));
