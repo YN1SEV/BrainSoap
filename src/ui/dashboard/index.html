@@ -17,12 +17,8 @@
 </head>
 
 <body>
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-
   <!--================================================= Sidebar ==================================================-->
   <!--============================================================================================================-->
-  <button class="mini-btn" id="toggle-sidebar" aria-label="Toggle navigation sidebar" aria-expanded="true">☰</button>
-
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <header><img src="../../../assets/icons/icon128.png" alt="">BrainSoap</header>
@@ -35,9 +31,11 @@
       <a href="#stats"   ><img src="../../../assets/nav/stats.svg"    alt="">Statistics </a>
       <a href="#settings"><img src="../../../assets/nav/settings.svg" alt="">Settings   </a>
     </nav>
+
+    <p class="nav-hint">Keyboard: Up/Down move between tabs, Enter opens one.</p>
   </aside>
 
-  <main id="main-content">
+  <main>
 
     <!--================================================== HOME  ===================================================-->
     <!--============================================================================================================-->
@@ -53,11 +51,11 @@
         <ul id="categories"></ul>
 
         <div class="controls">
-          <div class="add-category-row">
+          <form class="add-category-row" id="add-category-form">
             <label class="visually-hidden" for="add-category-input">New category name</label>
             <input id="add-category-input" placeholder="Add new Category...">
             <button id="add-category-btn">Add</button>
-          </div>
+          </form>
         </div>
     </section>
 
@@ -188,8 +186,8 @@
             <span class="setting-label">Notifications</span>
             <span class="setting-desc">Allow limit-reached notifications.</span>
           </div>
-          <button id="setting-notifications" class="toggle" role="switch" aria-checked="true"
-                  aria-label="Toggle notifications"></button>
+          <input type="checkbox" id="setting-notifications" class="toggle"
+                 aria-label="Toggle notifications" checked>
         </div>
 
         <!------------------ Refresh interval ------------------->
@@ -286,6 +284,10 @@
     </section>
 
   </main>
+
+  <button class="mini-btn" id="toggle-sidebar" aria-label="Toggle navigation sidebar" aria-expanded="true">☰</button>
+
+  <div id="copy-toast" popover role="status">Copied to clipboard</div>
 </body>
 
 <!-- Load libraries -->
