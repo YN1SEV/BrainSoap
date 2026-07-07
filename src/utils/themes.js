@@ -1,9 +1,6 @@
-// dev only button to flip between the light and dark theme
-const devThemeButton = document.createElement("button");
-devThemeButton.textContent = "Theme";
-document.body.appendChild(devThemeButton);
-
-const devThemes = {
+// CSS variable maps for the explicit light / dark themes.
+// "system" falls back to the prefers-color-scheme rules in styles.css.
+export const themes = {
   light: {
     "--bg": "#f4f6f8",
     "--surface": "#ffffff",
@@ -52,12 +49,18 @@ const devThemes = {
   },
 };
 
-let devTheme = "light";
+// Apply a theme by overriding CSS variables inline; "system" clears the
+// overrides so the media queries in styles.css take over again.
+export function applyTheme(theme) {
+  const root = document.documentElement;
+  const overrides = themes[theme];
 
-devThemeButton.addEventListener("click", () => {
-  devTheme = devTheme === "light" ? "dark" : "light";
-
-  for (const [name, value] of Object.entries(devThemes[devTheme])) {
-    document.documentElement.style.setProperty(name, value);
+  if (!overrides) {
+    for (const name of Object.keys(themes.light)) root.style.removeProperty(name);
+    return;
   }
-});
+
+  for (const [name, value] of Object.entries(overrides)) {
+    root.style.setProperty(name, value);
+  }
+}
