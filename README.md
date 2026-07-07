@@ -59,6 +59,7 @@ this was a great help in understanding how to create an extension and what you c
     ```tree
     BrainSoap
     ├── assets
+    │   ├── misc
     │   ├── icons
     │   ├── nav
     │   └── visuals
@@ -75,7 +76,7 @@ this was a great help in understanding how to create an extension and what you c
     │   │       ├── nav
     │   │       ├── rules
     │   │       ├── stats
-    │   │       ├── dev
+    │   │       ├── settings
     │   │       └── imported
     │   └── utils
     ├── manifest.json

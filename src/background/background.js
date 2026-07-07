@@ -117,21 +117,22 @@ async function checkThresholds(isVisit) {
   
   const focusMode = !!(await custom_storage.getLocal('focusMode'));
   const categoryLog = (await custom_storage.getLocal('categoryLog')) ?? {};
+  const allowNotify = (await custom_storage.getSync('settings'))?.notificationsEnabled !== false;
   const t = today();
   
   for (const cat of cats) {
     const used = categoryLog[cat.timerName]?.date === t ? categoryLog[cat.timerName].usedSeconds : 0;
     if (!focusMode && used < cat.maxTime * 60) continue;
-    triggerBlock(cat, focusMode);
+    triggerBlock(cat, focusMode, allowNotify);
     if (isVisit) await logBlock();
     if (focusMode) break;
   }
 }
 
 // do what is requested
-function triggerBlock(cat, focusMode) {
+function triggerBlock(cat, focusMode, allowNotify = true) {
   const actions = focusMode ? ["popup"] : (cat.actions ?? ["popup"]);
-  if (actions.includes("notify")) sendMessage("BrainSoap: Limit Reached", `Time's up on ${cat.timerName}!`, "limit-notify");
+  if (allowNotify && actions.includes("notify")) sendMessage("BrainSoap: Limit Reached", `Time's up on ${cat.timerName}!`, "limit-notify");
   if (actions.includes("image"))  showImage(cat.imagePath);
   
   const hasPopup    = actions.includes("popup")

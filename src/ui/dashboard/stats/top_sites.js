@@ -2,6 +2,7 @@ import { custom_storage } from "../../../browser/storage.js";
 import { formatDuration } from "../../../utils/time.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
 import { computeAndSaveStats, excludeFromTopSites } from "../../../services/stats-service.js";
+import { getRefreshMs } from "../../../utils/settings.js";
 
 const getFaviconUrl = (domain) => `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico`;
 
@@ -86,5 +87,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   await computeAndSaveStats();
   await renderTopSites();
   setupActions();
-  setInterval(renderTopSites, 10000);
+  setInterval(renderTopSites, await getRefreshMs());
 });
