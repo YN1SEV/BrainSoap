@@ -1,5 +1,20 @@
 import { appData, saveRules, saveAndRender, refreshTimers, loadAndRenderRules } from "./render_rules.js";
 import { showCategoryMenu } from "./cat_menu.js";
+import { getNewCategoryDefaults, getRefreshMs } from "../../../utils/settings.js";
+
+// build a fresh category from the user's configured defaults
+async function makeCategory(name) {
+  const d = await getNewCategoryDefaults();
+  const useRedirect = d.action === "redirect" && d.redirectUrl;
+  const category = {
+    timerName: name,
+    maxTime: Number(d.maxTime) || 60,
+    actions: useRedirect ? ["redirect"] : ["popup"],
+    items: [],
+  };
+  if (useRedirect) category.redirectUrl = d.redirectUrl;
+  return category;
+}
 
 // reflect on or off state on a toggle button
 function paintStatus(button, active) {
@@ -13,13 +28,13 @@ function attachRulesHandlers() {
   const container = document.getElementById('categories');
   if (!container) return;
 
-  function addItemFromInputByIndex(idx) {
+  async function addItemFromInputByIndex(idx) {
     const input = container.querySelector(`.cat-add-item-input[data-cat-index="${idx}"]`);
     if (!input) return;
     const val = input.value.trim();
     if (!val) return;
     const newItem = { name: val, url: val, active: true };
-    if (!appData[idx]) appData[idx] = { timerName: 'Unknown', maxTime: 60, actions: ['popup'], items: [] };
+    if (!appData[idx]) appData[idx] = await makeCategory('Unknown');
     appData[idx].items.push(newItem);
     saveAndRender();
   }
@@ -72,10 +87,10 @@ function attachRulesHandlers() {
   const addCatBtn = document.getElementById('add-category-btn');
   const addCatInput = document.getElementById('add-category-input');
   if (addCatBtn && addCatInput) {
-    addCatBtn.addEventListener('click', () => {
+    addCatBtn.addEventListener('click', async () => {
       const name = addCatInput.value.trim();
       if (!name) return;
-      appData.push({ timerName: name, maxTime: 60, actions: ['popup'], items: [] });
+      appData.push(await makeCategory(name));
       addCatInput.value = '';
       saveAndRender();
     });
@@ -92,5 +107,5 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.log("refreshing rules...");
       await loadAndRenderRules();
     }
-  }, 10000);
+  }, await getRefreshMs());
 });

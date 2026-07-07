@@ -1,7 +1,13 @@
 export const defaultSettings = {
   exist: true,                 // flag to check if user deleted browser data
-  theme: "light",
+  theme: "system",             // "system" | "light" | "dark"
   notificationsEnabled: true,
+  refreshSeconds: 10,          // how often the dashboard re-reads stats/rules
+  newCategoryDefaults: {
+    maxTime: 60,               // default time limit (minutes) for a new category
+    action: "popup",           // "popup" | "redirect"
+    redirectUrl: "",           // used when action is "redirect"
+  },
 };
 
 export const defaultBlacklist = [

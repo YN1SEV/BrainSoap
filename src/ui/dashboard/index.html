@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="nav/frame.css">
   <link rel="stylesheet" href="stats/stats.css">
   <link rel="stylesheet" href="rules/rules.css">
-  <link rel="stylesheet" href="dev/dev.css">
+  <link rel="stylesheet" href="settings/settings.css">
 
 </head>
 
@@ -163,7 +163,126 @@
     <!--================================================ SETTINGS  =================================================-->
     <!--============================================================================================================-->
     <section class="page" id="settings">
-      <div id="settings_dummy"></div>
+
+      <!------------------------------------------------- General ---------------------------------------------------->
+      <section class="subsection" id="settings_general" aria-labelledby="settings-general-heading">
+        <h1 id="settings-general-heading">General</h1>
+
+        <!------------------ Theme ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Theme</span>
+            <span class="setting-desc">Choose how BrainSoap looks.</span>
+          </div>
+          <label class="visually-hidden" for="setting-theme">Theme</label>
+          <select id="setting-theme" class="setting-control">
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+
+        <!------------------ Notifications ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Notifications</span>
+            <span class="setting-desc">Allow limit-reached notifications.</span>
+          </div>
+          <button id="setting-notifications" class="toggle" role="switch" aria-checked="true"
+                  aria-label="Toggle notifications"></button>
+        </div>
+
+        <!------------------ Refresh interval ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Refresh interval</span>
+            <span class="setting-desc">How often stats &amp; rules update (seconds).</span>
+          </div>
+          <label class="visually-hidden" for="setting-refresh">Refresh interval in seconds</label>
+          <input id="setting-refresh" class="setting-control setting-number" type="number" min="1" step="1">
+        </div>
+      </section>
+
+      <!------------------------------------------- New category defaults -------------------------------------------->
+      <section class="subsection" id="settings_category" aria-labelledby="settings-category-heading">
+        <h1 id="settings-category-heading">New category defaults</h1>
+
+        <!------------------ Default time limit ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Time limit</span>
+            <span class="setting-desc">Default limit for a new category (minutes).</span>
+          </div>
+          <label class="visually-hidden" for="setting-cat-time">Default time limit in minutes</label>
+          <input id="setting-cat-time" class="setting-control setting-number" type="number" min="1" step="1">
+        </div>
+
+        <!------------------ Default action (+ redirect url) ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Action</span>
+            <span class="setting-desc">What happens when the limit is reached.</span>
+          </div>
+          <div class="setting-action">
+            <label class="visually-hidden" for="setting-cat-action">Default action</label>
+            <select id="setting-cat-action" class="setting-control">
+              <option value="popup">Popup</option>
+              <option value="redirect">Redirect</option>
+            </select>
+            <label class="visually-hidden" for="setting-cat-redirect">Default redirect URL</label>
+            <input id="setting-cat-redirect" class="setting-control setting-text" type="url"
+                   placeholder="https://example.com" hidden>
+          </div>
+        </div>
+      </section>
+
+      <!-------------------------------------------------- Data ------------------------------------------------------>
+      <section class="subsection" id="settings_data" aria-labelledby="settings-data-heading">
+        <h1 id="settings-data-heading">Data</h1>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Export</span>
+            <span class="setting-desc">Download your settings and stats as a file.</span>
+          </div>
+          <button id="settings-export" class="settings-btn">Export</button>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Import</span>
+            <span class="setting-desc">Restore from a previously exported file.</span>
+          </div>
+          <button id="settings-import" class="settings-btn">Import</button>
+          <input id="settings-import-file" type="file" accept="application/json" hidden>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Reset</span>
+            <span class="setting-desc">RESET EVERYTHING.</span>
+          </div>
+          <button id="settings-reset" class="settings-btn danger">Reset</button>
+        </div>
+
+        <p id="settings-status" class="settings-status" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-------------------------------------------------- About ----------------------------------------------------->
+      <section class="subsection" id="settings_about" aria-labelledby="settings-about-heading">
+        <h1 id="settings-about-heading">About</h1>
+
+        <div class="about-row">
+          <p class="about-text">
+            BrainSoap is a free, open browser extension built as a School Project in Web Engineering.
+            I honestly don't know what to write here, so I will just leave this as a placeholder for now. 
+            If you are reading this, please consider checking out the source code on GitHub and maybe even contributing!
+          </p>
+          <img class="about-qr" src="../../../assets/misc/Git_QR.svg"
+               alt="QR code linking to the BrainSoap Git repository">
+        </div>
+      </section>
+
     </section>
 
   </main>
@@ -173,7 +292,6 @@
 <script src="imported/chart.js"></script>
 
 <!-- Load UI components -->
-<script src="dev/dev.js"></script>
 <script src="nav/nav.js"></script>
 <script src="rules/keyboard_nav.js"></script>
 
@@ -187,5 +305,8 @@
 <script type="module" src="stats/recent.js"></script>
 <script type="module" src="stats/stats.js"></script>
 <script type="module" src="stats/top_sites.js"></script>
+
+<!-- Load settings -->
+<script type="module" src="settings/settings.js"></script>
 
 </html>

@@ -1,5 +1,6 @@
 import { custom_storage } from "../../../browser/storage.js";
 import { computeAndSaveStats } from "../../../services/stats-service.js";
+import { getRefreshMs } from "../../../utils/settings.js";
 
 
 // weekday names in order ending on today
@@ -102,5 +103,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   setInterval(async () => {
     console.log("Updating Stats...");
     await renderStats();
-  }, 10000);
+  }, await getRefreshMs());
 });
