@@ -76,6 +76,10 @@ function setupActions() {
     if (e.target.matches(".top-add")) {
       await copyToClipboard(url);
       window.location.hash = "rules";
+
+      const toast = document.getElementById("copy-toast");
+      toast?.togglePopover(true);
+      setTimeout(() => toast?.togglePopover(false), 2000);
     } else if (e.target.matches(".top-remove")) {
       await excludeFromTopSites(url);
       await renderTopSites();

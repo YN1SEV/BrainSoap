@@ -7,26 +7,21 @@ export function showCategoryMenu(catIndex, anchorEl) {
 
   const popup = document.createElement('div');
   popup.className = 'cat-menu-popup';
+  popup.popover = 'auto'; // browser handles top layer, Esc and click-outside
   popup.dataset.catIndex = catIndex;
 
   const rect = anchorEl.getBoundingClientRect();
-  popup.style.position = 'fixed';
-  popup.style.zIndex = '9999';
   popup.style.left = `${rect.left}px`;
   popup.style.top = `${rect.bottom + 6}px`;
 
-  function closePopup() {
-    if (popup.parentNode) popup.remove();
-    document.removeEventListener('click', onDocumentClick);
-  }
-  function onDocumentClick(e) {
-    if (!popup.contains(e.target) && e.target !== anchorEl) closePopup();
-  }
+  const closePopup = () => popup.hidePopover();
+  popup.addEventListener('toggle', (e) => {
+    if (e.newState === 'closed') popup.remove();
+  });
 
   renderMainMenu(popup, catIndex, closePopup);
   document.body.appendChild(popup);
-
-  setTimeout(() => document.addEventListener('click', onDocumentClick), 0);
+  popup.showPopover();
 }
 
 function renderMainMenu(popup, catIndex, closePopup) {

@@ -100,7 +100,7 @@ async function initSettings() {
 
   // reflect stored state, then apply the saved theme to the whole dashboard
   if (themeSelect) themeSelect.value = settings.theme ?? 'system';
-  if (notifToggle) notifToggle.setAttribute('aria-checked', String(settings.notificationsEnabled !== false));
+  if (notifToggle) notifToggle.checked = settings.notificationsEnabled !== false;
   if (refreshInput) refreshInput.value = settings.refreshSeconds ?? defaultSettings.refreshSeconds;
   if (catTimeInput) catTimeInput.value = catDefaults.maxTime;
   if (catActionSelect) catActionSelect.value = catDefaults.action;
@@ -119,9 +119,8 @@ async function initSettings() {
     setStatus("Theme updated.");
   });
 
-  notifToggle?.addEventListener('click', async () => {
-    const enabled = notifToggle.getAttribute('aria-checked') !== 'true';
-    notifToggle.setAttribute('aria-checked', String(enabled));
+  notifToggle?.addEventListener('change', async () => {
+    const enabled = notifToggle.checked;
     await saveSettings({ notificationsEnabled: enabled });
     setStatus(enabled ? "Notifications enabled." : "Notifications disabled.");
   });

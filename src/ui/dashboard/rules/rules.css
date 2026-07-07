@@ -5,7 +5,8 @@
   margin: 0 0 12px 0;
 }
 
-.rules-hint { margin: 0 0 12px; color: var(--text-muted); font-size: 0.85rem; }
+.rules-hint { margin: 0 0 12px; color: var(--text-muted); font-size: 0.85rem; display: none; }
+#rules:has(#categories :focus-visible) .rules-hint { display: block; }
 .category:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .category.kbd-open { box-shadow: 0 0 0 2px var(--primary-soft), 0 1px 3px var(--shadow); }
 
@@ -177,6 +178,8 @@
 }
 
 .cat-menu-popup {
+  inset: auto;
+  margin: 0;
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
