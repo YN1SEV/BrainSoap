@@ -86,15 +86,15 @@ function createCategoryHTML(category, catIndex, timerState = {}) {
         <h2>${name}</h2>
         <div class="cat-controls">
           <span class="cat-timer">${timerText}</span>
-          <button class="cat-status ${statusClass}" data-cat-index="${catIndex}" aria-pressed="${hasActiveItem}" aria-label="Toggle all sites in ${name}"></button>
-          <button class="cat-menu-btn" data-cat-index="${catIndex}" aria-label="Options for ${name}">⋯</button>
+          <button class="cat-status rules-control ${statusClass}" data-cat-index="${catIndex}" aria-pressed="${hasActiveItem}" aria-label="Toggle all sites in ${name}"></button>
+          <button class="cat-menu-btn rules-control" data-cat-index="${catIndex}" aria-label="Options for ${name}">⋯</button>
         </div>
       </header>
       <ul class="items" data-cat-index="${catIndex}">
         ${itemsHTML}
       </ul>
       <form class="cat-add-item" data-cat-index="${catIndex}">
-        <input class="cat-add-item-input" data-cat-index="${catIndex}" aria-label="Add a site to ${name}" placeholder="Add a new URL or name...">
+        <input class="cat-add-item-input rules-control" data-cat-index="${catIndex}" aria-label="Add a site to ${name}" placeholder="Add a new URL or name...">
         <button class="cat-add-item-btn" data-cat-index="${catIndex}">Add</button>
       </form>
     </li>
@@ -117,7 +117,7 @@ function createItemHTML(item, catIndex, itemIndex) {
         </div>
       </div>
       <div class="item-right-content">
-        <button class="item-status ${statusClass}" data-cat-index="${catIndex}" data-item-index="${itemIndex}" aria-pressed="${isPressed}" aria-label="Toggle ${urlEscaped}"></button>
+        <button class="item-status rules-control ${statusClass}" data-cat-index="${catIndex}" data-item-index="${itemIndex}" aria-pressed="${isPressed}" aria-label="Toggle ${urlEscaped}"></button>
       </div>
     </li>
   `;
