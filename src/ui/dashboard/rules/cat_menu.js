@@ -1,5 +1,6 @@
 import { appData, saveAndRender } from "./render_rules.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
+import { faviconUrl } from "../../../utils/url.js";
 
 export function showCategoryMenu(catIndex, anchorEl) {
   let existing = document.querySelector('.cat-menu-popup');
@@ -31,14 +32,16 @@ function renderMainMenu(popup, catIndex, closePopup) {
   const menuOptions = [
     { label: 'Rename', action: 'rename' },
     { label: 'Change Timer', action: 'change-timer' },
-    { label: 'Items', action: 'items' },
-    { label: 'Delete', action: 'delete' }
+    { label: 'Items', action: 'items', expandable: true },
+    { label: 'Delete', action: 'delete', danger: true }
   ];
 
   popup.innerHTML = `
     <ul>
-      ${menuOptions.map(({ label, action }) =>
-        `<li><button class="cat-menu-action" data-action="${action}">${label}</button></li>`
+      ${menuOptions.map(({ label, action, danger, expandable }) =>
+        `<li><button class="cat-menu-action${danger ? ' danger' : ''}" data-action="${action}">
+          <span>${label}</span>${expandable ? '<span class="cat-menu-action-chevron" aria-hidden="true">›</span>' : ''}
+        </button></li>`
       ).join('')}
     </ul>
   `;
@@ -92,9 +95,10 @@ function renderItemsMenu(popup, catIndex, closePopup) {
 
   const itemRows = items.map((item, index) => `
     <li class="cat-menu-item-row">
+      <img class="cat-menu-item-icon" src="${faviconUrl(item.url)}" alt="" />
       <span class="cat-menu-item-name">${escapeHtml(item.name || item.url)}</span>
       <button class="cat-menu-action" data-action="item-rename" data-item-index="${index}">Rename</button>
-      <button class="cat-menu-action" data-action="item-delete" data-item-index="${index}">Delete</button>
+      <button class="cat-menu-action danger" data-action="item-delete" data-item-index="${index}">Delete</button>
     </li>
   `).join('');
 

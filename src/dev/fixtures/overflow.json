@@ -1,0 +1,1204 @@
+{
+  "app": "BrainSoap",
+  "version": 1,
+  "exportedAt": "2026-07-09T11:28:53.000Z",
+  "sync": {
+    "settings": {
+      "exist": true,
+      "theme": "system",
+      "notificationsEnabled": true,
+      "refreshSeconds": 10,
+      "newCategoryDefaults": {
+        "maxTime": 60,
+        "action": "popup",
+        "redirectUrl": ""
+      }
+    },
+    "blacklist": [
+      {
+        "timerName": "Test Category 1 with a fairly long name",
+        "maxTime": 15,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 2 with a fairly long name",
+        "maxTime": 25,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 3 with a fairly long name",
+        "maxTime": 35,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 4 with a fairly long name",
+        "maxTime": 45,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 5 with a fairly long name",
+        "maxTime": 55,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 6 with a fairly long name",
+        "maxTime": 65,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 7 with a fairly long name",
+        "maxTime": 75,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 8 with a fairly long name",
+        "maxTime": 85,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 9 with a fairly long name",
+        "maxTime": 95,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 10 with a fairly long name",
+        "maxTime": 105,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 11 with a fairly long name",
+        "maxTime": 115,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 12 with a fairly long name",
+        "maxTime": 125,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 13 with a fairly long name",
+        "maxTime": 135,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 14 with a fairly long name",
+        "maxTime": 145,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 15 with a fairly long name",
+        "maxTime": 155,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 16 with a fairly long name",
+        "maxTime": 165,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          }
+        ]
+      }
+    ]
+  },
+  "local": {
+    "categoryLog": {
+      "Test Category 1 with a fairly long name": {
+        "usedSeconds": 120,
+        "date": "2026-07-09"
+      },
+      "Test Category 2 with a fairly long name": {
+        "usedSeconds": 1236,
+        "date": "2026-07-09"
+      },
+      "Test Category 3 with a fairly long name": {
+        "usedSeconds": 522,
+        "date": "2026-07-09"
+      },
+      "Test Category 4 with a fairly long name": {
+        "usedSeconds": 1995,
+        "date": "2026-07-09"
+      },
+      "Test Category 5 with a fairly long name": {
+        "usedSeconds": 1343,
+        "date": "2026-07-09"
+      },
+      "Test Category 6 with a fairly long name": {
+        "usedSeconds": 2456,
+        "date": "2026-07-09"
+      },
+      "Test Category 7 with a fairly long name": {
+        "usedSeconds": 2482,
+        "date": "2026-07-09"
+      },
+      "Test Category 8 with a fairly long name": {
+        "usedSeconds": 2484,
+        "date": "2026-07-09"
+      },
+      "Test Category 9 with a fairly long name": {
+        "usedSeconds": 3793,
+        "date": "2026-07-09"
+      },
+      "Test Category 10 with a fairly long name": {
+        "usedSeconds": 1995,
+        "date": "2026-07-09"
+      },
+      "Test Category 11 with a fairly long name": {
+        "usedSeconds": 5095,
+        "date": "2026-07-09"
+      },
+      "Test Category 12 with a fairly long name": {
+        "usedSeconds": 958,
+        "date": "2026-07-09"
+      },
+      "Test Category 13 with a fairly long name": {
+        "usedSeconds": 6194,
+        "date": "2026-07-09"
+      },
+      "Test Category 14 with a fairly long name": {
+        "usedSeconds": 829,
+        "date": "2026-07-09"
+      },
+      "Test Category 15 with a fairly long name": {
+        "usedSeconds": 6898,
+        "date": "2026-07-09"
+      },
+      "Test Category 16 with a fairly long name": {
+        "usedSeconds": 2786,
+        "date": "2026-07-09"
+      }
+    },
+    "recentVisits": [
+      {
+        "url": "youtube.com",
+        "durationSeconds": 120,
+        "lastVisit": 1783596533437
+      },
+      {
+        "url": "reddit.com",
+        "durationSeconds": 1607,
+        "lastVisit": 1783595633437
+      },
+      {
+        "url": "github.com",
+        "durationSeconds": 503,
+        "lastVisit": 1783594733437
+      },
+      {
+        "url": "twitter.com",
+        "durationSeconds": 1509,
+        "lastVisit": 1783593833437
+      },
+      {
+        "url": "netflix.com",
+        "durationSeconds": 861,
+        "lastVisit": 1783592933437
+      },
+      {
+        "url": "tiktok.com",
+        "durationSeconds": 1318,
+        "lastVisit": 1783592033437
+      },
+      {
+        "url": "instagram.com",
+        "durationSeconds": 1170,
+        "lastVisit": 1783591133437
+      },
+      {
+        "url": "twitch.tv",
+        "durationSeconds": 1047,
+        "lastVisit": 1783590233437
+      },
+      {
+        "url": "news.ycombinator.com",
+        "durationSeconds": 1409,
+        "lastVisit": 1783589333437
+      },
+      {
+        "url": "stackoverflow.com",
+        "durationSeconds": 715,
+        "lastVisit": 1783588433437
+      },
+      {
+        "url": "wikipedia.org",
+        "durationSeconds": 1562,
+        "lastVisit": 1783587533437
+      },
+      {
+        "url": "amazon.com",
+        "durationSeconds": 343,
+        "lastVisit": 1783586633437
+      },
+      {
+        "url": "example-site-12.com",
+        "durationSeconds": 1620,
+        "lastVisit": 1783585733437
+      },
+      {
+        "url": "example-site-13.com",
+        "durationSeconds": 283,
+        "lastVisit": 1783584833437
+      },
+      {
+        "url": "example-site-14.com",
+        "durationSeconds": 1578,
+        "lastVisit": 1783583933437
+      },
+      {
+        "url": "example-site-15.com",
+        "durationSeconds": 659,
+        "lastVisit": 1783583033437
+      },
+      {
+        "url": "example-site-16.com",
+        "durationSeconds": 1439,
+        "lastVisit": 1783582133437
+      },
+      {
+        "url": "example-site-17.com",
+        "durationSeconds": 998,
+        "lastVisit": 1783581233437
+      },
+      {
+        "url": "example-site-18.com",
+        "durationSeconds": 1213,
+        "lastVisit": 1783580333437
+      },
+      {
+        "url": "example-site-19.com",
+        "durationSeconds": 1280,
+        "lastVisit": 1783579433437
+      },
+      {
+        "url": "example-site-20.com",
+        "durationSeconds": 914,
+        "lastVisit": 1783578533437
+      },
+      {
+        "url": "example-site-21.com",
+        "durationSeconds": 1485,
+        "lastVisit": 1783577633437
+      },
+      {
+        "url": "example-site-22.com",
+        "durationSeconds": 562,
+        "lastVisit": 1783576733437
+      },
+      {
+        "url": "example-site-23.com",
+        "durationSeconds": 1598,
+        "lastVisit": 1783575833437
+      },
+      {
+        "url": "example-site-24.com",
+        "durationSeconds": 181,
+        "lastVisit": 1783574933437
+      },
+      {
+        "url": "example-site-25.com",
+        "durationSeconds": 1614,
+        "lastVisit": 1783574033437
+      },
+      {
+        "url": "example-site-26.com",
+        "durationSeconds": 444,
+        "lastVisit": 1783573133437
+      },
+      {
+        "url": "example-site-27.com",
+        "durationSeconds": 1531,
+        "lastVisit": 1783572233437
+      },
+      {
+        "url": "someverylongsubdomain.example-website-name.com",
+        "durationSeconds": 807,
+        "lastVisit": 1783571333437
+      },
+      {
+        "url": "another-extremely-long-domain-for-testing.org",
+        "durationSeconds": 1353,
+        "lastVisit": 1783570433437
+      }
+    ],
+    "topExcluded": [],
+    "installDate": "2026-04-10T11:28:53.000Z",
+    "dayLog": {
+      "2026-06-12": {
+        "focusSeconds": 6762,
+        "scrollSeconds": 4846,
+        "focusSessions": 4,
+        "blockedCount": 5
+      },
+      "2026-06-13": {
+        "focusSeconds": 3864,
+        "scrollSeconds": 5378,
+        "focusSessions": 3,
+        "blockedCount": 8
+      },
+      "2026-06-14": {
+        "focusSeconds": 6984,
+        "scrollSeconds": 4104,
+        "focusSessions": 2,
+        "blockedCount": 4
+      },
+      "2026-06-15": {
+        "focusSeconds": 3163,
+        "scrollSeconds": 5792,
+        "focusSessions": 1,
+        "blockedCount": 8
+      },
+      "2026-06-16": {
+        "focusSeconds": 6942,
+        "scrollSeconds": 3256,
+        "focusSessions": 4,
+        "blockedCount": 3
+      },
+      "2026-06-17": {
+        "focusSeconds": 4179,
+        "scrollSeconds": 5986,
+        "focusSessions": 3,
+        "blockedCount": 8
+      },
+      "2026-06-18": {
+        "focusSeconds": 6639,
+        "scrollSeconds": 2642,
+        "focusSessions": 2,
+        "blockedCount": 4
+      },
+      "2026-06-19": {
+        "focusSeconds": 5116,
+        "scrollSeconds": 5950,
+        "focusSessions": 1,
+        "blockedCount": 8
+      },
+      "2026-06-20": {
+        "focusSeconds": 6093,
+        "scrollSeconds": 3531,
+        "focusSessions": 4,
+        "blockedCount": 6
+      },
+      "2026-06-21": {
+        "focusSeconds": 5913,
+        "scrollSeconds": 5684,
+        "focusSessions": 3,
+        "blockedCount": 7
+      },
+      "2026-06-22": {
+        "focusSeconds": 5343,
+        "scrollSeconds": 4352,
+        "focusSessions": 2,
+        "blockedCount": 7
+      },
+      "2026-06-23": {
+        "focusSeconds": 6517,
+        "scrollSeconds": 5207,
+        "focusSessions": 1,
+        "blockedCount": 6
+      },
+      "2026-06-24": {
+        "focusSeconds": 4436,
+        "scrollSeconds": 5049,
+        "focusSessions": 4,
+        "blockedCount": 7
+      },
+      "2026-06-25": {
+        "focusSeconds": 6887,
+        "scrollSeconds": 4550,
+        "focusSessions": 3,
+        "blockedCount": 5
+      },
+      "2026-06-26": {
+        "focusSeconds": 3435,
+        "scrollSeconds": 5577,
+        "focusSessions": 2,
+        "blockedCount": 8
+      },
+      "2026-06-27": {
+        "focusSeconds": 6999,
+        "scrollSeconds": 3757,
+        "focusSessions": 1,
+        "blockedCount": 4
+      },
+      "2026-06-28": {
+        "focusSeconds": 3596,
+        "scrollSeconds": 5901,
+        "focusSessions": 4,
+        "blockedCount": 8
+      },
+      "2026-06-29": {
+        "focusSeconds": 6846,
+        "scrollSeconds": 2880,
+        "focusSessions": 3,
+        "blockedCount": 4
+      },
+      "2026-06-30": {
+        "focusSeconds": 4587,
+        "scrollSeconds": 5999,
+        "focusSessions": 2,
+        "blockedCount": 8
+      },
+      "2026-07-01": {
+        "focusSeconds": 6437,
+        "scrollSeconds": 3021,
+        "focusSessions": 1,
+        "blockedCount": 5
+      },
+      "2026-07-02": {
+        "focusSeconds": 5473,
+        "scrollSeconds": 5865,
+        "focusSessions": 4,
+        "blockedCount": 7
+      },
+      "2026-07-03": {
+        "focusSeconds": 5799,
+        "scrollSeconds": 3889,
+        "focusSessions": 3,
+        "blockedCount": 6
+      },
+      "2026-07-04": {
+        "focusSeconds": 6194,
+        "scrollSeconds": 5507,
+        "focusSessions": 2,
+        "blockedCount": 6
+      },
+      "2026-07-05": {
+        "focusSeconds": 4976,
+        "scrollSeconds": 4663,
+        "focusSessions": 1,
+        "blockedCount": 7
+      },
+      "2026-07-06": {
+        "focusSeconds": 6703,
+        "scrollSeconds": 4950,
+        "focusSessions": 4,
+        "blockedCount": 5
+      },
+      "2026-07-07": {
+        "focusSeconds": 4022,
+        "scrollSeconds": 5295,
+        "focusSessions": 3,
+        "blockedCount": 8
+      },
+      "2026-07-08": {
+        "focusSeconds": 6967,
+        "scrollSeconds": 4229,
+        "focusSessions": 2,
+        "blockedCount": 4
+      },
+      "2026-07-09": {
+        "focusSeconds": 3000,
+        "scrollSeconds": 5740,
+        "focusSessions": 1,
+        "blockedCount": 8
+      }
+    },
+    "domainLog": {
+      "youtube.com": {
+        "totalSeconds": 14400,
+        "lastVisit": 1783596533437
+      },
+      "reddit.com": {
+        "totalSeconds": 9300,
+        "lastVisit": 1783595633437
+      },
+      "github.com": {
+        "totalSeconds": 12000,
+        "lastVisit": 1783594733437
+      },
+      "twitter.com": {
+        "totalSeconds": 6600,
+        "lastVisit": 1783593833437
+      },
+      "netflix.com": {
+        "totalSeconds": 8100,
+        "lastVisit": 1783592933437
+      },
+      "tiktok.com": {
+        "totalSeconds": 7200,
+        "lastVisit": 1783592033437
+      },
+      "instagram.com": {
+        "totalSeconds": 5400,
+        "lastVisit": 1783591133437
+      },
+      "twitch.tv": {
+        "totalSeconds": 5000,
+        "lastVisit": 1783590233437
+      },
+      "news.ycombinator.com": {
+        "totalSeconds": 4200,
+        "lastVisit": 1783589333437
+      },
+      "stackoverflow.com": {
+        "totalSeconds": 3600,
+        "lastVisit": 1783588433437
+      },
+      "wikipedia.org": {
+        "totalSeconds": 2400,
+        "lastVisit": 1783587533437
+      },
+      "amazon.com": {
+        "totalSeconds": 1800,
+        "lastVisit": 1783586633437
+      },
+      "example-site-12.com": {
+        "totalSeconds": 9598,
+        "lastVisit": 1783585733437
+      },
+      "example-site-13.com": {
+        "totalSeconds": 1578,
+        "lastVisit": 1783584833437
+      },
+      "example-site-14.com": {
+        "totalSeconds": 9346,
+        "lastVisit": 1783583933437
+      },
+      "example-site-15.com": {
+        "totalSeconds": 3832,
+        "lastVisit": 1783583033437
+      },
+      "example-site-16.com": {
+        "totalSeconds": 8513,
+        "lastVisit": 1783582133437
+      },
+      "example-site-17.com": {
+        "totalSeconds": 5871,
+        "lastVisit": 1783581233437
+      },
+      "example-site-18.com": {
+        "totalSeconds": 7155,
+        "lastVisit": 1783580333437
+      },
+      "example-site-19.com": {
+        "totalSeconds": 7560,
+        "lastVisit": 1783579433437
+      },
+      "example-site-20.com": {
+        "totalSeconds": 5362,
+        "lastVisit": 1783578533437
+      },
+      "example-site-21.com": {
+        "totalSeconds": 8787,
+        "lastVisit": 1783577633437
+      },
+      "example-site-22.com": {
+        "totalSeconds": 3252,
+        "lastVisit": 1783576733437
+      },
+      "example-site-23.com": {
+        "totalSeconds": 9470,
+        "lastVisit": 1783575833437
+      },
+      "example-site-24.com": {
+        "totalSeconds": 966,
+        "lastVisit": 1783574933437
+      },
+      "example-site-25.com": {
+        "totalSeconds": 9565,
+        "lastVisit": 1783574033437
+      },
+      "example-site-26.com": {
+        "totalSeconds": 2544,
+        "lastVisit": 1783573133437
+      },
+      "example-site-27.com": {
+        "totalSeconds": 9064,
+        "lastVisit": 1783572233437
+      },
+      "someverylongsubdomain.example-website-name.com": {
+        "totalSeconds": 4444,
+        "lastVisit": 1783571333437
+      },
+      "another-extremely-long-domain-for-testing.org": {
+        "totalSeconds": 3210,
+        "lastVisit": 1783570433437
+      }
+    },
+    "activeDates": [
+      "2026-06-12",
+      "2026-06-13",
+      "2026-06-14",
+      "2026-06-15",
+      "2026-06-16",
+      "2026-06-17",
+      "2026-06-18",
+      "2026-06-19",
+      "2026-06-20",
+      "2026-06-21",
+      "2026-06-22",
+      "2026-06-23",
+      "2026-06-24",
+      "2026-06-25",
+      "2026-06-26",
+      "2026-06-27",
+      "2026-06-28",
+      "2026-06-29",
+      "2026-06-30",
+      "2026-07-01",
+      "2026-07-02",
+      "2026-07-03",
+      "2026-07-04",
+      "2026-07-05",
+      "2026-07-06",
+      "2026-07-07",
+      "2026-07-08",
+      "2026-07-09"
+    ]
+  }
+}

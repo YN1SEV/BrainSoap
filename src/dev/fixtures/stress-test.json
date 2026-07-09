@@ -1,0 +1,1549 @@
+{
+  "app": "BrainSoap",
+  "version": 1,
+  "exportedAt": "2026-07-09T11:28:53.000Z",
+  "sync": {
+    "settings": {
+      "exist": true,
+      "theme": "system",
+      "notificationsEnabled": true,
+      "refreshSeconds": 10,
+      "newCategoryDefaults": {
+        "maxTime": 60,
+        "action": "popup",
+        "redirectUrl": ""
+      }
+    },
+    "blacklist": [
+      {
+        "timerName": "Test Category 1",
+        "maxTime": 15,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 2",
+        "maxTime": 25,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 3",
+        "maxTime": 35,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 4",
+        "maxTime": 45,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 5",
+        "maxTime": 55,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 6",
+        "maxTime": 65,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 7",
+        "maxTime": 75,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 8",
+        "maxTime": 85,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 9",
+        "maxTime": 95,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 10",
+        "maxTime": 105,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 11",
+        "maxTime": 115,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 12",
+        "maxTime": 125,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 13",
+        "maxTime": 135,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          },
+          {
+            "name": "reddit",
+            "url": "reddit.com",
+            "active": true
+          },
+          {
+            "name": "twitter",
+            "url": "twitter.com",
+            "active": true
+          },
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 14",
+        "maxTime": 145,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "instagram",
+            "url": "instagram.com",
+            "active": false
+          },
+          {
+            "name": "tiktok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          }
+        ]
+      },
+      {
+        "timerName": "Test Category 15",
+        "maxTime": 155,
+        "actions": [
+          "notify",
+          "popup"
+        ],
+        "items": [
+          {
+            "name": "twitch",
+            "url": "twitch.tv",
+            "active": false
+          },
+          {
+            "name": "facebook",
+            "url": "facebook.com",
+            "active": true
+          },
+          {
+            "name": "pinterest",
+            "url": "pinterest.com",
+            "active": true
+          },
+          {
+            "name": "linkedin",
+            "url": "linkedin.com",
+            "active": false
+          },
+          {
+            "name": "news",
+            "url": "news.ycombinator.com",
+            "active": true
+          },
+          {
+            "name": "github",
+            "url": "github.com",
+            "active": true
+          },
+          {
+            "name": "youtube",
+            "url": "youtube.com",
+            "active": false
+          }
+        ]
+      }
+    ]
+  },
+  "local": {
+    "categoryLog": {
+      "Test Category 1": {
+        "usedSeconds": 120,
+        "date": "2026-07-09"
+      },
+      "Test Category 2": {
+        "usedSeconds": 1236,
+        "date": "2026-07-09"
+      },
+      "Test Category 3": {
+        "usedSeconds": 522,
+        "date": "2026-07-09"
+      },
+      "Test Category 4": {
+        "usedSeconds": 1995,
+        "date": "2026-07-09"
+      },
+      "Test Category 5": {
+        "usedSeconds": 1343,
+        "date": "2026-07-09"
+      },
+      "Test Category 6": {
+        "usedSeconds": 2456,
+        "date": "2026-07-09"
+      },
+      "Test Category 7": {
+        "usedSeconds": 2482,
+        "date": "2026-07-09"
+      },
+      "Test Category 8": {
+        "usedSeconds": 2484,
+        "date": "2026-07-09"
+      },
+      "Test Category 9": {
+        "usedSeconds": 3793,
+        "date": "2026-07-09"
+      },
+      "Test Category 10": {
+        "usedSeconds": 1995,
+        "date": "2026-07-09"
+      },
+      "Test Category 11": {
+        "usedSeconds": 5095,
+        "date": "2026-07-09"
+      },
+      "Test Category 12": {
+        "usedSeconds": 958,
+        "date": "2026-07-09"
+      },
+      "Test Category 13": {
+        "usedSeconds": 6194,
+        "date": "2026-07-09"
+      },
+      "Test Category 14": {
+        "usedSeconds": 829,
+        "date": "2026-07-09"
+      },
+      "Test Category 15": {
+        "usedSeconds": 6898,
+        "date": "2026-07-09"
+      }
+    },
+    "recentVisits": [
+      {
+        "url": "youtube.com",
+        "durationSeconds": 120,
+        "lastVisit": 1783596533437
+      },
+      {
+        "url": "reddit.com",
+        "durationSeconds": 1607,
+        "lastVisit": 1783595633437
+      },
+      {
+        "url": "github.com",
+        "durationSeconds": 503,
+        "lastVisit": 1783594733437
+      },
+      {
+        "url": "twitter.com",
+        "durationSeconds": 1509,
+        "lastVisit": 1783593833437
+      },
+      {
+        "url": "netflix.com",
+        "durationSeconds": 861,
+        "lastVisit": 1783592933437
+      },
+      {
+        "url": "tiktok.com",
+        "durationSeconds": 1318,
+        "lastVisit": 1783592033437
+      },
+      {
+        "url": "instagram.com",
+        "durationSeconds": 1170,
+        "lastVisit": 1783591133437
+      },
+      {
+        "url": "twitch.tv",
+        "durationSeconds": 1047,
+        "lastVisit": 1783590233437
+      },
+      {
+        "url": "news.ycombinator.com",
+        "durationSeconds": 1409,
+        "lastVisit": 1783589333437
+      },
+      {
+        "url": "stackoverflow.com",
+        "durationSeconds": 715,
+        "lastVisit": 1783588433437
+      },
+      {
+        "url": "wikipedia.org",
+        "durationSeconds": 1562,
+        "lastVisit": 1783587533437
+      },
+      {
+        "url": "amazon.com",
+        "durationSeconds": 343,
+        "lastVisit": 1783586633437
+      },
+      {
+        "url": "example-site-12.com",
+        "durationSeconds": 1620,
+        "lastVisit": 1783585733437
+      },
+      {
+        "url": "example-site-13.com",
+        "durationSeconds": 283,
+        "lastVisit": 1783584833437
+      },
+      {
+        "url": "example-site-14.com",
+        "durationSeconds": 1578,
+        "lastVisit": 1783583933437
+      },
+      {
+        "url": "example-site-15.com",
+        "durationSeconds": 659,
+        "lastVisit": 1783583033437
+      },
+      {
+        "url": "example-site-16.com",
+        "durationSeconds": 1439,
+        "lastVisit": 1783582133437
+      },
+      {
+        "url": "example-site-17.com",
+        "durationSeconds": 998,
+        "lastVisit": 1783581233437
+      },
+      {
+        "url": "example-site-18.com",
+        "durationSeconds": 1213,
+        "lastVisit": 1783580333437
+      },
+      {
+        "url": "example-site-19.com",
+        "durationSeconds": 1280,
+        "lastVisit": 1783579433437
+      },
+      {
+        "url": "example-site-20.com",
+        "durationSeconds": 914,
+        "lastVisit": 1783578533437
+      },
+      {
+        "url": "example-site-21.com",
+        "durationSeconds": 1485,
+        "lastVisit": 1783577633437
+      },
+      {
+        "url": "example-site-22.com",
+        "durationSeconds": 562,
+        "lastVisit": 1783576733437
+      },
+      {
+        "url": "example-site-23.com",
+        "durationSeconds": 1598,
+        "lastVisit": 1783575833437
+      },
+      {
+        "url": "example-site-24.com",
+        "durationSeconds": 181,
+        "lastVisit": 1783574933437
+      },
+      {
+        "url": "example-site-25.com",
+        "durationSeconds": 1614,
+        "lastVisit": 1783574033437
+      },
+      {
+        "url": "example-site-26.com",
+        "durationSeconds": 444,
+        "lastVisit": 1783573133437
+      },
+      {
+        "url": "example-site-27.com",
+        "durationSeconds": 1531,
+        "lastVisit": 1783572233437
+      },
+      {
+        "url": "example-site-28.com",
+        "durationSeconds": 807,
+        "lastVisit": 1783571333437
+      },
+      {
+        "url": "example-site-29.com",
+        "durationSeconds": 1353,
+        "lastVisit": 1783570433437
+      },
+      {
+        "url": "example-site-30.com",
+        "durationSeconds": 1125,
+        "lastVisit": 1783569533437
+      },
+      {
+        "url": "example-site-31.com",
+        "durationSeconds": 1094,
+        "lastVisit": 1783568633437
+      },
+      {
+        "url": "example-site-32.com",
+        "durationSeconds": 1376,
+        "lastVisit": 1783567733437
+      },
+      {
+        "url": "example-site-33.com",
+        "durationSeconds": 771,
+        "lastVisit": 1783566833437
+      },
+      {
+        "url": "example-site-34.com",
+        "durationSeconds": 1544,
+        "lastVisit": 1783565933437
+      },
+      {
+        "url": "example-site-35.com",
+        "durationSeconds": 404,
+        "lastVisit": 1783565033437
+      },
+      {
+        "url": "example-site-36.com",
+        "durationSeconds": 1617,
+        "lastVisit": 1783564133437
+      },
+      {
+        "url": "example-site-37.com",
+        "durationSeconds": 222,
+        "lastVisit": 1783563233437
+      },
+      {
+        "url": "example-site-38.com",
+        "durationSeconds": 1591,
+        "lastVisit": 1783562333437
+      },
+      {
+        "url": "example-site-39.com",
+        "durationSeconds": 601,
+        "lastVisit": 1783561433437
+      }
+    ],
+    "topExcluded": [],
+    "installDate": "2025-09-12T11:28:53.000Z",
+    "dayLog": {
+      "2026-05-11": {
+        "focusSeconds": 20289,
+        "scrollSeconds": 23890,
+        "focusSessions": 4,
+        "blockedCount": 100
+      },
+      "2026-05-12": {
+        "focusSeconds": 27358,
+        "scrollSeconds": 15247,
+        "focusSessions": 3,
+        "blockedCount": 54
+      },
+      "2026-05-13": {
+        "focusSeconds": 22701,
+        "scrollSeconds": 23953,
+        "focusSessions": 2,
+        "blockedCount": 96
+      },
+      "2026-05-14": {
+        "focusSeconds": 26147,
+        "scrollSeconds": 17060,
+        "focusSessions": 1,
+        "blockedCount": 68
+      },
+      "2026-05-15": {
+        "focusSeconds": 24800,
+        "scrollSeconds": 23423,
+        "focusSessions": 4,
+        "blockedCount": 89
+      },
+      "2026-05-16": {
+        "focusSeconds": 24395,
+        "scrollSeconds": 19231,
+        "focusSessions": 3,
+        "blockedCount": 81
+      },
+      "2026-05-17": {
+        "focusSeconds": 26448,
+        "scrollSeconds": 22332,
+        "focusSessions": 2,
+        "blockedCount": 78
+      },
+      "2026-05-18": {
+        "focusSeconds": 22218,
+        "scrollSeconds": 21120,
+        "focusSessions": 1,
+        "blockedCount": 91
+      },
+      "2026-05-19": {
+        "focusSeconds": 27535,
+        "scrollSeconds": 20755,
+        "focusSessions": 4,
+        "blockedCount": 65
+      },
+      "2026-05-20": {
+        "focusSeconds": 19761,
+        "scrollSeconds": 22603,
+        "focusSessions": 3,
+        "blockedCount": 97
+      },
+      "2026-05-21": {
+        "focusSeconds": 27989,
+        "scrollSeconds": 18796,
+        "focusSessions": 2,
+        "blockedCount": 51
+      },
+      "2026-05-22": {
+        "focusSeconds": 18813,
+        "scrollSeconds": 23581,
+        "focusSessions": 1,
+        "blockedCount": 100
+      },
+      "2026-05-23": {
+        "focusSeconds": 27779,
+        "scrollSeconds": 16585,
+        "focusSessions": 4,
+        "blockedCount": 45
+      },
+      "2026-05-24": {
+        "focusSeconds": 21333,
+        "scrollSeconds": 23990,
+        "focusSessions": 3,
+        "blockedCount": 99
+      },
+      "2026-05-25": {
+        "focusSeconds": 26920,
+        "scrollSeconds": 15732,
+        "focusSessions": 2,
+        "blockedCount": 60
+      },
+      "2026-05-26": {
+        "focusSeconds": 23632,
+        "scrollSeconds": 23801,
+        "focusSessions": 1,
+        "blockedCount": 94
+      },
+      "2026-05-27": {
+        "focusSeconds": 25469,
+        "scrollSeconds": 18000,
+        "focusSessions": 4,
+        "blockedCount": 74
+      },
+      "2026-05-28": {
+        "focusSeconds": 25556,
+        "scrollSeconds": 23028,
+        "focusSessions": 3,
+        "blockedCount": 85
+      },
+      "2026-05-29": {
+        "focusSeconds": 23522,
+        "scrollSeconds": 20069,
+        "focusSessions": 2,
+        "blockedCount": 85
+      },
+      "2026-05-30": {
+        "focusSeconds": 26979,
+        "scrollSeconds": 21722,
+        "focusSessions": 1,
+        "blockedCount": 73
+      },
+      "2026-05-31": {
+        "focusSeconds": 21208,
+        "scrollSeconds": 21801,
+        "focusSessions": 4,
+        "blockedCount": 94
+      },
+      "2026-06-01": {
+        "focusSeconds": 27806,
+        "scrollSeconds": 19970,
+        "focusSessions": 3,
+        "blockedCount": 59
+      },
+      "2026-06-02": {
+        "focusSeconds": 18681,
+        "scrollSeconds": 23081,
+        "focusSessions": 2,
+        "blockedCount": 99
+      },
+      "2026-06-03": {
+        "focusSeconds": 27981,
+        "scrollSeconds": 17887,
+        "focusSessions": 1,
+        "blockedCount": 44
+      },
+      "2026-06-04": {
+        "focusSeconds": 19891,
+        "scrollSeconds": 23825,
+        "focusSessions": 4,
+        "blockedCount": 100
+      },
+      "2026-06-05": {
+        "focusSeconds": 27494,
+        "scrollSeconds": 15613,
+        "focusSessions": 3,
+        "blockedCount": 51
+      },
+      "2026-06-06": {
+        "focusSeconds": 22338,
+        "scrollSeconds": 23983,
+        "focusSessions": 2,
+        "blockedCount": 97
+      },
+      "2026-06-07": {
+        "focusSeconds": 26376,
+        "scrollSeconds": 16702,
+        "focusSessions": 1,
+        "blockedCount": 66
+      },
+      "2026-06-08": {
+        "focusSeconds": 24496,
+        "scrollSeconds": 23545,
+        "focusSessions": 4,
+        "blockedCount": 90
+      },
+      "2026-06-09": {
+        "focusSeconds": 24702,
+        "scrollSeconds": 18904,
+        "focusSessions": 3,
+        "blockedCount": 79
+      },
+      "2026-06-10": {
+        "focusSeconds": 26223,
+        "scrollSeconds": 22539,
+        "focusSessions": 2,
+        "blockedCount": 80
+      },
+      "2026-06-11": {
+        "focusSeconds": 22583,
+        "scrollSeconds": 20847,
+        "focusSessions": 1,
+        "blockedCount": 89
+      },
+      "2026-06-12": {
+        "focusSeconds": 27404,
+        "scrollSeconds": 21032,
+        "focusSessions": 4,
+        "blockedCount": 67
+      },
+      "2026-06-13": {
+        "focusSeconds": 20160,
+        "scrollSeconds": 22401,
+        "focusSessions": 3,
+        "blockedCount": 96
+      },
+      "2026-06-14": {
+        "focusSeconds": 27961,
+        "scrollSeconds": 19125,
+        "focusSessions": 2,
+        "blockedCount": 53
+      },
+      "2026-06-15": {
+        "focusSeconds": 18407,
+        "scrollSeconds": 23464,
+        "focusSessions": 1,
+        "blockedCount": 100
+      },
+      "2026-06-16": {
+        "focusSeconds": 27856,
+        "scrollSeconds": 16944,
+        "focusSessions": 4,
+        "blockedCount": 42
+      },
+      "2026-06-17": {
+        "focusSeconds": 20947,
+        "scrollSeconds": 23965,
+        "focusSessions": 3,
+        "blockedCount": 99
+      },
+      "2026-06-18": {
+        "focusSeconds": 27097,
+        "scrollSeconds": 15366,
+        "focusSessions": 2,
+        "blockedCount": 58
+      },
+      "2026-06-19": {
+        "focusSeconds": 23291,
+        "scrollSeconds": 23870,
+        "focusSessions": 1,
+        "blockedCount": 95
+      },
+      "2026-06-20": {
+        "focusSeconds": 25733,
+        "scrollSeconds": 17652,
+        "focusSessions": 4,
+        "blockedCount": 72
+      },
+      "2026-06-21": {
+        "focusSeconds": 25284,
+        "scrollSeconds": 23187,
+        "focusSessions": 3,
+        "blockedCount": 86
+      },
+      "2026-06-22": {
+        "focusSeconds": 23856,
+        "scrollSeconds": 19762,
+        "focusSessions": 2,
+        "blockedCount": 84
+      },
+      "2026-06-23": {
+        "focusSeconds": 26793,
+        "scrollSeconds": 21960,
+        "focusSessions": 1,
+        "blockedCount": 75
+      },
+      "2026-06-24": {
+        "focusSeconds": 21591,
+        "scrollSeconds": 21555,
+        "focusSessions": 4,
+        "blockedCount": 93
+      },
+      "2026-06-25": {
+        "focusSeconds": 27718,
+        "scrollSeconds": 20271,
+        "focusSessions": 3,
+        "blockedCount": 62
+      },
+      "2026-06-26": {
+        "focusSeconds": 19086,
+        "scrollSeconds": 22913,
+        "focusSessions": 2,
+        "blockedCount": 98
+      },
+      "2026-06-27": {
+        "focusSeconds": 27998,
+        "scrollSeconds": 18232,
+        "focusSessions": 1,
+        "blockedCount": 47
+      },
+      "2026-06-28": {
+        "focusSeconds": 19490,
+        "scrollSeconds": 23746,
+        "focusSessions": 4,
+        "blockedCount": 100
+      },
+      "2026-06-29": {
+        "focusSeconds": 27614,
+        "scrollSeconds": 15978,
+        "focusSessions": 3,
+        "blockedCount": 49
+      },
+      "2026-06-30": {
+        "focusSeconds": 21967,
+        "scrollSeconds": 23998,
+        "focusSessions": 2,
+        "blockedCount": 98
+      },
+      "2026-07-01": {
+        "focusSeconds": 26592,
+        "scrollSeconds": 16341,
+        "focusSessions": 1,
+        "blockedCount": 64
+      },
+      "2026-07-02": {
+        "focusSeconds": 24181,
+        "scrollSeconds": 23653,
+        "focusSessions": 4,
+        "blockedCount": 92
+      },
+      "2026-07-03": {
+        "focusSeconds": 24999,
+        "scrollSeconds": 18571,
+        "focusSessions": 3,
+        "blockedCount": 77
+      },
+      "2026-07-04": {
+        "focusSeconds": 25985,
+        "scrollSeconds": 22732,
+        "focusSessions": 2,
+        "blockedCount": 82
+      },
+      "2026-07-05": {
+        "focusSeconds": 22941,
+        "scrollSeconds": 20563,
+        "focusSessions": 1,
+        "blockedCount": 88
+      },
+      "2026-07-06": {
+        "focusSeconds": 27258,
+        "scrollSeconds": 21299,
+        "focusSessions": 4,
+        "blockedCount": 70
+      },
+      "2026-07-07": {
+        "focusSeconds": 20555,
+        "scrollSeconds": 22186,
+        "focusSessions": 3,
+        "blockedCount": 96
+      },
+      "2026-07-08": {
+        "focusSeconds": 27917,
+        "scrollSeconds": 19447,
+        "focusSessions": 2,
+        "blockedCount": 55
+      },
+      "2026-07-09": {
+        "focusSeconds": 18000,
+        "scrollSeconds": 23332,
+        "focusSessions": 1,
+        "blockedCount": 99
+      }
+    },
+    "domainLog": {
+      "youtube.com": {
+        "totalSeconds": 14400,
+        "lastVisit": 1783596533437
+      },
+      "reddit.com": {
+        "totalSeconds": 9300,
+        "lastVisit": 1783595633437
+      },
+      "github.com": {
+        "totalSeconds": 12000,
+        "lastVisit": 1783594733437
+      },
+      "twitter.com": {
+        "totalSeconds": 6600,
+        "lastVisit": 1783593833437
+      },
+      "netflix.com": {
+        "totalSeconds": 8100,
+        "lastVisit": 1783592933437
+      },
+      "tiktok.com": {
+        "totalSeconds": 7200,
+        "lastVisit": 1783592033437
+      },
+      "instagram.com": {
+        "totalSeconds": 5400,
+        "lastVisit": 1783591133437
+      },
+      "twitch.tv": {
+        "totalSeconds": 5000,
+        "lastVisit": 1783590233437
+      },
+      "news.ycombinator.com": {
+        "totalSeconds": 4200,
+        "lastVisit": 1783589333437
+      },
+      "stackoverflow.com": {
+        "totalSeconds": 3600,
+        "lastVisit": 1783588433437
+      },
+      "wikipedia.org": {
+        "totalSeconds": 2400,
+        "lastVisit": 1783587533437
+      },
+      "amazon.com": {
+        "totalSeconds": 1800,
+        "lastVisit": 1783586633437
+      },
+      "example-site-12.com": {
+        "totalSeconds": 9598,
+        "lastVisit": 1783585733437
+      },
+      "example-site-13.com": {
+        "totalSeconds": 1578,
+        "lastVisit": 1783584833437
+      },
+      "example-site-14.com": {
+        "totalSeconds": 9346,
+        "lastVisit": 1783583933437
+      },
+      "example-site-15.com": {
+        "totalSeconds": 3832,
+        "lastVisit": 1783583033437
+      },
+      "example-site-16.com": {
+        "totalSeconds": 8513,
+        "lastVisit": 1783582133437
+      },
+      "example-site-17.com": {
+        "totalSeconds": 5871,
+        "lastVisit": 1783581233437
+      },
+      "example-site-18.com": {
+        "totalSeconds": 7155,
+        "lastVisit": 1783580333437
+      },
+      "example-site-19.com": {
+        "totalSeconds": 7560,
+        "lastVisit": 1783579433437
+      },
+      "example-site-20.com": {
+        "totalSeconds": 5362,
+        "lastVisit": 1783578533437
+      },
+      "example-site-21.com": {
+        "totalSeconds": 8787,
+        "lastVisit": 1783577633437
+      },
+      "example-site-22.com": {
+        "totalSeconds": 3252,
+        "lastVisit": 1783576733437
+      },
+      "example-site-23.com": {
+        "totalSeconds": 9470,
+        "lastVisit": 1783575833437
+      },
+      "example-site-24.com": {
+        "totalSeconds": 966,
+        "lastVisit": 1783574933437
+      },
+      "example-site-25.com": {
+        "totalSeconds": 9565,
+        "lastVisit": 1783574033437
+      },
+      "example-site-26.com": {
+        "totalSeconds": 2544,
+        "lastVisit": 1783573133437
+      },
+      "example-site-27.com": {
+        "totalSeconds": 9064,
+        "lastVisit": 1783572233437
+      },
+      "example-site-28.com": {
+        "totalSeconds": 4725,
+        "lastVisit": 1783571333437
+      },
+      "example-site-29.com": {
+        "totalSeconds": 8001,
+        "lastVisit": 1783570433437
+      },
+      "example-site-30.com": {
+        "totalSeconds": 6632,
+        "lastVisit": 1783569533437
+      },
+      "example-site-31.com": {
+        "totalSeconds": 6447,
+        "lastVisit": 1783568633437
+      },
+      "example-site-32.com": {
+        "totalSeconds": 8139,
+        "lastVisit": 1783567733437
+      },
+      "example-site-33.com": {
+        "totalSeconds": 4504,
+        "lastVisit": 1783566833437
+      },
+      "example-site-34.com": {
+        "totalSeconds": 9145,
+        "lastVisit": 1783565933437
+      },
+      "example-site-35.com": {
+        "totalSeconds": 2302,
+        "lastVisit": 1783565033437
+      },
+      "example-site-36.com": {
+        "totalSeconds": 9583,
+        "lastVisit": 1783564133437
+      },
+      "example-site-37.com": {
+        "totalSeconds": 1213,
+        "lastVisit": 1783563233437
+      },
+      "example-site-38.com": {
+        "totalSeconds": 9425,
+        "lastVisit": 1783562333437
+      },
+      "example-site-39.com": {
+        "totalSeconds": 3487,
+        "lastVisit": 1783561433437
+      }
+    },
+    "activeDates": [
+      "2026-05-11",
+      "2026-05-12",
+      "2026-05-13",
+      "2026-05-14",
+      "2026-05-15",
+      "2026-05-16",
+      "2026-05-17",
+      "2026-05-18",
+      "2026-05-19",
+      "2026-05-20",
+      "2026-05-21",
+      "2026-05-22",
+      "2026-05-23",
+      "2026-05-24",
+      "2026-05-25",
+      "2026-05-26",
+      "2026-05-27",
+      "2026-05-28",
+      "2026-05-29",
+      "2026-05-30",
+      "2026-05-31",
+      "2026-06-01",
+      "2026-06-02",
+      "2026-06-03",
+      "2026-06-04",
+      "2026-06-05",
+      "2026-06-06",
+      "2026-06-07",
+      "2026-06-08",
+      "2026-06-09",
+      "2026-06-10",
+      "2026-06-11",
+      "2026-06-12",
+      "2026-06-13",
+      "2026-06-14",
+      "2026-06-15",
+      "2026-06-16",
+      "2026-06-17",
+      "2026-06-18",
+      "2026-06-19",
+      "2026-06-20",
+      "2026-06-21",
+      "2026-06-22",
+      "2026-06-23",
+      "2026-06-24",
+      "2026-06-25",
+      "2026-06-26",
+      "2026-06-27",
+      "2026-06-28",
+      "2026-06-29",
+      "2026-06-30",
+      "2026-07-01",
+      "2026-07-02",
+      "2026-07-03",
+      "2026-07-04",
+      "2026-07-05",
+      "2026-07-06",
+      "2026-07-07",
+      "2026-07-08",
+      "2026-07-09"
+    ]
+  }
+}
