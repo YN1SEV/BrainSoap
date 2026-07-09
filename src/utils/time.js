@@ -12,10 +12,23 @@ export function last7DateKeys(today = new Date()) {
   });
 }
 
+// date keys of week before last7DateKeys
+export function prev7DateKeys(today = new Date()) {
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - 13 + i);
+    return toDateKey(d);
+  });
+}
+
 export function formatDuration(seconds) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+}
+
+export function formatUsage(seconds) {
+  return seconds < 120 ? "briefly" : formatDuration(seconds);
 }
 
 // longest run of back to back active days plus the current streak

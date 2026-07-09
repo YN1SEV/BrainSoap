@@ -148,6 +148,21 @@
   white-space: nowrap;
 }
 
+#stats .activity-item .meta {
+  align-self: center;
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+#stats .activity-item .timestamp {
+  font-size: 0.68rem;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
 @media (min-width: 560px) {
   #stats_all_time ul,.week-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));

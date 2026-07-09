@@ -1,6 +1,7 @@
 import { appData, saveRules, saveAndRender, refreshTimers, loadAndRenderRules } from "./render_rules.js";
 import { showCategoryMenu } from "./cat_menu.js";
 import { getNewCategoryDefaults, getRefreshMs } from "../../../utils/settings.js";
+import { hasOptOutPrefix, domainOf } from "../../../utils/url.js";
 
 // build a fresh category from the user's configured defaults
 async function makeCategory(name) {
@@ -33,7 +34,11 @@ function attachRulesHandlers() {
     if (!input) return;
     const val = input.value.trim();
     if (!val) return;
-    const newItem = { name: val, url: val, active: true };
+    const cleaned = hasOptOutPrefix(val)
+      ? val.replace(/^[^a-z0-9]+/i, "")
+      : (domainOf(val) || val);
+    
+      const newItem = { name: cleaned, url: cleaned, active: true };
     if (!appData[idx]) appData[idx] = await makeCategory('Unknown');
     appData[idx].items.push(newItem);
     saveAndRender();

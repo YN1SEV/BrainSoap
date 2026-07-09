@@ -79,13 +79,14 @@ const timerState = {
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 
 ### Recent Activity Stats
-Sent every 30 seconds (only when dashboard is open).
-Contains the 10 most recently visited URLs.
+Per-visit log maintained in `logDomainTime`. A revisit within 5 minutes resumes
+the latest entry; after 5 minutes a new entry is added (so a site can appear
+twice). The dashboard reads the 10 most recent directly.
 
 ```js
-const recentStats = [
-  {url: "URL_1", durationSeconds: 22},
-  {url: "URL_2", durationSeconds: 12},
+const recentVisits = [
+  {url: "URL_1", durationSeconds: 22, lastVisit: 1720440000000},
+  {url: "URL_2", durationSeconds: 12, lastVisit: 1720439000000},
   ...
 ];
 ```
