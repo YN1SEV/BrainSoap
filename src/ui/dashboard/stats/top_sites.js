@@ -1,10 +1,9 @@
 import { custom_storage } from "../../../browser/storage.js";
-import { formatDuration } from "../../../utils/time.js";
+import { formatUsage } from "../../../utils/time.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
 import { computeAndSaveStats, excludeFromTopSites } from "../../../services/stats-service.js";
 import { getRefreshMs } from "../../../utils/settings.js";
-
-const getFaviconUrl = (domain) => `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico`;
+import { faviconUrl, domainOf } from "../../../utils/url.js";
 
 // copy text with textarea fallback for old browsers
 async function copyToClipboard(text) {
@@ -35,12 +34,13 @@ async function copyToClipboard(text) {
 
 function createRow(item) {
   const url = escapeHtml(item.url);
+  const label = escapeHtml(domainOf(item.url) || item.url);
 
   return `
     <li class="top-site">
-      <img class="favicon" src="${getFaviconUrl(item.url)}" alt="" />
-      <span class="domain">${url}</span>
-      <span class="duration">${formatDuration(item.durationSeconds)}</span>
+      <img class="favicon" src="${faviconUrl(item.url)}" alt="" />
+      <span class="domain">${label}</span>
+      <span class="duration">${formatUsage(item.durationSeconds)}</span>
       <button class="top-add" data-url="${url}" aria-label="Copy ${url} and open Rules">+</button>
       <button class="top-remove" data-url="${url}" aria-label="Remove ${url} from this statistic">✕</button>
     </li>

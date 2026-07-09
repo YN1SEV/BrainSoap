@@ -1,5 +1,6 @@
 import { custom_storage } from "../../../browser/storage.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
+import { faviconUrl } from "../../../utils/url.js";
 
 export let appData = [];
 
@@ -101,7 +102,6 @@ function createCategoryHTML(category, catIndex, timerState = {}) {
 }
 
 function createItemHTML(item, catIndex, itemIndex) {
-  const urlEncoded = encodeURIComponent(item.url);
   const urlEscaped = escapeHtml(item.url);
   const nameEscaped = escapeHtml(item.name);
   const statusClass = item.active ? 'active' : 'inactive';
@@ -110,7 +110,7 @@ function createItemHTML(item, catIndex, itemIndex) {
   return `
     <li class="item">
       <div class="item-left-content">
-        <img class="item-icon" src="https://www.google.com/s2/favicons?sz=64&domain=${urlEncoded}" alt="" />
+        <img class="item-icon" src="${faviconUrl(item.url)}" alt="" />
         <div class="item-title">
           <div class="item-name">${nameEscaped}</div>
           <div class="item-url">${urlEscaped}</div>

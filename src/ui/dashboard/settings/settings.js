@@ -66,7 +66,7 @@ async function importData(file) {
 // usage/stats data kept in local storage — wiped on a full reset
 const STATS_KEYS = [
   'dayLog', 'domainLog', 'categoryLog', 'usageStats',
-  'recentStats', 'topExcluded', 'activeDates',
+  'recentVisits', 'topExcluded', 'activeDates',
 ];
 
 async function resetAll() {
