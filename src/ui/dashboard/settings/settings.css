@@ -1,63 +1,22 @@
-main section#settings:target {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  /* base size scales gently with the viewport; children use em to follow */
-  font-size: clamp(0.95rem, 0.9rem + 0.35vw, 1.15rem);
-}
-
-#settings > .subsection {
-  display: flex;
-  flex-direction: column;
-  /* centered column: takes all space when tight, grows (capped) when roomy */
-  width: 100%;
-  max-width: clamp(680px, 62vw, 940px);
-  margin-inline: auto;
-  padding: 6px var(--panel-padding) 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 1px 2px var(--shadow);
-}
-
-#settings h1 {
+section#settings h1 {
   margin: 12px 0 2px;
   font-size: 1em;
   font-weight: 750;
   line-height: 1.2;
 }
 
-.setting-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+section#settings > section > div {
   padding: 14px 0;
 }
-
-/* separate rows with a hairline instead of stacking filled panels */
-.setting-row + .setting-row {
-  border-top: 1px solid var(--border);
+.setting-row {
+  justify-content: space-between;
+  gap: 16px;
 }
-
 .setting-info {
-  display: flex;
-  flex-direction: column;
   gap: 3px;
   min-width: 0;
 }
 
-.setting-label {
-  font-size: 0.92em;
-  font-weight: 720;
-}
-
-.setting-desc {
-  font-size: 0.8em;
-  color: var(--text-muted);
-}
-
-/* action + its redirect url share one control cluster */
 .setting-action {
   display: flex;
   flex-wrap: wrap;
@@ -70,49 +29,24 @@ main section#settings:target {
 .setting-control,
 .settings-btn {
   flex-shrink: 0;
-  padding: 0.5em 0.9em;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-strong);
-  background: var(--surface-2);
   color: var(--text);
-  font-size: 0.9em;
   cursor: pointer;
 }
-
-.setting-control:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
 .setting-number {
   width: 84px;
   text-align: right;
-  /* drop the native spinners — plain text field */
   -moz-appearance: textfield;
   appearance: textfield;
 }
-
 .setting-number::-webkit-inner-spin-button,
 .setting-number::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
 .setting-text {
   width: min(220px, 42vw);
 }
 
-.settings-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.settings-btn.danger:hover {
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-/* toggle switch */
 .toggle {
   appearance: none;
   margin: 0;
@@ -127,7 +61,6 @@ main section#settings:target {
   cursor: pointer;
   transition: background var(--ease), border-color var(--ease);
 }
-
 .toggle::after {
   content: "";
   position: absolute;
@@ -139,12 +72,10 @@ main section#settings:target {
   background: var(--text-muted);
   transition: transform var(--ease), background var(--ease);
 }
-
 .toggle:checked {
   background: var(--primary-soft);
   border-color: var(--primary);
 }
-
 .toggle:checked::after {
   transform: translateX(18px);
   background: var(--primary);
@@ -157,21 +88,15 @@ main section#settings:target {
   color: var(--text-muted);
 }
 
-/* about card */
 .about-row {
-  display: flex;
-  align-items: center;
   gap: 18px;
-  padding: 14px 0;
 }
-
 .about-text {
   margin: 0;
   font-size: 0.85em;
   line-height: 1.55;
   color: var(--text-soft);
 }
-
 .about-qr {
   flex-shrink: 0;
   width: 92px;
