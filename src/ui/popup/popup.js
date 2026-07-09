@@ -1,6 +1,6 @@
 import { custom_storage } from "../../browser/storage.js";
 import { getCleanedIdentifier, isTrackableUrl } from "../../utils/url.js";
-import { logFocusSessionEnd, shortestTimer, computeAndSaveStats } from "../../services/stats-service.js";
+import { logFocusSessionEnd, startFocusTracking, accrueFocusTime, shortestTimer, computeAndSaveStats } from "../../services/stats-service.js";
 
 globalThis.browser ??= globalThis.chrome;
 
@@ -11,7 +11,8 @@ async function activeDomain() {
     
     if (!isTrackableUrl(tab?.url)) return null;
     
-    return getCleanedIdentifier(tab.url);
+    const blacklist = (await custom_storage.getSync('blacklist')) ?? [];
+    return getCleanedIdentifier(tab.url, blacklist);
   } catch {
     return null;
   }
@@ -58,6 +59,7 @@ const setFocusEnabled = (enabled) => {
 async function turnFocusOff() {
   await logFocusSessionEnd();
   await custom_storage.setLocal('focusMode', false);
+  await accrueFocusTime();
 }
 
 async function loadToggles() {
@@ -74,6 +76,7 @@ async function loadToggles() {
 async function onFocusChange(e) {
   if (e.target.checked) {
     await custom_storage.setLocal('focusMode', true);
+    await startFocusTracking();
   } else {
     await turnFocusOff();
   }

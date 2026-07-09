@@ -54,7 +54,7 @@ class StorageManager {
       'domainLog', 
       'categoryLog', 
       'usageStats', 
-      'recentStats', 
+      'recentVisits', 
       'topExcluded', 
       'activeDates', 
       'installDate'

@@ -1,11 +1,16 @@
 // needs rework 
 
 import { custom_storage } from "../browser/storage.js";
-import { toDateKey, last7DateKeys, calcStreak } from "../utils/time.js";
+import { toDateKey, last7DateKeys, prev7DateKeys, calcStreak } from "../utils/time.js";
 import { buildTimerMap, categoriesForDomain, remainingMinutes } from "./timer-service.js";
+import { ruleTarget } from "../utils/url.js";
 
-const getDayLog      = () => custom_storage.getLocal("dayLog")     .then(v => v ?? {});
-const getDomainLog   = () => custom_storage.getLocal("domainLog")  .then(v => v ?? {});
+const RECENT_RESUME_MS = 5 * 60 * 1000; // revisits within this window resume the same entry
+const RECENT_MAX       = 30;
+
+const getDayLog      = () => custom_storage.getLocal("dayLog")      .then(v => v ?? {});
+const getRecentVisits= () => custom_storage.getLocal("recentVisits").then(v => v ?? []);
+const getDomainLog   = () => custom_storage.getLocal("domainLog")   .then(v => v ?? {});
 const getCategoryLog = () => custom_storage.getLocal("categoryLog").then(v => v ?? {});
 const getActiveDates = () => custom_storage.getLocal("activeDates").then(v => v ?? []);
 const getBlacklist   = () => custom_storage.getSync("blacklist")   .then(v => v ?? []);
@@ -27,20 +32,36 @@ export async function logDomainTime(domain, seconds, focusMode = false) {
   if (!domain || seconds <= 0) return;
 
   const today = toDateKey();
-  const [blacklist, dayLog, domainLog, categoryLog] = await Promise.all([
-    getBlacklist(), 
-    getDayLog(), 
-    getDomainLog(), 
-    getCategoryLog()
+  const [blacklist, dayLog, domainLog, categoryLog, recent] = await Promise.all([
+    getBlacklist(),
+    getDayLog(),
+    getDomainLog(),
+    getCategoryLog(),
+    getRecentVisits()
   ]);
 
+  const now = Date.now();
+
   const previous = domainLog[domain] ?? { totalSeconds: 0 };
-  domainLog[domain] = { 
-    totalSeconds: previous.totalSeconds + seconds, 
-    lastVisit: Date.now() 
+  domainLog[domain] = {
+    totalSeconds: previous.totalSeconds + seconds,
+    lastVisit: now
   };
 
-  const writes = [custom_storage.setLocal("domainLog", domainLog)];
+  // resume latest entry if revisited within 5 min
+  const latest = recent.find(v => v.url === domain);
+  if (latest && now - latest.lastVisit < RECENT_RESUME_MS) {
+    recent.splice(recent.indexOf(latest), 1);
+    recent.unshift({ url: domain, durationSeconds: latest.durationSeconds + seconds, lastVisit: now });
+  } else {
+    recent.unshift({ url: domain, durationSeconds: seconds, lastVisit: now });
+  }
+  recent.splice(RECENT_MAX);
+
+  const writes = [
+    custom_storage.setLocal("domainLog", domainLog),
+    custom_storage.setLocal("recentVisits", recent),
+  ];
 
   const categories = focusMode ? [] : categoriesForDomain(domain, buildTimerMap(blacklist));
   if (categories.length) {
@@ -71,9 +92,24 @@ async function bumpToday(mutate) {
   await custom_storage.setLocal("dayLog", dayLog);
 }
 
-export async function logFocusMinute()     { await bumpToday(day => (day.focusSeconds += 60)); }
 export async function logFocusSessionEnd() { await bumpToday(day => day.focusSessions++); }
 export async function logBlock()           { await bumpToday(day => day.blockedCount++); }
+
+// start counting focus time from now
+export async function startFocusTracking() {
+  await custom_storage.setLocal("focusSince", Date.now());
+}
+
+export async function accrueFocusTime() {
+  const since = await custom_storage.getLocal("focusSince");
+  if (!since) return;
+
+  const delta = Math.floor((Date.now() - since) / 1000);
+  if (delta > 0) await bumpToday(day => (day.focusSeconds += delta));
+
+  const focusMode = await custom_storage.getLocal("focusMode");
+  await custom_storage.setLocal("focusSince", focusMode ? Date.now() : null);
+}
 
 // remember that the user showed up today
 export async function logActiveDay() {
@@ -98,7 +134,11 @@ export async function shortestTimer(domain) {
 
   for (const category of blacklist) {
     const categoryItems = category.items ?? [];
-    const isActive = categoryItems.some(item => item.active && domain.includes(item.url));
+    const haystack = domain.toLowerCase();
+    const isActive = categoryItems.some(item => {
+      const target = ruleTarget(item.url);
+      return item.active && target && haystack.includes(target);
+    });
     
     if (!isActive) continue;
 
@@ -131,6 +171,16 @@ export async function computeAndSaveStats() {
 
   const streak = calcStreak(activeDates);
   const days = last7DateKeys();
+  const prevDays = prev7DateKeys();
+
+  // week-over-week change
+  const weekSum = (keys, field) => keys.reduce((t, d) => t + (dayLog[d]?.[field] ?? 0), 0);
+  const weekDelta = (field) => {
+    const current = weekSum(days, field);
+    const previous = weekSum(prevDays, field);
+    if (previous === 0) return null;
+    return Math.round(((current - previous) / previous) * 100);
+  };
 
   const allBlockedItems = blacklist.flatMap(category => category.items ?? []);
   const uniqueUrls = new Set(allBlockedItems.map(item => item.url));
@@ -153,6 +203,10 @@ export async function computeAndSaveStats() {
       focus:  days.map(d => +((dayLog[d]?.focusSeconds  ?? 0) / 3600).toFixed(2)),
       scroll: days.map(d => +((dayLog[d]?.scrollSeconds ?? 0) / 3600).toFixed(2)),
     },
+    weekDelta: {
+      focus:  weekDelta("focusSeconds"),
+      scroll: weekDelta("scrollSeconds"),
+    },
   };
 
   const trackedDomains = Object.entries(domainLog)
@@ -163,11 +217,6 @@ export async function computeAndSaveStats() {
       lastVisit: data.lastVisit ?? 0 
     }));
 
-  // recent activity = the last 10 visited websites
-  const recentStats = [...trackedDomains]
-    .sort((a, b) => b.lastVisit - a.lastVisit)
-    .slice(0, 10);
-
   const inRules = domain => [...uniqueUrls].some(url => url && domain.includes(url));
   const topSites = trackedDomains
     .filter(d => !inRules(d.url) && !topExcluded.includes(d.url))
@@ -177,7 +226,6 @@ export async function computeAndSaveStats() {
   // Save all processed stats
   await Promise.all([
     custom_storage.setLocal("usageStats", usageStats),
-    custom_storage.setLocal("recentStats", recentStats),
     custom_storage.setLocal("topSites", topSites)
   ]);
 
