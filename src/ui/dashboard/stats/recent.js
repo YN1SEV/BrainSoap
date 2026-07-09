@@ -1,37 +1,45 @@
 import { custom_storage } from "../../../browser/storage.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
 import { getRefreshMs } from "../../../utils/settings.js";
-
-function getFaviconUrl(domain) {
-  return `https://icons.duckduckgo.com/ip3/${encodeURIComponent(domain)}.ico`;
-}
+import { formatUsage } from "../../../utils/time.js";
+import { faviconUrl, domainOf } from "../../../utils/url.js";
 
 function createActivityItem(item) {
-  const minutes = Math.round(item.durationSeconds / 60);
-  const url = escapeHtml(item.url);
+  const label = escapeHtml(domainOf(item.url) || item.url);
+  const time = item.lastVisit
+    ? new Date(item.lastVisit).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : "";
 
   return `
     <li class="activity-item">
-      <img class="favicon" src="${getFaviconUrl(item.url)}" alt="" />
-      <span class="domain">${url}</span>
-      <span class="duration">${minutes} min</span>
+      <img class="favicon" src="${faviconUrl(item.url)}" alt="" />
+      <span class="domain">${label}</span>
+      <span class="meta">
+        <span class="duration">${formatUsage(item.durationSeconds)}</span>
+        <span class="timestamp">${time}</span>
+      </span>
     </li>
   `;
+}
+
+async function getRecentItems() {
+  const recentVisits = await custom_storage.getLocal('recentVisits');
+  if (!Array.isArray(recentVisits)) return [];
+  return [...recentVisits].sort((a, b) => b.lastVisit - a.lastVisit).slice(0, 10);
 }
 
 async function renderActivities() {
   const container = document.getElementById("activity-list");
   if (!container) return;
 
-  const recentStats = await custom_storage.getLocal('recentStats');
+  const recent = await getRecentItems();
 
-  if (!recentStats || !Array.isArray(recentStats)) {
-    console.warn('No valid recent stats found in storage');
+  if (recent.length === 0) {
     container.innerHTML = `<li class="activity-empty">No activity tracked yet.</li>`;
     return;
   }
 
-  container.innerHTML = recentStats.slice(0, 10).map(createActivityItem).join("");
+  container.innerHTML = recent.map(createActivityItem).join("");
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

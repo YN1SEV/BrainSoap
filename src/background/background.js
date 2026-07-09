@@ -4,13 +4,15 @@ import { getCleanedIdentifier, isTrackableUrl } from "../utils/url.js";
 import { unmuteCurrentTab } from "../browser/tabs.js";
 import { redirectTo, sendMessage, showBlocker, showImage } from "../browser/actions.js";
 import { matchingCategories, remainingMinutes } from "../services/timer-service.js";
-import { logDomainTime, logFocusMinute, logBlock, logActiveDay, computeAndSaveStats } from "../services/stats-service.js";
+import { logDomainTime, accrueFocusTime, logBlock, logActiveDay, computeAndSaveStats } from "../services/stats-service.js";
 
 // cross-browser compatibility
 globalThis.browser ??= globalThis.chrome;
 
 const today = () => new Date().toISOString().slice(0, 10);
-const trackable = (url) => (isTrackableUrl(url) ? getCleanedIdentifier(url) : null);
+const trackable = async (url) => (
+  isTrackableUrl(url) ? getCleanedIdentifier(url, await getBlacklist()) : null
+);
 
 
 // catch silent fail
@@ -41,7 +43,7 @@ browser.alarms.onAlarm.addListener(async (alarm) => {
   try {
     if (await custom_storage.getLocal('paused')) return;
     await flushSession();
-    if (await custom_storage.getLocal('focusMode')) await logFocusMinute();
+    await accrueFocusTime();
     await logActiveDay();
     await checkThresholds(false);
     await publishTimerState();
@@ -53,25 +55,14 @@ browser.alarms.onAlarm.addListener(async (alarm) => {
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   try {
     const tab = await browser.tabs.get(tabId);
-    await startSession(trackable(tab.url));
+    await startSession(await trackable(tab.url));
   } catch (e) { console.error("onActivated failed:", e); }
 });
 
 // track url switching within tab
 browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  if (changeInfo.url) await startSession(trackable(tab.url));
+  if (changeInfo.url) await startSession(await trackable(tab.url));
 }, { properties: ["url"] });
-
-// track idling
-browser.idle.onStateChanged.addListener(async (state) => {
-  if (state === "active") {
-    const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-    await startSession(trackable(tab?.url));
-  } else {
-    await flushSession();
-    await custom_storage.setLocal('session', null);
-  }
-});
 
 // content script confirms the blocker was dismissed
 browser.runtime.onMessage.addListener((message) => {

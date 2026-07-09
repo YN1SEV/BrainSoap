@@ -22,12 +22,17 @@ function updateDOMText(mapping) {
   }
 }
 
+function formatWeekDelta(percent) {
+  if (percent === null || percent === undefined) return "N/A";
+  return `${percent > 0 ? '+' : ''}${percent}% this week`;
+}
+
 function setWeekDeltas(focusPercent, scrollPercent) {
   const focusEl = document.getElementById('focus-delta');
   const scrollEl = document.getElementById('scroll-delta');
 
-  if (focusEl) focusEl.textContent = `${focusPercent > 0 ? '+' : ''}${focusPercent}% this week`;
-  if (scrollEl) scrollEl.textContent = `${scrollPercent > 0 ? '+' : ''}${scrollPercent}% this week`;
+  if (focusEl) focusEl.textContent = formatWeekDelta(focusPercent);
+  if (scrollEl) scrollEl.textContent = formatWeekDelta(scrollPercent);
 }
 
 // draw the weekly line chart or update it if it already exists
@@ -95,7 +100,7 @@ async function renderStats() {
     renderChart(canvasElement, focusChartData, scrollChartData);
   }
 
-  setWeekDeltas(-15, 20);
+  setWeekDeltas(stats.weekDelta?.focus ?? null, stats.weekDelta?.scroll ?? null);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
