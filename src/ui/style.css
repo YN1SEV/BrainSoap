@@ -8,6 +8,8 @@
   --radius-sm: 6px;
   --panel-padding: 18px;
   --ease: 160ms ease;
+
+  --dashboard-text: white;
 }
 
 @media (prefers-color-scheme: dark){
@@ -37,6 +39,9 @@
     --scrollbar-thumb: #3a4657;
     --scrollbar-thumb-hover: #4f5f73;
     --scrollbar-track: #121821;
+
+    --dashboard-bg: var(--accent);
+    --dashboard-hover-bg: var(--primary);
   }
 }
 
@@ -67,5 +72,8 @@
     --scrollbar-thumb: #c7d0dc;
     --scrollbar-thumb-hover: #aebaca;
     --scrollbar-track: #eef2f6;
+
+    --dashboard-bg: var(--accent);
+    --dashboard-hover-bg: var(--primary);
   }
 }
