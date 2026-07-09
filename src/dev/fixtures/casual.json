@@ -1,0 +1,179 @@
+{
+  "app": "BrainSoap",
+  "version": 1,
+  "exportedAt": "2026-07-09T11:28:53.000Z",
+  "sync": {
+    "settings": {
+      "exist": true,
+      "theme": "system",
+      "notificationsEnabled": true,
+      "refreshSeconds": 10,
+      "newCategoryDefaults": {
+        "maxTime": 60,
+        "action": "popup",
+        "redirectUrl": ""
+      }
+    },
+    "blacklist": [
+      {
+        "timerName": "Social Media",
+        "maxTime": 30,
+        "actions": [
+          "notify",
+          "popup",
+          "redirect"
+        ],
+        "redirectUrl": "https://www.linkedin.com/jobs/",
+        "items": [
+          {
+            "name": "Instagram",
+            "url": "instagram.com",
+            "active": true
+          },
+          {
+            "name": "TikTok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "Facebook",
+            "url": "facebook.com",
+            "active": false
+          },
+          {
+            "name": "Reddit",
+            "url": "reddit.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Entertainment",
+        "maxTime": 60,
+        "actions": [
+          "image"
+        ],
+        "imagePath": "assets/visuals/stop.png",
+        "items": [
+          {
+            "name": "YouTube",
+            "url": "youtube.com",
+            "active": true
+          },
+          {
+            "name": "Netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "Reddit",
+            "url": "reddit.com",
+            "active": true
+          }
+        ]
+      }
+    ]
+  },
+  "local": {
+    "categoryLog": {
+      "Social Media": {
+        "usedSeconds": 120,
+        "date": "2026-07-09"
+      },
+      "Entertainment": {
+        "usedSeconds": 2797,
+        "date": "2026-07-09"
+      }
+    },
+    "recentVisits": [
+      {
+        "url": "youtube.com",
+        "durationSeconds": 120,
+        "lastVisit": 1783596533437
+      },
+      {
+        "url": "reddit.com",
+        "durationSeconds": 1607,
+        "lastVisit": 1783595633437
+      },
+      {
+        "url": "github.com",
+        "durationSeconds": 503,
+        "lastVisit": 1783594733437
+      },
+      {
+        "url": "twitter.com",
+        "durationSeconds": 1509,
+        "lastVisit": 1783593833437
+      },
+      {
+        "url": "netflix.com",
+        "durationSeconds": 861,
+        "lastVisit": 1783592933437
+      }
+    ],
+    "topExcluded": [],
+    "installDate": "2026-06-27T11:28:53.000Z",
+    "dayLog": {
+      "2026-07-03": {
+        "focusSeconds": 2250,
+        "scrollSeconds": 1076,
+        "focusSessions": 3,
+        "blockedCount": 6
+      },
+      "2026-07-05": {
+        "focusSeconds": 1941,
+        "scrollSeconds": 1342,
+        "focusSessions": 1,
+        "blockedCount": 7
+      },
+      "2026-07-06": {
+        "focusSeconds": 2589,
+        "scrollSeconds": 1440,
+        "focusSessions": 4,
+        "blockedCount": 5
+      },
+      "2026-07-08": {
+        "focusSeconds": 2687,
+        "scrollSeconds": 1193,
+        "focusSessions": 2,
+        "blockedCount": 4
+      },
+      "2026-07-09": {
+        "focusSeconds": 1200,
+        "scrollSeconds": 1711,
+        "focusSessions": 1,
+        "blockedCount": 8
+      }
+    },
+    "domainLog": {
+      "youtube.com": {
+        "totalSeconds": 14400,
+        "lastVisit": 1783596533437
+      },
+      "reddit.com": {
+        "totalSeconds": 9300,
+        "lastVisit": 1783595633437
+      },
+      "github.com": {
+        "totalSeconds": 12000,
+        "lastVisit": 1783594733437
+      },
+      "twitter.com": {
+        "totalSeconds": 6600,
+        "lastVisit": 1783593833437
+      },
+      "netflix.com": {
+        "totalSeconds": 8100,
+        "lastVisit": 1783592933437
+      }
+    },
+    "activeDates": [
+      "2026-07-03",
+      "2026-07-05",
+      "2026-07-06",
+      "2026-07-08",
+      "2026-07-09"
+    ]
+  }
+}

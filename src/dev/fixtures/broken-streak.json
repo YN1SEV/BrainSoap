@@ -1,0 +1,247 @@
+{
+  "app": "BrainSoap",
+  "version": 1,
+  "exportedAt": "2026-07-09T11:28:53.000Z",
+  "sync": {
+    "settings": {
+      "exist": true,
+      "theme": "system",
+      "notificationsEnabled": true,
+      "refreshSeconds": 10,
+      "newCategoryDefaults": {
+        "maxTime": 60,
+        "action": "popup",
+        "redirectUrl": ""
+      }
+    },
+    "blacklist": [
+      {
+        "timerName": "Social Media",
+        "maxTime": 30,
+        "actions": [
+          "notify",
+          "popup",
+          "redirect"
+        ],
+        "redirectUrl": "https://www.linkedin.com/jobs/",
+        "items": [
+          {
+            "name": "Instagram",
+            "url": "instagram.com",
+            "active": true
+          },
+          {
+            "name": "TikTok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "Facebook",
+            "url": "facebook.com",
+            "active": false
+          },
+          {
+            "name": "Reddit",
+            "url": "reddit.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Entertainment",
+        "maxTime": 60,
+        "actions": [
+          "image"
+        ],
+        "imagePath": "assets/visuals/stop.png",
+        "items": [
+          {
+            "name": "YouTube",
+            "url": "youtube.com",
+            "active": true
+          },
+          {
+            "name": "Netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "Reddit",
+            "url": "reddit.com",
+            "active": true
+          }
+        ]
+      }
+    ]
+  },
+  "local": {
+    "categoryLog": {},
+    "recentVisits": [
+      {
+        "url": "youtube.com",
+        "durationSeconds": 120,
+        "lastVisit": 1783596533437
+      },
+      {
+        "url": "reddit.com",
+        "durationSeconds": 1607,
+        "lastVisit": 1783595633437
+      },
+      {
+        "url": "github.com",
+        "durationSeconds": 503,
+        "lastVisit": 1783594733437
+      },
+      {
+        "url": "twitter.com",
+        "durationSeconds": 1509,
+        "lastVisit": 1783593833437
+      },
+      {
+        "url": "netflix.com",
+        "durationSeconds": 861,
+        "lastVisit": 1783592933437
+      }
+    ],
+    "topExcluded": [],
+    "installDate": "2026-05-30T11:28:53.000Z",
+    "dayLog": {
+      "2026-06-20": {
+        "focusSeconds": 3160,
+        "scrollSeconds": 1354,
+        "focusSessions": 4,
+        "blockedCount": 6
+      },
+      "2026-06-21": {
+        "focusSeconds": 3093,
+        "scrollSeconds": 2092,
+        "focusSessions": 3,
+        "blockedCount": 7
+      },
+      "2026-06-22": {
+        "focusSeconds": 2878,
+        "scrollSeconds": 1635,
+        "focusSessions": 2,
+        "blockedCount": 7
+      },
+      "2026-06-23": {
+        "focusSeconds": 3319,
+        "scrollSeconds": 1928,
+        "focusSessions": 1,
+        "blockedCount": 6
+      },
+      "2026-06-24": {
+        "focusSeconds": 2539,
+        "scrollSeconds": 1874,
+        "focusSessions": 4,
+        "blockedCount": 7
+      },
+      "2026-06-25": {
+        "focusSeconds": 3458,
+        "scrollSeconds": 1703,
+        "focusSessions": 3,
+        "blockedCount": 5
+      },
+      "2026-06-26": {
+        "focusSeconds": 2163,
+        "scrollSeconds": 2055,
+        "focusSessions": 2,
+        "blockedCount": 8
+      },
+      "2026-06-27": {
+        "focusSeconds": 3500,
+        "scrollSeconds": 1431,
+        "focusSessions": 1,
+        "blockedCount": 4
+      },
+      "2026-06-28": {
+        "focusSeconds": 2223,
+        "scrollSeconds": 2166,
+        "focusSessions": 4,
+        "blockedCount": 8
+      },
+      "2026-06-29": {
+        "focusSeconds": 3442,
+        "scrollSeconds": 1130,
+        "focusSessions": 3,
+        "blockedCount": 4
+      },
+      "2026-07-01": {
+        "focusSeconds": 3289,
+        "scrollSeconds": 1179,
+        "focusSessions": 1,
+        "blockedCount": 5
+      },
+      "2026-07-02": {
+        "focusSeconds": 2927,
+        "scrollSeconds": 2154,
+        "focusSessions": 4,
+        "blockedCount": 7
+      },
+      "2026-07-03": {
+        "focusSeconds": 3050,
+        "scrollSeconds": 1476,
+        "focusSessions": 3,
+        "blockedCount": 6
+      },
+      "2026-07-04": {
+        "focusSeconds": 3198,
+        "scrollSeconds": 2031,
+        "focusSessions": 2,
+        "blockedCount": 6
+      },
+      "2026-07-05": {
+        "focusSeconds": 2741,
+        "scrollSeconds": 1742,
+        "focusSessions": 1,
+        "blockedCount": 7
+      },
+      "2026-07-06": {
+        "focusSeconds": 3389,
+        "scrollSeconds": 1840,
+        "focusSessions": 4,
+        "blockedCount": 5
+      }
+    },
+    "domainLog": {
+      "youtube.com": {
+        "totalSeconds": 14400,
+        "lastVisit": 1783596533437
+      },
+      "reddit.com": {
+        "totalSeconds": 9300,
+        "lastVisit": 1783595633437
+      },
+      "github.com": {
+        "totalSeconds": 12000,
+        "lastVisit": 1783594733437
+      },
+      "twitter.com": {
+        "totalSeconds": 6600,
+        "lastVisit": 1783593833437
+      },
+      "netflix.com": {
+        "totalSeconds": 8100,
+        "lastVisit": 1783592933437
+      }
+    },
+    "activeDates": [
+      "2026-06-20",
+      "2026-06-21",
+      "2026-06-22",
+      "2026-06-23",
+      "2026-06-24",
+      "2026-06-25",
+      "2026-06-26",
+      "2026-06-27",
+      "2026-06-28",
+      "2026-06-29",
+      "2026-07-01",
+      "2026-07-02",
+      "2026-07-03",
+      "2026-07-04",
+      "2026-07-05",
+      "2026-07-06"
+    ]
+  }
+}
