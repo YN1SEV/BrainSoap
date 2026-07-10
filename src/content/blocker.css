@@ -63,13 +63,51 @@ body.blocked-scrolling {
 
 #doom-blocker-image {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(128, 128, 128, 0.8); /* Grayed out background */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95); /* Nearly opaque to hide the site */
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2147483647;
-  border-radius: 8px; /* Optional: rounds the corners of the container */
+  z-index: 2147483647; /* Highest possible z-index */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+#doom-blocker-image .blocker-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+  gap: 24px; /* Creates spacing between the image and the button */
+  max-width: 90vw; /* Prevents it from touching the screen edges */
+  max-height: 90vh;
+}
+
+/* 2. Constrain the image so it fits the screen without distorting */
+#doom-blocker-image .blocker-card img {
+  max-width: 100%;
+  max-height: 70vh; /* Leaves enough room at the bottom for the button */
+  object-fit: contain; /* Preserves the image's aspect ratio */
+  border-radius: 8px; /* Optional: smooths the corners of the image */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5); /* Optional: makes the image pop */
+}
+
+/* 3. Style the button so it looks clean under the image */
+#doom-blocker-image #close-blocker {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #555; /* Default disabled background */
+  color: white;
+  transition: background 0.3s ease;
+}
+
+/* 4. Style for when the button becomes active */
+#doom-blocker-image #close-blocker:not([disabled]) {
+  background: #28a745; /* Turns green when the timer is up */
 }

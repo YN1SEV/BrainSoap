@@ -8,12 +8,14 @@ globalThis.browser ??= globalThis.chrome;
 if (!window.hasBlockerListener) {
   window.hasBlockerListener = true;
 
-  browser.runtime.onMessage.addListener((message) => {
-    if (message.action === "TRIGGER_BLOCK") {                   // chooses when time exceeded
+  const listener = browser.runtime.onMessage.addListener((message) => {
+    if (message.action === "TRIGGER_BLOCK") {   
+      console.log("rendering something")
       if (message.imagePath) renderImage(message.imagePath)
       else renderBlocker(message.seconds, message.redirectUrl);
     }
   });
+  console.log(listener)
 }
 
 function renderBlocker(seconds, redirectUrl = undefined) {
@@ -67,22 +69,56 @@ function renderBlocker(seconds, redirectUrl = undefined) {
 }
 
 // covers whole page with single image
-function renderImage(imagePath) {
+function renderImage(imagePath, redirectUrl = undefined) {
+  console.log("attemting image render")
+  let seconds = 3
+  let resolvedPath = browser.runtime.getURL(imagePath)
   try {
-  // Prevent duplicate popups
-  if (document.getElementById('doom-blocker-image')) return;
+    // Prevent duplicate popups
+    if (document.getElementById('doom-blocker-image')) return;
 
-  // Add class to body to stop scrolling
-  document.body.classList.add('blocked-scrolling');
-  
-  console.log("rendering image");
-  const img = document.createElement('img');
-  img.id = 'doom-blocker-image';
-  img.src = browser.runtime.getURL(imagePath);
-  img.alt = "Time is up — take a break from this site.";
+    // Build body, needs rework
+    document.body.classList.add('blocked-scrolling');
 
-  document.body.appendChild(img);
+    const overlay = document.createElement('div');
+    overlay.id = 'doom-blocker-image';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Focus reminder');
 
-    
+    // not worth it rn to make a html file
+    overlay.innerHTML = `
+      <div class="blocker-card">
+        <img src="${resolvedPath}">
+        <button id="close-blocker" disabled>Wait (${seconds}s)</button>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const btn = document.getElementById('close-blocker');
+    let timeLeft = seconds;
+
+    // wait before ignoring limit
+    const timer = setInterval(() => {
+      timeLeft--;      //cnt down every second
+      if (timeLeft > 0) btn.innerText = `Wait (${timeLeft}s)`;
+      else {
+        clearInterval(timer);
+        btn.disabled = false;
+        btn.innerText = "Continue to site";
+        btn.style.background = "#28a745"; 
+        btn.focus(); 
+      }
+    }, 1000);
+
+    btn.onclick = () => {
+      document.body.classList.remove('blocked-scrolling');
+      overlay.remove();
+      browser.runtime.sendMessage({ 
+        action: "BLOCKER_CONFIRMED", 
+        url: redirectUrl
+      });
+    };
   } catch (e) {console.error(e)}
 }
