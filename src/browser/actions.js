@@ -35,14 +35,12 @@ export async function showBlocker(redirectUrl = null) {
 
 // freezes tab and covers it with a full screen image instead
 export async function showImage(imagePath) {
+  console.log("showing image")
   const tabID = await getActiveTabId();
   freezeTab(tabID);
-
+  const msg = {action: "TRIGGER_BLOCK", imagePath: imagePath}
   try {
-    await sendMessageWithRetry(tabID, {
-      action: "TRIGGER_BLOCK",
-      imagePath: imagePath
-    });
+    await sendMessageWithRetry(tabID, msg);
   } catch (error) {
     console.error("Message failed after multiple attempts:", error);
   }

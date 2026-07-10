@@ -46,6 +46,7 @@ export async function unmuteCurrentTab() {
 export async function sendMessageWithRetry(tabId, message, retries = 3, delay = 100) {
   for (let i = 0; i < retries; i++) {
     try {
+      console.log("sending: ", message)
       return await browser.tabs.sendMessage(tabId, message);
     } catch (err) {
       if (i === retries - 1) throw err; // Out of retries, propagate error
