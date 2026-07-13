@@ -1,3 +1,70 @@
+#doom-blocker-overlay,
+#doom-blocker-image {
+  --radius: 8px;
+  --radius-sm: 6px;
+  --ease: 160ms ease;
+}
+
+@media (prefers-color-scheme: light) {
+  #doom-blocker-overlay,
+  #doom-blocker-image {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --surface-3: #e2e8ef;
+    --text: #17202a;
+    --text-muted: #6b7280;
+    --primary: #4969e8;
+    --accent: #168f78;
+    --danger: #c2414b;
+    --border-strong: rgba(24, 35, 48, 0.18);
+    --shadow: rgba(24, 35, 48, 0.1);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  #doom-blocker-overlay,
+  #doom-blocker-image {
+    --bg: #0d1117;
+    --surface: #121821;
+    --surface-3: #202b39;
+    --text: #f4f7fb;
+    --text-muted: #9aa6b2;
+    --primary: #5d7cff;
+    --accent: #2fc9a8;
+    --danger: #ef6b73;
+    --border-strong: rgba(218, 228, 240, 0.18);
+    --shadow: rgba(0, 0, 0, 0.38);
+  }
+}
+
+/* explicit theme choice from Settings overrides the OS preference */
+#doom-blocker-overlay[data-theme="light"],
+#doom-blocker-image[data-theme="light"] {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-3: #e2e8ef;
+  --text: #17202a;
+  --text-muted: #6b7280;
+  --primary: #4969e8;
+  --accent: #168f78;
+  --danger: #c2414b;
+  --border-strong: rgba(24, 35, 48, 0.18);
+  --shadow: rgba(24, 35, 48, 0.1);
+}
+#doom-blocker-overlay[data-theme="dark"],
+#doom-blocker-image[data-theme="dark"] {
+  --bg: #0d1117;
+  --surface: #121821;
+  --surface-3: #202b39;
+  --text: #f4f7fb;
+  --text-muted: #9aa6b2;
+  --primary: #5d7cff;
+  --accent: #2fc9a8;
+  --danger: #ef6b73;
+  --border-strong: rgba(218, 228, 240, 0.18);
+  --shadow: rgba(0, 0, 0, 0.38);
+}
+
 /* full-screen darkening layer */
 #doom-blocker-overlay {
   position: fixed;
@@ -5,53 +72,58 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.95); /* Nearly opaque to hide the site */
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2147483647; /* Highest possible z-index */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 /* popup card */
 .blocker-card {
-  background: #1a1a1a;
-  color: white;
-  padding: 2rem;
-  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 3rem;
+  border-radius: var(--radius);
   text-align: center;
   width: 85%;
-  max-width: 400px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  border: 1px solid #333;
+  max-width: 700px;
+  box-shadow: 0 10px 30px var(--shadow);
+  border: 1px solid var(--border-strong);
 }
 
 .blocker-card h2 {
   margin-top: 0;
-  color: #ff4d4d;
+  font-size: 3.5rem;
+  color: var(--danger);
 }
 
 .blocker-card p {
+  font-size: 2.2rem;
   line-height: 1.5;
-  color: #ccc;
+  color: var(--text-muted);
 }
 
-/*Wait button */
+/* Wait button */
 #close-blocker {
   margin-top: 1.5rem;
-  padding: 12px 24px;
-  font-size: 1rem;
+  padding: 14px 28px;
+  font-size: 2rem;
   font-weight: bold;
   border: none;
-  border-radius: 8px;
-  background: #0060df;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
   color: white;
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition: background var(--ease), opacity var(--ease);
 }
 
 #close-blocker:disabled {
-  background: #444;
+  background: var(--surface-3);
+  color: var(--text-muted);
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -67,12 +139,14 @@ body.blocked-scrolling {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.95); /* Nearly opaque to hide the site */
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2147483647; /* Highest possible z-index */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 #doom-blocker-image .blocker-card {
@@ -83,31 +157,16 @@ body.blocked-scrolling {
   gap: 24px; /* Creates spacing between the image and the button */
   max-width: 90vw; /* Prevents it from touching the screen edges */
   max-height: 90vh;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-/* 2. Constrain the image so it fits the screen without distorting */
+/* Constrain the image so it fits the screen without distorting */
 #doom-blocker-image .blocker-card img {
   max-width: 100%;
   max-height: 70vh; /* Leaves enough room at the bottom for the button */
   object-fit: contain; /* Preserves the image's aspect ratio */
-  border-radius: 8px; /* Optional: smooths the corners of the image */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5); /* Optional: makes the image pop */
-}
-
-/* 3. Style the button so it looks clean under the image */
-#doom-blocker-image #close-blocker {
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #555; /* Default disabled background */
-  color: white;
-  transition: background 0.3s ease;
-}
-
-/* 4. Style for when the button becomes active */
-#doom-blocker-image #close-blocker:not([disabled]) {
-  background: #28a745; /* Turns green when the timer is up */
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px var(--shadow);
 }
