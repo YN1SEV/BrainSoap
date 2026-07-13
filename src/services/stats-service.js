@@ -158,13 +158,12 @@ export async function shortestTimer(domain) {
 }
 
 export async function computeAndSaveStats() {
-  const [dayLog, domainLog, activeDates, blacklist, topExcluded, installDate] = await Promise.all([
+  const [dayLog, domainLog, activeDates, blacklist, topExcluded] = await Promise.all([
     getDayLog(),
     getDomainLog(),
     getActiveDates(),
     getBlacklist(),
     getTopExcluded(),
-    custom_storage.getLocal("installDate"),
   ]);
 
   const sum = f => Object.values(dayLog).reduce((t, d) => t + (d[f] ?? 0), 0);
@@ -185,20 +184,14 @@ export async function computeAndSaveStats() {
   const allBlockedItems = blacklist.flatMap(category => category.items ?? []);
   const uniqueUrls = new Set(allBlockedItems.map(item => item.url));
 
-  let totalActiveDays = activeDates.length;
-  if (installDate) {
-    const msSinceInstall = Date.now() - new Date(installDate);
-    totalActiveDays = Math.floor(msSinceInstall / 86400000) + 1; // 86400000ms = 1 day
-  }
-
   const usageStats = {
     focusHours:    +(sum("focusSeconds")  / 3600).toFixed(1),
     focusSessions:  sum("focusSessions"),
     scrollHours:   +(sum("scrollSeconds") / 3600).toFixed(1),
     scrollAttempts: sum("blockedCount"),
     currentStreak: streak.current, bestStreak: streak.best,
-    blockedSites:  uniqueUrls.size,
-    activeDays:    totalActiveDays,
+    blockedSites:  allBlockedItems.length,
+    activeDays:    activeDates.length,
     chart: {
       focus:  days.map(d => +((dayLog[d]?.focusSeconds  ?? 0) / 3600).toFixed(2)),
       scroll: days.map(d => +((dayLog[d]?.scrollSeconds ?? 0) / 3600).toFixed(2)),
