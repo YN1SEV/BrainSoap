@@ -154,7 +154,8 @@ async function initSettings() {
   });
 
   catTimeInput?.addEventListener('change', async () => {
-    const maxTime = Math.max(1, Number(catTimeInput.value) || defaultSettings.newCategoryDefaults.maxTime);
+    const parsed = Number(catTimeInput.value);
+    const maxTime = Math.max(0, Number.isFinite(parsed) ? parsed : defaultSettings.newCategoryDefaults.maxTime);
     catTimeInput.value = maxTime;
     await saveCategoryDefaults({ maxTime });
     setStatus("Default time limit saved.");
