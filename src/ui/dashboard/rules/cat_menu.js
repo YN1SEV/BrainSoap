@@ -77,7 +77,7 @@ function renderMainMenu(popup, catIndex, closePopup) {
       case 'change-timer': {
         const newTime = prompt('Time limit in minutes:', category.maxTime);
         if (newTime !== null && !isNaN(Number(newTime))) { 
-          category.maxTime = Number(newTime); 
+          category.maxTime = Math.max(0, Number(newTime));
           await syncTimerState(category);
           saveAndRender(); 
         }

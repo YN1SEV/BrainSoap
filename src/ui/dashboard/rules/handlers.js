@@ -8,9 +8,10 @@ async function makeCategory(name) {
   const d = await getNewCategoryDefaults();
   const actions = d.actions?.length ? d.actions : ["popup"];
   const useRedirect = actions.includes("redirect") && d.redirectUrl;
+  const parsedMaxTime = Number(d.maxTime);
   const category = {
     timerName: name,
-    maxTime: Number(d.maxTime) || 60,
+    maxTime: Number.isFinite(parsedMaxTime) ? parsedMaxTime : 60,
     actions,
     items: [],
   };
