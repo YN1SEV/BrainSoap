@@ -1,6 +1,17 @@
 import { appData, saveAndRender } from "./render_rules.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
 import { faviconUrl } from "../../../utils/url.js";
+import { custom_storage } from "../../../browser/storage.js";
+
+async function syncTimerState(category) {
+  const timerState = (await custom_storage.getLocal('timerState')) ?? {};
+  const entry = timerState[category.timerName];
+  if (!entry) return;
+
+  entry.maxTime = category.maxTime;
+  entry.remaining = Math.min(entry.remaining, category.maxTime);
+  await custom_storage.setLocal('timerState', timerState);
+}
 
 export function showCategoryMenu(catIndex, anchorEl) {
   let existing = document.querySelector('.cat-menu-popup');
@@ -47,7 +58,7 @@ function renderMainMenu(popup, catIndex, closePopup) {
     </ul>
   `;
 
-  popup.onclick = (e) => {
+  popup.onclick = async (e) => {
     const actionButtonEl = e.target.closest('.cat-menu-action');
     if (!actionButtonEl) return;
     
@@ -67,6 +78,7 @@ function renderMainMenu(popup, catIndex, closePopup) {
         const newTime = prompt('Time limit in minutes:', category.maxTime);
         if (newTime !== null && !isNaN(Number(newTime))) { 
           category.maxTime = Number(newTime); 
+          await syncTimerState(category);
           saveAndRender(); 
         }
         closePopup();
