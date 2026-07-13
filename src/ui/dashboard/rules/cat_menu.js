@@ -32,6 +32,7 @@ function renderMainMenu(popup, catIndex, closePopup) {
   const menuOptions = [
     { label: 'Rename', action: 'rename' },
     { label: 'Change Timer', action: 'change-timer' },
+    { label: 'Change Action', action: 'change-action', expandable: true },
     { label: 'Items', action: 'items', expandable: true },
     { label: 'Delete', action: 'delete', danger: true }
   ];
@@ -83,8 +84,67 @@ function renderMainMenu(popup, catIndex, closePopup) {
         renderItemsMenu(popup, catIndex, closePopup);
         break;
       }
+      case 'change-action': {
+        renderActionMenu(popup, catIndex, closePopup);
+        break;
+      }
     }
   };
+}
+
+const ACTION_OPTIONS = [
+  { value: 'popup', label: 'Popup' },
+  { value: 'redirect', label: 'Redirect' },
+  { value: 'notify', label: 'Notify' },
+];
+
+function renderActionMenu(popup, catIndex, closePopup) {
+  const category = appData[catIndex];
+  if (!category) return;
+
+  const actions = category.actions ?? ['popup'];
+  const hasRedirect = actions.includes('redirect');
+
+  popup.innerHTML = `
+    <ul>
+      <li><button class="cat-menu-action" data-action="back">← Back</button></li>
+      ${ACTION_OPTIONS.map(({ value, label }) => `
+        <li class="cat-menu-checkbox-row">
+          <label>
+            <input type="checkbox" class="cat-action-checkbox" value="${value}" ${actions.includes(value) ? 'checked' : ''}>
+            ${label}
+          </label>
+        </li>
+      `).join('')}
+      <li class="cat-menu-redirect-row">
+        <input type="url" class="cat-action-redirect-input" placeholder="https://example.com"
+               value="${escapeHtml(category.redirectUrl || '')}" ${hasRedirect ? '' : 'hidden'}>
+      </li>
+    </ul>
+  `;
+
+  popup.onclick = (e) => {
+    const actionButtonEl = e.target.closest('.cat-menu-action');
+    if (actionButtonEl?.dataset.action === 'back') renderMainMenu(popup, catIndex, closePopup);
+  };
+
+  popup.querySelectorAll('.cat-action-checkbox').forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      const selected = [...popup.querySelectorAll('.cat-action-checkbox')]
+        .filter((c) => c.checked)
+        .map((c) => c.value);
+
+      // a category needs at least one action, fall back to popup rather than leaving it inert
+      category.actions = selected.length ? selected : ['popup'];
+      saveAndRender();
+      renderActionMenu(popup, catIndex, closePopup);
+    });
+  });
+
+  popup.querySelector('.cat-action-redirect-input')?.addEventListener('change', (e) => {
+    category.redirectUrl = e.target.value.trim();
+    saveAndRender();
+  });
 }
 
 function renderItemsMenu(popup, catIndex, closePopup) {

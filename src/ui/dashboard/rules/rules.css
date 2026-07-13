@@ -223,3 +223,26 @@ section#rules > ul,
   color: var(--danger);
   background: color-mix(in srgb, var(--danger), transparent 90%);
 }
+
+.cat-menu-checkbox-row {
+  padding: 6px 10px;
+}
+.cat-menu-checkbox-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.cat-menu-redirect-row {
+  padding: 4px 10px 6px;
+}
+.cat-menu-redirect-row input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.82rem;
+}

@@ -6,11 +6,12 @@ import { hasOptOutPrefix, domainOf } from "../../../utils/url.js";
 // build a fresh category from the user's configured defaults
 async function makeCategory(name) {
   const d = await getNewCategoryDefaults();
-  const useRedirect = d.action === "redirect" && d.redirectUrl;
+  const actions = d.actions?.length ? d.actions : ["popup"];
+  const useRedirect = actions.includes("redirect") && d.redirectUrl;
   const category = {
     timerName: name,
     maxTime: Number(d.maxTime) || 60,
-    actions: useRedirect ? ["redirect"] : ["popup"],
+    actions,
     items: [],
   };
   if (useRedirect) category.redirectUrl = d.redirectUrl;
