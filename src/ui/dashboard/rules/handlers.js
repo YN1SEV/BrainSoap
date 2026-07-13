@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.isContentEditable);
     if (!isTyping) {
       console.log("refreshing rules...");
-      await loadAndRenderRules();
+      await refreshTimers();
     }
   }, await getRefreshMs());
 });
