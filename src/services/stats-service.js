@@ -3,7 +3,7 @@
 import { custom_storage } from "../browser/storage.js";
 import { toDateKey, last7DateKeys, prev7DateKeys, calcStreak } from "../utils/time.js";
 import { buildTimerMap, categoriesForDomain, remainingMinutes } from "./timer-service.js";
-import { ruleTarget } from "../utils/url.js";
+import { ruleTarget, domainOf } from "../utils/url.js";
 
 const RECENT_RESUME_MS = 5 * 60 * 1000; // revisits within this window resume the same entry
 const RECENT_MAX       = 30;
@@ -42,19 +42,21 @@ export async function logDomainTime(domain, seconds, focusMode = false) {
 
   const now = Date.now();
 
-  const previous = domainLog[domain] ?? { totalSeconds: 0 };
-  domainLog[domain] = {
+  const site = domainOf(domain) || domain;
+
+  const previous = domainLog[site] ?? { totalSeconds: 0 };
+  domainLog[site] = {
     totalSeconds: previous.totalSeconds + seconds,
     lastVisit: now
   };
 
   // resume latest entry if revisited within 5 min
-  const latest = recent.find(v => v.url === domain);
+  const latest = recent.find(v => v.url === site);
   if (latest && now - latest.lastVisit < RECENT_RESUME_MS) {
     recent.splice(recent.indexOf(latest), 1);
-    recent.unshift({ url: domain, durationSeconds: latest.durationSeconds + seconds, lastVisit: now });
+    recent.unshift({ url: site, durationSeconds: latest.durationSeconds + seconds, lastVisit: now });
   } else {
-    recent.unshift({ url: domain, durationSeconds: seconds, lastVisit: now });
+    recent.unshift({ url: site, durationSeconds: seconds, lastVisit: now });
   }
   recent.splice(RECENT_MAX);
 
