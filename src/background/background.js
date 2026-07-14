@@ -1,7 +1,7 @@
 import { custom_storage } from "../browser/storage.js";
 import { defaultSettings, defaultBlacklist } from "../utils/defaults.js";
 import { getCleanedIdentifier, isTrackableUrl } from "../utils/url.js";
-import { unmuteCurrentTab } from "../browser/tabs.js";
+import { unmuteCurrentTab, getActiveTabId } from "../browser/tabs.js";
 import { redirectTo, sendMessage, showBlocker, showImage } from "../browser/actions.js";
 import { matchingCategories, remainingMinutes } from "../services/timer-service.js";
 import { logDomainTime, accrueFocusTime, logBlock, logActiveDay, computeAndSaveStats } from "../services/stats-service.js";
@@ -72,16 +72,23 @@ browser.runtime.onMessage.addListener((message) => {
   }
   // focus mode was just turned on
   if (message.action === "RECHECK_TAB") {
-    browser.tabs.query({ active: true, currentWindow: true }).then(async ([tab]) => {
-      if (tab) await startSession(await trackable(tab.url));
-    });
+    recheckActiveTab();
   }
 });
 
-async function startSession(domain) {
+async function recheckActiveTab() {
+  try {
+    const tabId = await getActiveTabId();
+    if (!tabId) return;
+    const tab = await browser.tabs.get(tabId);
+    await startSession(await trackable(tab.url), false);
+  } catch (e) { console.error("RECHECK_TAB failed:", e); }
+}
+
+async function startSession(domain, isVisit = true) {
   await flushSession();
   await custom_storage.setLocal('session', domain ? { domain, since: Date.now() } : null);
-  await checkThresholds(true);
+  await checkThresholds(isVisit);
 }
 
 // calculates time on session
@@ -105,6 +112,8 @@ async function getBlacklist() {
 
 // checks for exceeded time limits
 async function checkThresholds(isVisit) {
+  if (await custom_storage.getLocal('paused')) return;
+
   const session = await custom_storage.getLocal('session');
   const domain = session?.domain;
   if (!domain) return;
