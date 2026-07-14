@@ -70,6 +70,12 @@ browser.runtime.onMessage.addListener((message) => {
     if (message.url !== undefined) redirectTo(message.url);
     unmuteCurrentTab();
   }
+  // focus mode was just turned on
+  if (message.action === "RECHECK_TAB") {
+    browser.tabs.query({ active: true, currentWindow: true }).then(async ([tab]) => {
+      if (tab) await startSession(await trackable(tab.url));
+    });
+  }
 });
 
 async function startSession(domain) {
