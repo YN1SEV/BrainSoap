@@ -2,10 +2,10 @@
 --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 Browser extension to help you avoid extended scrolling by blocking your screen or redirecting you to a more productive site.
 
-# Notice
+## Notice
 This project was created as a learning Project for DHBW Stuttgart. 
 
-# Features
+## Features
 - tracking how much time you spend on diffrent sites
 - actions when a limit is exceded
     - sending you a message
@@ -13,73 +13,56 @@ This project was created as a learning Project for DHBW Stuttgart.
     - redirecting you to a diffrent URL
     - also in arbitrary combinations
 
-## planned Features 
+### planned Features 
 >[!info]
-> #### aka TO-DO list
+>**aka TO-DO list**
+- custom image popup
 
-- actual ui for settings
-- image popup - not just the generic one
-- better looking blocker popup
-- adaptive ui 
-- caching for browser storage
-
-
-
-
-# Related repositorys
+## Related repositorys
 much thanks to [MDN](https://github.com/mdn/webextensions-examples.git) and [fnya](https://github.com/fnya/firefox-extensions-template.git) for providing examples. 
 this was a great help in understanding how to create an extension and what you can do with them.
 
+## Installation
 
-# Installation
-
-## for contributing
+### for contributing
 1. pull this repo to your local machine.
 2. get the mentioned repos for examples
 3. more material will follow soon. This project is not complete yet, but it's a start!
 
-## via temporary addon (firefox)
+### via temporary addon (firefox)
 1. type in your url bar about:debugging 
 2. go to This firefox
 3. click load temporary Add-on
 4. chose the manifest.json file from this repo. 
 5. that should be it. you can now try the extension.
 
+### installing permanantly
+not yet supported, the process to get an extension verified takes too long/is too complicated
 
-# Dev-Notes
-- please abstract the browser interaction layer by topic. this makes it a lot easier to maintain multiple browsers
-- javascript sucks but please make the code readable
-- variables are treated diffrently by the storage manager from settings because settings are synced. variables are kept local to keep traffic low. 
-- local ai inline completion is awesome!
-- manifest_version in manifest.json is about the manifest protocol version, dont change it. 
-- the scripts in the manifest are loaded in order how they are listed. plan accordingly
-- when getting a url from the user sanitize it to turn it into the url id (see utils.js)
-- maybe rework the settings loading option fallback,- right now it's kinda bad.
-- Folder structure: 
-    ```tree
-    BrainSoap
-    ├── assets
-    │   ├── misc
-    │   ├── icons
-    │   ├── nav
-    │   └── visuals
-    ├── docs
-    │   └── ideas.md
-    ├── src
-    │   ├── background
-    │   ├── content
-    │   ├── browser
-    │   ├── services
-    │   ├── ui
-    │   │   ├── popup
-    │   │   └── dashboard
-    │   │       ├── nav
-    │   │       ├── rules
-    │   │       ├── stats
-    │   │       ├── settings
-    │   │       └── imported
-    │   └── utils
-    ├── manifest.json
-    └── README.md
-    ```
-- only add a feature to the list when it is done.
+## Folder structure: 
+```
+BrainSoap
+├───assets
+│   ├───icons
+│   ├───misc
+│   ├───nav
+│   └───visuals
+├───docs
+└───src
+    ├───background
+    ├───browser
+    ├───content
+    ├───dev
+    │   └───fixtures
+    ├───services
+    ├───ui
+    │   ├───dashboard
+    │   │   ├───dev
+    │   │   ├───imported
+    │   │   ├───nav
+    │   │   ├───rules
+    │   │   ├───settings
+    │   │   └───stats
+    │   └───popup
+    └───utils
+```
