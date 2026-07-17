@@ -23,7 +23,8 @@ export function showCategoryMenu(catIndex, anchorEl) {
   popup.dataset.catIndex = catIndex;
 
   const rect = anchorEl.getBoundingClientRect();
-  popup.style.left = `${rect.left}px`;
+  const popupWidth = 250;
+  popup.style.left = `${Math.max(12, rect.right - popupWidth)}px`;
   popup.style.top = `${rect.bottom + 6}px`;
 
   const closePopup = () => popup.hidePopover();
