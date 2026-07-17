@@ -11,7 +11,7 @@ if (!window.hasBlockerListener) {
   const listener = browser.runtime.onMessage.addListener((message) => {
     if (message.action === "TRIGGER_BLOCK") {   
       console.log("rendering something")
-      if (message.imagePath) renderImage(message.imagePath)
+      if (message.imagePath) renderImage(message.imagePath, message.redirectUrl)
       else renderBlocker(message.seconds, message.redirectUrl);
     }
   });
