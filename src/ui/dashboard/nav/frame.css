@@ -78,17 +78,6 @@ body:has(#settings:target) aside nav a[href="#settings"]::before {
   background: var(--primary);
 }
 
-aside > p {
-  display: none;
-  margin: 0;
-  padding: 8px 10px;
-  color: var(--text-muted);
-  font-size: 0.8rem;          
-}
-aside:has(nav :focus-visible) > p {
-  display: block;
-}
-
 body > button {
   position: fixed;
   top: 12px;
