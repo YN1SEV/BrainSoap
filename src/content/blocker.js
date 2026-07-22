@@ -32,7 +32,9 @@ function renderBlocker(seconds, redirectUrl = undefined) {
   // Prevent duplicate popups
   if (document.getElementById('doom-blocker-overlay')) return;
 
-  // Build body, needs rework
+  // Sanitize input to a non-negative integer
+  const safeSeconds = Math.max(0, parseInt(seconds, 10) || 0);
+
   document.body.classList.add('blocked-scrolling');
 
   const overlay = document.createElement('div');
@@ -41,55 +43,68 @@ function renderBlocker(seconds, redirectUrl = undefined) {
   overlay.setAttribute('aria-modal', 'true');
   overlay.setAttribute('aria-label', 'Focus reminder');
 
-  if (cachedTheme !== 'system') overlay.dataset.theme = cachedTheme;
+  if (typeof cachedTheme !== 'undefined' && cachedTheme !== 'system') {
+    overlay.dataset.theme = cachedTheme;
+  }
 
-  // not worth it rn to make a html file
+  // Static structure avoids innerHTML linting triggers
   overlay.innerHTML = `
     <div class="blocker-card">
       <h2>Focus Mode</h2>
       <p>Reality check: Is this how you want to spend your time?</p>
-      <button id="close-blocker" disabled>Wait (${seconds}s)</button>
+      <button id="close-blocker" disabled></button>
     </div>
   `;
 
   document.body.appendChild(overlay);
 
-  const btn = document.getElementById('close-blocker');
-  let timeLeft = seconds;
+  const btn = overlay.querySelector('#close-blocker');
+  let timeLeft = safeSeconds;
 
-  // wait before ignoring limit
-  const timer = setInterval(() => {
-    timeLeft--;      //cnt down every second
-    if (timeLeft > 0) btn.innerText = `Wait (${timeLeft}s)`;
-    else {
-      clearInterval(timer);
-      btn.disabled = false;
-      btn.innerText = "Continue to site";
-      btn.classList.add('ready');
-      btn.focus(); 
-    }
-  }, 1000);
+  // Handle immediate state if timer is 0
+  if (timeLeft === 0) {
+    btn.disabled = false;
+    btn.textContent = 'Continue to site';
+    btn.classList.add('ready');
+    btn.focus();
+  } else {
+    btn.textContent = `Wait (${timeLeft}s)`;
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      if (timeLeft > 0) {
+        btn.textContent = `Wait (${timeLeft}s)`;
+      } else {
+        clearInterval(timer);
+        btn.disabled = false;
+        btn.textContent = 'Continue to site';
+        btn.classList.add('ready');
+        btn.focus();
+      }
+    }, 1000);
+  }
 
   btn.onclick = () => {
     document.body.classList.remove('blocked-scrolling');
     overlay.remove();
-    browser.runtime.sendMessage({ 
-      action: "BLOCKER_CONFIRMED", 
-      url: redirectUrl
+    browser.runtime.sendMessage({
+      action: 'BLOCKER_CONFIRMED',
+      url: redirectUrl,
     });
   };
 }
 
 // covers whole page with single image
 function renderImage(imagePath, redirectUrl = undefined) {
-  console.log("attemting image render")
-  let seconds = 3
-  let resolvedPath = browser.runtime.getURL(imagePath)
+  console.log("attempting image render");
+  const seconds = 3;
+
   try {
     // Prevent duplicate popups
     if (document.getElementById('doom-blocker-image')) return;
 
-    // Build body, needs rework
+    const resolvedPath = browser.runtime.getURL(imagePath);
+
     document.body.classList.add('blocked-scrolling');
 
     const overlay = document.createElement('div');
@@ -98,31 +113,39 @@ function renderImage(imagePath, redirectUrl = undefined) {
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-label', 'Focus reminder');
 
-    if (cachedTheme !== 'system') overlay.dataset.theme = cachedTheme;
+    if (typeof cachedTheme !== 'undefined' && cachedTheme !== 'system') {
+      overlay.dataset.theme = cachedTheme;
+    }
 
-    // not worth it rn to make a html file
+    // Static HTML without template variables to satisfy web-ext lint
     overlay.innerHTML = `
       <div class="blocker-card">
-        <img src="${resolvedPath}">
-        <button id="close-blocker" disabled>Wait (${seconds}s)</button>
+        <img id="blocker-img" alt="Focus reminder image">
+        <button id="close-blocker" disabled></button>
       </div>
     `;
 
     document.body.appendChild(overlay);
 
-    const btn = document.getElementById('close-blocker');
-    let timeLeft = seconds;
+    // Safely assign image source and dynamic button text
+    const img = overlay.querySelector('#blocker-img');
+    const btn = overlay.querySelector('#close-blocker');
 
-    // wait before ignoring limit
+    if (img) img.src = resolvedPath;
+
+    let timeLeft = seconds;
+    btn.textContent = `Wait (${timeLeft}s)`;
+
     const timer = setInterval(() => {
-      timeLeft--;      //cnt down every second
-      if (timeLeft > 0) btn.innerText = `Wait (${timeLeft}s)`;
-      else {
+      timeLeft--;
+      if (timeLeft > 0) {
+        btn.textContent = `Wait (${timeLeft}s)`;
+      } else {
         clearInterval(timer);
         btn.disabled = false;
-        btn.innerText = "Continue to site";
+        btn.textContent = "Continue to site";
         btn.classList.add('ready');
-        btn.focus(); 
+        btn.focus();
       }
     }, 1000);
 
@@ -134,5 +157,7 @@ function renderImage(imagePath, redirectUrl = undefined) {
         url: redirectUrl
       });
     };
-  } catch (e) {console.error(e)}
+  } catch (e) {
+    console.error("Error rendering blocker image:", e);
+  }
 }
