@@ -1,8 +1,20 @@
 import { custom_storage } from "../../../browser/storage.js";
-import { escapeHtml } from "../../../utils/sanitize.js";
 import { faviconUrl } from "../../../utils/url.js";
 
 export let appData = [];
+
+// Minimal DOM element builder to satisfy web-ext linting
+function el(tag, attrs = {}, children = []) {
+  const element = document.createElement(tag);
+  Object.entries(attrs).forEach(([k, v]) => {
+    if (k === 'className') element.className = v;
+    else if (k === 'textContent') element.textContent = v;
+    else if (k.startsWith('data-')) element.dataset[k.slice(5)] = v;
+    else element.setAttribute(k, v);
+  });
+  element.append(...[children].flat().filter(Boolean));
+  return element;
+}
 
 export async function loadAndRenderRules() {
   const stored = await custom_storage.getSync('blacklist');
@@ -34,17 +46,74 @@ function categoryTimerText(category, timerState) {
 
 export async function renderCategories() {
   const container = document.getElementById('categories');
-
   if (!container) return;
 
-  container.innerHTML = '';
-
   const timerState = (await custom_storage.getLocal('timerState')) ?? {};
+  container.replaceChildren(...appData.map((cat, i) => createCategoryNode(cat, i, timerState)));
+}
 
-  appData.forEach((cat, index) => {
-    const html = createCategoryHTML(cat, index, timerState);
-    container.insertAdjacentHTML('beforeend', html);
-  });
+function createCategoryNode(category, catIndex, timerState = {}) {
+  if (!Array.isArray(category.items)) category.items = [];
+
+  const name = category.timerName || 'Unnamed Category';
+  const hasActive = category.items.some(i => i?.active);
+  const timerText = categoryTimerText(category, timerState);
+
+  return el('li', { className: 'category', tabindex: '0', role: 'region', 'aria-label': name }, [
+    el('header', {}, [
+      el('h2', { textContent: name }),
+      el('div', { className: 'cat-controls' }, [
+        el('span', { className: 'cat-timer', textContent: timerText }),
+        el('button', {
+          className: `cat-status rules-control ${hasActive ? 'active' : 'inactive'}`,
+          'data-cat-index': catIndex,
+          'aria-pressed': hasActive,
+          'aria-label': `Toggle all sites in ${name}`
+        }),
+        el('button', {
+          className: 'cat-menu-btn rules-control',
+          'data-cat-index': catIndex,
+          'aria-label': `Options for ${name}`,
+          textContent: '⋯'
+        })
+      ])
+    ]),
+    el('ul', { className: 'items', 'data-cat-index': catIndex },
+      category.items.filter(Boolean).map((item, i) => createItemNode(item, catIndex, i))
+    ),
+    el('form', { className: 'cat-add-item', 'data-cat-index': catIndex }, [
+      el('input', {
+        className: 'cat-add-item-input rules-control',
+        'data-cat-index': catIndex,
+        'aria-label': `Add a site to ${name}`,
+        placeholder: 'Add a new URL or name...'
+      }),
+      el('button', { className: 'cat-add-item-btn', 'data-cat-index': catIndex, textContent: 'Add' })
+    ])
+  ]);
+}
+
+function createItemNode(item, catIndex, itemIndex) {
+  const isPressed = !!item.active;
+
+  return el('li', { className: 'item' }, [
+    el('div', { className: 'item-left-content' }, [
+      el('img', { className: 'item-icon', src: faviconUrl(item.url), alt: '' }),
+      el('div', { className: 'item-title' }, [
+        el('div', { className: 'item-name', textContent: item.name }),
+        el('div', { className: 'item-url', textContent: item.url })
+      ])
+    ]),
+    el('div', { className: 'item-right-content' }, [
+      el('button', {
+        className: `item-status rules-control ${isPressed ? 'active' : 'inactive'}`,
+        'data-cat-index': catIndex,
+        'data-item-index': itemIndex,
+        'aria-pressed': isPressed,
+        'aria-label': `Toggle ${item.url}`
+      })
+    ])
+  ]);
 }
 
 // update just the timer labels without rebuilding the list
@@ -63,62 +132,4 @@ export async function refreshTimers() {
       span.textContent = categoryTimerText(category, timerState);
     }
   });
-}
-
-function createCategoryHTML(category, catIndex, timerState = {}) {
-  if (!Array.isArray(category.items)) {
-    category.items = [];
-  }
-
-  const timerText = categoryTimerText(category, timerState);
-  
-  const itemsHTML = category.items.map((item, i) => {
-    return createItemHTML(item, catIndex, i);
-  }).join('');
-
-  const hasActiveItem = category.items.some(i => i && i.active);
-  const statusClass = hasActiveItem ? 'active' : 'inactive';
-  const name = escapeHtml(category.timerName || 'Unnamed Category');
-
-  return `
-    <li class="category" tabindex="0" role="region" aria-label="${name}">
-      <header>
-        <h2>${name}</h2>
-        <div class="cat-controls">
-          <span class="cat-timer">${timerText}</span>
-          <button class="cat-status rules-control ${statusClass}" data-cat-index="${catIndex}" aria-pressed="${hasActiveItem}" aria-label="Toggle all sites in ${name}"></button>
-          <button class="cat-menu-btn rules-control" data-cat-index="${catIndex}" aria-label="Options for ${name}">⋯</button>
-        </div>
-      </header>
-      <ul class="items" data-cat-index="${catIndex}">
-        ${itemsHTML}
-      </ul>
-      <form class="cat-add-item" data-cat-index="${catIndex}">
-        <input class="cat-add-item-input rules-control" data-cat-index="${catIndex}" aria-label="Add a site to ${name}" placeholder="Add a new URL or name...">
-        <button class="cat-add-item-btn" data-cat-index="${catIndex}">Add</button>
-      </form>
-    </li>
-  `;
-}
-
-function createItemHTML(item, catIndex, itemIndex) {
-  const urlEscaped = escapeHtml(item.url);
-  const nameEscaped = escapeHtml(item.name);
-  const statusClass = item.active ? 'active' : 'inactive';
-  const isPressed = !!item.active;
-
-  return `
-    <li class="item">
-      <div class="item-left-content">
-        <img class="item-icon" src="${faviconUrl(item.url)}" alt="" />
-        <div class="item-title">
-          <div class="item-name">${nameEscaped}</div>
-          <div class="item-url">${urlEscaped}</div>
-        </div>
-      </div>
-      <div class="item-right-content">
-        <button class="item-status rules-control ${statusClass}" data-cat-index="${catIndex}" data-item-index="${itemIndex}" aria-pressed="${isPressed}" aria-label="Toggle ${urlEscaped}"></button>
-      </div>
-    </li>
-  `;
 }
