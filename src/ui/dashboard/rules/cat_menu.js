@@ -1,6 +1,17 @@
 import { appData, saveAndRender } from "./render_rules.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
 import { faviconUrl } from "../../../utils/url.js";
+import { custom_storage } from "../../../browser/storage.js";
+
+async function syncTimerState(category) {
+  const timerState = (await custom_storage.getLocal('timerState')) ?? {};
+  const entry = timerState[category.timerName];
+  if (!entry) return;
+
+  entry.maxTime = category.maxTime;
+  entry.remaining = Math.min(entry.remaining, category.maxTime);
+  await custom_storage.setLocal('timerState', timerState);
+}
 
 export function showCategoryMenu(catIndex, anchorEl) {
   let existing = document.querySelector('.cat-menu-popup');
@@ -12,7 +23,8 @@ export function showCategoryMenu(catIndex, anchorEl) {
   popup.dataset.catIndex = catIndex;
 
   const rect = anchorEl.getBoundingClientRect();
-  popup.style.left = `${rect.left}px`;
+  const popupWidth = 250;
+  popup.style.left = `${Math.max(12, rect.right - popupWidth)}px`;
   popup.style.top = `${rect.bottom + 6}px`;
 
   const closePopup = () => popup.hidePopover();
@@ -32,6 +44,7 @@ function renderMainMenu(popup, catIndex, closePopup) {
   const menuOptions = [
     { label: 'Rename', action: 'rename' },
     { label: 'Change Timer', action: 'change-timer' },
+    { label: 'Change Action', action: 'change-action', expandable: true },
     { label: 'Items', action: 'items', expandable: true },
     { label: 'Delete', action: 'delete', danger: true }
   ];
@@ -46,7 +59,7 @@ function renderMainMenu(popup, catIndex, closePopup) {
     </ul>
   `;
 
-  popup.onclick = (e) => {
+  popup.onclick = async (e) => {
     const actionButtonEl = e.target.closest('.cat-menu-action');
     if (!actionButtonEl) return;
     
@@ -65,7 +78,8 @@ function renderMainMenu(popup, catIndex, closePopup) {
       case 'change-timer': {
         const newTime = prompt('Time limit in minutes:', category.maxTime);
         if (newTime !== null && !isNaN(Number(newTime))) { 
-          category.maxTime = Number(newTime); 
+          category.maxTime = Math.max(0, Number(newTime));
+          await syncTimerState(category);
           saveAndRender(); 
         }
         closePopup();
@@ -83,8 +97,67 @@ function renderMainMenu(popup, catIndex, closePopup) {
         renderItemsMenu(popup, catIndex, closePopup);
         break;
       }
+      case 'change-action': {
+        renderActionMenu(popup, catIndex, closePopup);
+        break;
+      }
     }
   };
+}
+
+const ACTION_OPTIONS = [
+  { value: 'popup', label: 'Popup' },
+  { value: 'redirect', label: 'Redirect' },
+  { value: 'notify', label: 'Notify' },
+];
+
+function renderActionMenu(popup, catIndex, closePopup) {
+  const category = appData[catIndex];
+  if (!category) return;
+
+  const actions = category.actions ?? ['popup'];
+  const hasRedirect = actions.includes('redirect');
+
+  popup.innerHTML = `
+    <ul>
+      <li><button class="cat-menu-action" data-action="back">← Back</button></li>
+      ${ACTION_OPTIONS.map(({ value, label }) => `
+        <li class="cat-menu-checkbox-row">
+          <label>
+            <input type="checkbox" class="cat-action-checkbox" value="${value}" ${actions.includes(value) ? 'checked' : ''}>
+            ${label}
+          </label>
+        </li>
+      `).join('')}
+      <li class="cat-menu-redirect-row">
+        <input type="url" class="cat-action-redirect-input" placeholder="https://example.com"
+               value="${escapeHtml(category.redirectUrl || '')}" ${hasRedirect ? '' : 'hidden'}>
+      </li>
+    </ul>
+  `;
+
+  popup.onclick = (e) => {
+    const actionButtonEl = e.target.closest('.cat-menu-action');
+    if (actionButtonEl?.dataset.action === 'back') renderMainMenu(popup, catIndex, closePopup);
+  };
+
+  popup.querySelectorAll('.cat-action-checkbox').forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      const selected = [...popup.querySelectorAll('.cat-action-checkbox')]
+        .filter((c) => c.checked)
+        .map((c) => c.value);
+
+      // a category needs at least one action, fall back to popup rather than leaving it inert
+      category.actions = selected.length ? selected : ['popup'];
+      saveAndRender();
+      renderActionMenu(popup, catIndex, closePopup);
+    });
+  });
+
+  popup.querySelector('.cat-action-redirect-input')?.addEventListener('change', (e) => {
+    category.redirectUrl = e.target.value.trim();
+    saveAndRender();
+  });
 }
 
 function renderItemsMenu(popup, catIndex, closePopup) {

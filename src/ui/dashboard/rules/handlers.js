@@ -6,11 +6,13 @@ import { hasOptOutPrefix, domainOf } from "../../../utils/url.js";
 // build a fresh category from the user's configured defaults
 async function makeCategory(name) {
   const d = await getNewCategoryDefaults();
-  const useRedirect = d.action === "redirect" && d.redirectUrl;
+  const actions = d.actions?.length ? d.actions : ["popup"];
+  const useRedirect = actions.includes("redirect") && d.redirectUrl;
+  const parsedMaxTime = Number(d.maxTime);
   const category = {
     timerName: name,
-    maxTime: Number(d.maxTime) || 60,
-    actions: useRedirect ? ["redirect"] : ["popup"],
+    maxTime: Number.isFinite(parsedMaxTime) ? parsedMaxTime : 60,
+    actions,
     items: [],
   };
   if (useRedirect) category.redirectUrl = d.redirectUrl;
@@ -109,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.isContentEditable);
     if (!isTyping) {
       console.log("refreshing rules...");
-      await loadAndRenderRules();
+      await refreshTimers();
     }
   }, await getRefreshMs());
 });

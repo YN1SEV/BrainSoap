@@ -81,7 +81,7 @@ function createCategoryHTML(category, catIndex, timerState = {}) {
   const name = escapeHtml(category.timerName || 'Unnamed Category');
 
   return `
-    <li class="category">
+    <li class="category" tabindex="0" role="region" aria-label="${name}">
       <header>
         <h2>${name}</h2>
         <div class="cat-controls">

@@ -47,6 +47,8 @@ function createRow(item) {
   `;
 }
 
+let lastTopSiteUrls = [];
+
 async function renderTopSites() {
   const container = document.getElementById("top-sites-list");
   
@@ -55,10 +57,22 @@ async function renderTopSites() {
   const topSites = await custom_storage.getLocal("topSites");
 
   if (!Array.isArray(topSites) || topSites.length === 0) {
+    lastTopSiteUrls = [];
     container.innerHTML = `<li class="top-empty">No data yet.</li>`;
     return;
   }
 
+  const urls = topSites.map((item) => item.url);
+  const sameOrder = urls.length === lastTopSiteUrls.length && urls.every((u, i) => u === lastTopSiteUrls[i]);
+
+  if (sameOrder) {
+    container.querySelectorAll(".top-site .duration").forEach((el, i) => {
+      el.textContent = formatUsage(topSites[i].durationSeconds);
+    });
+    return;
+  }
+
+  lastTopSiteUrls = urls;
   container.innerHTML = topSites.map(createRow).join("");
 }
 

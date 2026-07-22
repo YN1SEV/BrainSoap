@@ -17,6 +17,8 @@
 </head>
 
 <body>
+  <button class="mini-btn" id="toggle-sidebar" aria-label="Toggle navigation sidebar" aria-expanded="true">☰</button>
+
   <!--================================================= Sidebar ==================================================-->
   <!--============================================================================================================-->
   <!-- SIDEBAR -->
@@ -31,8 +33,6 @@
       <a href="#stats"   ><img src="../../../assets/nav/stats.svg"    alt="">Statistics </a>
       <a href="#settings"><img src="../../../assets/nav/settings.svg" alt="">Settings   </a>
     </nav>
-
-    <p class="nav-hint">Keyboard: Up/Down move between tabs, Enter opens one.</p>
   </aside>
 
   <main>
@@ -47,7 +47,6 @@
     <!--============================================================================================================-->
     <section class="page" id="rules" aria-labelledby="rules-heading">
       <h1 id="rules-heading">Rules</h1>
-        <p class="rules-hint">Keyboard: ↑/↓ move between categories, Enter opens one, Esc goes back.</p>
         <ul id="categories"></ul>
 
         <div class="controls">
@@ -222,14 +221,23 @@
             <span class="setting-desc">What happens when the limit is reached.</span>
           </div>
           <div class="setting-action">
-            <label class="visually-hidden" for="setting-cat-action">Default action</label>
-            <select id="setting-cat-action" class="setting-control">
-              <option value="popup">Popup</option>
-              <option value="redirect">Redirect</option>
-            </select>
             <label class="visually-hidden" for="setting-cat-redirect">Default redirect URL</label>
             <input id="setting-cat-redirect" class="setting-control setting-text" type="url"
                    placeholder="https://example.com" hidden>
+            <div class="setting-action-checkboxes">
+              <label>
+                <input type="checkbox" id="setting-cat-action-popup" class="setting-control" value="popup">
+                Popup
+              </label>
+              <label>
+                <input type="checkbox" id="setting-cat-action-redirect" class="setting-control" value="redirect">
+                Redirect
+              </label>
+              <label>
+                <input type="checkbox" id="setting-cat-action-notify" class="setting-control" value="notify">
+                Notify
+              </label>
+            </div>
           </div>
         </div>
       </section>
@@ -285,8 +293,6 @@
 
   </main>
 
-  <button class="mini-btn" id="toggle-sidebar" aria-label="Toggle navigation sidebar" aria-expanded="true">☰</button>
-
   <div id="copy-toast" popover role="status">Copied to clipboard</div>
 </body>
 
@@ -295,7 +301,6 @@
 
 <!-- Load UI components -->
 <script src="nav/nav.js"></script>
-<script src="rules/keyboard_nav.js"></script>
 
 <!-- Load rules -->
 <script type="module" src="rules/render_rules.js"></script>

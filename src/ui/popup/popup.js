@@ -77,6 +77,7 @@ async function onFocusChange(e) {
   if (e.target.checked) {
     await custom_storage.setLocal('focusMode', true);
     await startFocusTracking();
+    await browser.runtime.sendMessage({ action: "RECHECK_TAB" });
   } else {
     await turnFocusOff();
   }

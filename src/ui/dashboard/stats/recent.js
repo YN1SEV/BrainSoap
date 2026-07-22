@@ -27,6 +27,7 @@ async function getRecentItems() {
   if (!Array.isArray(recentVisits)) return [];
   return [...recentVisits].sort((a, b) => b.lastVisit - a.lastVisit).slice(0, 10);
 }
+let lastActivityKeys = [];
 
 async function renderActivities() {
   const container = document.getElementById("activity-list");
@@ -35,10 +36,22 @@ async function renderActivities() {
   const recent = await getRecentItems();
 
   if (recent.length === 0) {
+    lastActivityKeys = [];
     container.innerHTML = `<li class="activity-empty">No activity tracked yet.</li>`;
     return;
   }
 
+  const keys = recent.map((item) => `${item.url}|${item.lastVisit}`);
+  const sameOrder = keys.length === lastActivityKeys.length && keys.every((k, i) => k === lastActivityKeys[i]);
+
+  if (sameOrder) {
+    container.querySelectorAll(".activity-item .duration").forEach((el, i) => {
+      el.textContent = formatUsage(recent[i].durationSeconds);
+    });
+    return;
+  }
+
+  lastActivityKeys = keys;
   container.innerHTML = recent.map(createActivityItem).join("");
 }
 
