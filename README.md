@@ -66,3 +66,16 @@ BrainSoap
     │   └───popup
     └───utils
 ```
+
+## Testing process
+
+### web-ext
+all code is verified with [web-ext](https://github.com/mozilla/web-ext) 
+web-ext is a command line tool that allows you to test your extension locally. 
+it also provides warnings for unsave code like inproperly sanitized variables. 
+
+### unit tests
+unit tests are applied to important central functionalitys
+
+### Manual Tests
+manual tests enshure all system work together as a whole.
