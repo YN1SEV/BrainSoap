@@ -5,8 +5,8 @@ export const defaultSettings = {
   refreshSeconds: 10,          // how often the dashboard re-reads stats/rules
   newCategoryDefaults: {
     maxTime: 60,               // default time limit (minutes) for a new category
-    action: "popup",           // "popup" | "redirect"
-    redirectUrl: "",           // used when action is "redirect"
+    actions: ["popup"],        // "popup" | "redirect" | "notify"
+    redirectUrl: "",           // used when action includes "redirect"
   },
 };
 

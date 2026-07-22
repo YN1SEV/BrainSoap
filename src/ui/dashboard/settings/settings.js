@@ -66,7 +66,7 @@ async function importData(file) {
 // usage/stats data kept in local storage — wiped on a full reset
 const STATS_KEYS = [
   'dayLog', 'domainLog', 'categoryLog', 'usageStats',
-  'recentVisits', 'topExcluded', 'activeDates',
+  'recentVisits', 'topExcluded', 'activeDates', 'timerState',
 ];
 
 async function resetAll() {
@@ -89,7 +89,9 @@ async function initSettings() {
   const notifToggle = document.getElementById('setting-notifications');
   const refreshInput = document.getElementById('setting-refresh');
   const catTimeInput = document.getElementById('setting-cat-time');
-  const catActionSelect = document.getElementById('setting-cat-action');
+  const catActionPopup = document.getElementById('setting-cat-action-popup');
+  const catActionRedirect = document.getElementById('setting-cat-action-redirect');
+  const catActionNotify = document.getElementById('setting-cat-action-notify');
   const catRedirectInput = document.getElementById('setting-cat-redirect');
   const exportBtn = document.getElementById('settings-export');
   const importBtn = document.getElementById('settings-import');
@@ -103,14 +105,33 @@ async function initSettings() {
   if (notifToggle) notifToggle.checked = settings.notificationsEnabled !== false;
   if (refreshInput) refreshInput.value = settings.refreshSeconds ?? defaultSettings.refreshSeconds;
   if (catTimeInput) catTimeInput.value = catDefaults.maxTime;
-  if (catActionSelect) catActionSelect.value = catDefaults.action;
+  const catActions = catDefaults.actions ?? [];
+  if (catActionPopup) catActionPopup.checked = catActions.includes('popup');
+  if (catActionRedirect) catActionRedirect.checked = catActions.includes('redirect');
+  if (catActionNotify) catActionNotify.checked = catActions.includes('notify');
   if (catRedirectInput) catRedirectInput.value = catDefaults.redirectUrl ?? '';
   syncRedirect();
   applyTheme(settings.theme);
 
-  // redirect url is only relevant when the action is "redirect"
+  // redirect url is only relevant when the action includes "redirect"
   function syncRedirect() {
-    if (catRedirectInput) catRedirectInput.hidden = catActionSelect?.value !== 'redirect';
+    if (catRedirectInput) catRedirectInput.hidden = !catActionRedirect?.checked;
+  }
+
+  async function saveCategoryActions() {
+    syncRedirect();
+    const actions = [catActionPopup, catActionRedirect, catActionNotify]
+      .filter((el) => el?.checked)
+      .map((el) => el.value);
+
+    // a category needs at least one action, fall back to popup rather than leaving it inert
+    if (actions.length === 0) {
+      actions.push('popup');
+      if (catActionPopup) catActionPopup.checked = true;
+    }
+
+    await saveCategoryDefaults({ actions });
+    setStatus("Default action saved.");
   }
 
   themeSelect?.addEventListener('change', async () => {
@@ -133,17 +154,16 @@ async function initSettings() {
   });
 
   catTimeInput?.addEventListener('change', async () => {
-    const maxTime = Math.max(1, Number(catTimeInput.value) || defaultSettings.newCategoryDefaults.maxTime);
+    const parsed = Number(catTimeInput.value);
+    const maxTime = Math.max(0, Number.isFinite(parsed) ? parsed : defaultSettings.newCategoryDefaults.maxTime);
     catTimeInput.value = maxTime;
     await saveCategoryDefaults({ maxTime });
     setStatus("Default time limit saved.");
   });
 
-  catActionSelect?.addEventListener('change', async () => {
-    syncRedirect();
-    await saveCategoryDefaults({ action: catActionSelect.value });
-    setStatus("Default action saved.");
-  });
+  catActionPopup?.addEventListener('change', saveCategoryActions);
+  catActionRedirect?.addEventListener('change', saveCategoryActions);
+  catActionNotify?.addEventListener('change', saveCategoryActions);
 
   catRedirectInput?.addEventListener('change', async () => {
     await saveCategoryDefaults({ redirectUrl: catRedirectInput.value.trim() });

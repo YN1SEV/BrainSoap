@@ -11,12 +11,22 @@ if (!window.hasBlockerListener) {
   const listener = browser.runtime.onMessage.addListener((message) => {
     if (message.action === "TRIGGER_BLOCK") {   
       console.log("rendering something")
-      if (message.imagePath) renderImage(message.imagePath)
+      if (message.imagePath) renderImage(message.imagePath, message.redirectUrl)
       else renderBlocker(message.seconds, message.redirectUrl);
     }
   });
   console.log(listener)
 }
+
+let cachedTheme = 'system';
+browser.storage.sync.get('settings')
+  .then(({ settings }) => { cachedTheme = settings?.theme ?? 'system'; })
+  .catch(() => {});
+browser.storage.onChanged.addListener((changes, area) => {
+  if (area === 'sync' && changes.settings) {
+    cachedTheme = changes.settings.newValue?.theme ?? 'system';
+  }
+});
 
 function renderBlocker(seconds, redirectUrl = undefined) {
   // Prevent duplicate popups
@@ -30,6 +40,8 @@ function renderBlocker(seconds, redirectUrl = undefined) {
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-modal', 'true');
   overlay.setAttribute('aria-label', 'Focus reminder');
+
+  if (cachedTheme !== 'system') overlay.dataset.theme = cachedTheme;
 
   // not worth it rn to make a html file
   overlay.innerHTML = `
@@ -53,7 +65,7 @@ function renderBlocker(seconds, redirectUrl = undefined) {
       clearInterval(timer);
       btn.disabled = false;
       btn.innerText = "Continue to site";
-      btn.style.background = "#28a745"; 
+      btn.classList.add('ready');
       btn.focus(); 
     }
   }, 1000);
@@ -86,6 +98,8 @@ function renderImage(imagePath, redirectUrl = undefined) {
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-label', 'Focus reminder');
 
+    if (cachedTheme !== 'system') overlay.dataset.theme = cachedTheme;
+
     // not worth it rn to make a html file
     overlay.innerHTML = `
       <div class="blocker-card">
@@ -107,7 +121,7 @@ function renderImage(imagePath, redirectUrl = undefined) {
         clearInterval(timer);
         btn.disabled = false;
         btn.innerText = "Continue to site";
-        btn.style.background = "#28a745"; 
+        btn.classList.add('ready');
         btn.focus(); 
       }
     }, 1000);

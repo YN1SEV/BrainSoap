@@ -26,6 +26,13 @@ section#settings > section > div {
   flex-shrink: 0;
 }
 
+.setting-action-checkboxes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
 .setting-control,
 .settings-btn {
   flex-shrink: 0;
