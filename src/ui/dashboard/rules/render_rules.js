@@ -9,7 +9,6 @@ function el(tag, attrs = {}, children = []) {
   Object.entries(attrs).forEach(([k, v]) => {
     if (k === 'className') element.className = v;
     else if (k === 'textContent') element.textContent = v;
-    else if (k.startsWith('data-')) element.dataset[k.slice(5)] = v;
     else element.setAttribute(k, v);
   });
   element.append(...[children].flat().filter(Boolean));
