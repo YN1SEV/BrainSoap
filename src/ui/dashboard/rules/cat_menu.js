@@ -126,6 +126,7 @@ const ACTION_OPTIONS = [
   { value: 'popup', label: 'Popup' },
   { value: 'redirect', label: 'Redirect' },
   { value: 'notify', label: 'Notify' },
+  { value: 'image', label: 'Image'},
 ];
 
 function renderActionMenu(popup, catIndex, closePopup) {
