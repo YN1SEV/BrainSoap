@@ -1,0 +1,113 @@
+section#settings h1 {
+  margin: 12px 0 2px;
+  font-size: 1em;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+section#settings > section > div {
+  padding: 14px 0;
+}
+.setting-row {
+  justify-content: space-between;
+  gap: 16px;
+}
+.setting-info {
+  gap: 3px;
+  min-width: 0;
+}
+
+.setting-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.setting-action-checkboxes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.setting-control,
+.settings-btn {
+  flex-shrink: 0;
+  color: var(--text);
+  cursor: pointer;
+}
+.setting-number {
+  width: 84px;
+  text-align: right;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.setting-number::-webkit-inner-spin-button,
+.setting-number::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.setting-text {
+  width: min(220px, 42vw);
+}
+
+.toggle {
+  appearance: none;
+  margin: 0;
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease);
+}
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: transform var(--ease), background var(--ease);
+}
+.toggle:checked {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+}
+.toggle:checked::after {
+  transform: translateX(18px);
+  background: var(--primary);
+}
+
+.settings-status {
+  margin: 8px 0 4px;
+  min-height: 1em;
+  font-size: 0.82em;
+  color: var(--text-muted);
+}
+
+.about-row {
+  gap: 18px;
+}
+.about-text {
+  margin: 0;
+  font-size: 0.85em;
+  line-height: 1.55;
+  color: var(--text-soft);
+}
+.about-qr {
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+}

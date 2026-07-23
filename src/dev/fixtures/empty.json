@@ -1,0 +1,86 @@
+{
+  "app": "BrainSoap",
+  "version": 1,
+  "exportedAt": "2026-07-09T11:28:53.000Z",
+  "sync": {
+    "settings": {
+      "exist": true,
+      "theme": "system",
+      "notificationsEnabled": true,
+      "refreshSeconds": 10,
+      "newCategoryDefaults": {
+        "maxTime": 60,
+        "action": "popup",
+        "redirectUrl": ""
+      }
+    },
+    "blacklist": [
+      {
+        "timerName": "Social Media",
+        "maxTime": 30,
+        "actions": [
+          "notify",
+          "popup",
+          "redirect"
+        ],
+        "redirectUrl": "https://www.linkedin.com/jobs/",
+        "items": [
+          {
+            "name": "Instagram",
+            "url": "instagram.com",
+            "active": true
+          },
+          {
+            "name": "TikTok",
+            "url": "tiktok.com",
+            "active": true
+          },
+          {
+            "name": "Facebook",
+            "url": "facebook.com",
+            "active": false
+          },
+          {
+            "name": "Reddit",
+            "url": "reddit.com",
+            "active": true
+          }
+        ]
+      },
+      {
+        "timerName": "Entertainment",
+        "maxTime": 60,
+        "actions": [
+          "image"
+        ],
+        "imagePath": "assets/visuals/stop.png",
+        "items": [
+          {
+            "name": "YouTube",
+            "url": "youtube.com",
+            "active": true
+          },
+          {
+            "name": "Netflix",
+            "url": "netflix.com",
+            "active": true
+          },
+          {
+            "name": "Reddit",
+            "url": "reddit.com",
+            "active": true
+          }
+        ]
+      }
+    ]
+  },
+  "local": {
+    "categoryLog": {},
+    "recentVisits": [],
+    "topExcluded": [],
+    "installDate": "2026-07-09T11:28:53.000Z",
+    "dayLog": {},
+    "domainLog": {},
+    "activeDates": []
+  }
+}

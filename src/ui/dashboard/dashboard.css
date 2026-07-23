@@ -1,0 +1,208 @@
+
+* {
+  box-sizing: border-box;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border: 2px solid var(--scrollbar-track);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent), transparent 92%), transparent 34%),
+    linear-gradient(315deg, color-mix(in srgb, var(--primary), transparent 93%), transparent 42%),
+    var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 14px;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+main {
+  flex: 1;
+  overflow-y: auto;
+}
+main > section {
+  display: none;
+  height: 100vh;
+  padding: 24px;
+  border-left: 1px solid var(--border);
+}
+main > section:target {
+  display: block;
+}
+
+[popover]:popover-open {
+  margin: 16px auto auto;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+}
+
+aside header,
+aside nav a,
+body > button,
+.category header,
+.cat-controls,
+.item,
+.item-left-content,
+.cat-add-item,
+.add-category-row,
+section#settings > section > div,
+section#stats .top-site button,
+.week-summary .stat-item .stat-top {
+  display: flex;
+  align-items: center;
+}
+
+aside,
+aside nav,
+.item-title,
+#activity-list,
+#top-sites-list,
+.week-summary .stat-item,
+.cat-menu-popup ul,
+.setting-info,
+section#settings > section {
+  display: flex;
+  flex-direction: column;
+}
+
+section#rules:target,
+section#settings:target {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: clamp(0.95rem, 0.9rem + 0.35vw, 1.15rem);
+}
+
+section#rules > *,
+section#settings > section {
+  width: 100%;
+  max-width: clamp(680px, 62vw, 940px);
+  margin-inline: auto;
+}
+
+.category,
+section#stats > section,
+section#settings > section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.category,
+section#settings > section {
+  box-shadow: 0 1px 2px var(--shadow);
+  padding: 6px var(--panel-padding) 10px;
+}
+
+.item + .item,
+.cat-add-item,
+.cat-menu-item-row + .cat-menu-item-row,
+.setting-row + .setting-row {
+  border-top: 1px solid var(--border);
+}
+
+.item-name,
+.setting-label {
+  font-size: 0.92em;
+  font-weight: 720;
+}
+.item-url,
+.setting-desc {
+  font-size: 0.8em;
+  color: var(--text-muted);
+}
+
+.rules-control:focus,
+.setting-control:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.cat-add-item-input,
+.add-category-row input,
+.setting-control,
+.settings-btn {
+  padding: 0.5em 0.9em;
+  font-size: 0.9em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+}
+.cat-menu-btn,
+.cat-add-item-btn,
+#add-category-btn {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  font-size: 0.9em;
+}
+
+.cat-menu-btn:hover,
+.cat-add-item-btn:hover,
+#add-category-btn:hover,
+.settings-btn:hover,
+.top-add:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.settings-btn.danger:hover,
+.top-remove:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.cat-menu-empty,
+.top-empty {
+  padding: 4px 6px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
