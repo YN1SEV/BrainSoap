@@ -67,67 +67,71 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 // content script confirms the blocker was dismissed
 browser.runtime.onMessage.addListener((message) => {
   if (message.action === "BLOCKER_CONFIRMED") {
-    if(message.url !== undefined){
-      console.log(`redirecting to ${message.url}`)
-      redirectTo(message.url); 
-    }
+    if (message.url !== undefined) redirectTo(message.url);
     unmuteCurrentTab();
-    storage.saveVariable(BlockedDomain, 0) // reset currently blocked domain
-    console.log(`${BlockedDomain} timer reset to 0`)
+  }
+  // focus mode was just turned on
+  if (message.action === "RECHECK_TAB") {
+    recheckActiveTab();
   }
 });
 
-// =================================================
-// FUNCTIONS
-// =================================================
-const checkIfTracked = async (url) => {
-  if (!url) return false;
-  const timerMap = await storage.getSetting("timerMap");
-  const trackedUrls = Object.keys(timerMap);
-  console.log(`Checking if ${url} is tracked among:`, trackedUrls);
-  return trackedUrls.some(trackedUrl => url.includes(trackedUrl));
+async function recheckActiveTab() {
+  try {
+    const tabId = await getActiveTabId();
+    if (!tabId) return;
+    const tab = await browser.tabs.get(tabId);
+    await startSession(await trackable(tab.url), false);
+  } catch (e) { console.error("RECHECK_TAB failed:", e); }
 }
 
-// save logic
-async function updateTime() {
-  if (!currentDomain) return;
+async function startSession(domain, isVisit = true) {
+  await flushSession();
+  await custom_storage.setLocal('session', domain ? { domain, since: Date.now() } : null);
+  await checkThresholds(isVisit);
+}
 
-  const now = Date.now();
-  const delta = Math.floor((now - startTime) / 1000);
+// calculates time on session
+async function flushSession() {
+  if (await custom_storage.getLocal('paused')) return;
   
-  // Storage usage with Promises
-  const data = await storage.getVariable(currentDomain);
-  const total = (data || 0) + delta;
+  const session = await custom_storage.getLocal('session');
+  if (!session?.domain) return;
+  
+  const delta = Math.floor((Date.now() - session.since) / 1000);
+  if (delta > 0) {
+    const focusMode = !!(await custom_storage.getLocal('focusMode'));
+    await logDomainTime(session.domain, delta, focusMode);
+  }
+  await custom_storage.setLocal('session', { domain: session.domain, since: Date.now() });
+}
 
-  await storage.saveVariable(currentDomain, total);
-
-  startTime = now; 
+async function getBlacklist() {
+  return (await custom_storage.getSync('blacklist')) ?? [];
 }
 
 // checks for exceeded time limits
 async function checkThresholds(isVisit) {
   if (await custom_storage.getLocal('paused')) return;
 
-  const timeSpent = await storage.getVariable(currentDomain);
-  console.log(`Time spent on ${currentDomain}: ${timeSpent} seconds`);
-
-  const timerMap = await storage.getSetting("timerMap");
-  const timersList = await storage.getSetting("timers");
-  const activeTimerKeys = timerMap[currentDomain] || ["default"];
-
-  // performe actions
-  for (const t of activeTimerKeys) {
-    const timerObject = timersList[t];
-    
-    if (!timerObject) continue;
-
-    const limit = timerObject.limit;
-    
-    if (timeSpent >= limit) 
-    {
-      // dont need to wait on result
-      actionOnLimit(timeSpent, timerObject);
-    }
+  const session = await custom_storage.getLocal('session');
+  const domain = session?.domain;
+  if (!domain) return;
+  
+  const cats = matchingCategories(await getBlacklist(), domain);
+  if (!cats.length) return;
+  
+  const focusMode = !!(await custom_storage.getLocal('focusMode'));
+  const categoryLog = (await custom_storage.getLocal('categoryLog')) ?? {};
+  const allowNotify = (await custom_storage.getSync('settings'))?.notificationsEnabled !== false;
+  const t = today();
+  
+  for (const cat of cats) {
+    const used = categoryLog[cat.timerName]?.date === t ? categoryLog[cat.timerName].usedSeconds : 0;
+    if (!focusMode && used < cat.maxTime * 60) continue;
+    triggerBlock(cat, focusMode, allowNotify);
+    if (isVisit) await logBlock();
+    if (focusMode) break;
   }
 }
 
@@ -140,27 +144,36 @@ function triggerBlock(cat, focusMode, allowNotify = true) {
   
   const hasPopup    = actions.includes("popup");
   const hasRedirect = actions.includes("redirect");
-  const hasImage = actions.includes("image");
-  
-  if (actions.includes("notify")) {
-    sendMessage("BrainSoap: Limit Reached", `Time's up on ${currentDomain}!`, "limit-notify");
-  }
+  const hasImage    = actions.includes("image");
 
-  if (hasImage)
-  {
-    showImage(timerObject.imagePath);
-  }
-  
-  if (hasPopup && hasRedirect) {
-    showBlocker(timerObject.redirectUrl); 
-  } else if (hasPopup) {
-    showBlocker();
+  // New behavior: 
+  // - If "popup" is selected: show image (if available) or blocker card, with redirect forwarding
+  // - If "popup" is NOT selected but "redirect" is: redirect immediately
+  // - Otherwise: fallback to blocker card
+  if (hasPopup) {
+    if (hasImage) {
+      showImage(cat.imagePath || "assets/visuals/stop.png", hasRedirect ? cat.redirectUrl : null);
+    } else {
+      showBlocker(hasRedirect ? cat.redirectUrl : null);
+    }
   } else if (hasRedirect) {
-    redirectTo(timerObject.redirectUrl);
+    redirectTo(cat.redirectUrl);
+  } else {
+    showBlocker();
   }
-  
-  BlockedDomain = currentDomain;
-  //reset current domain
-  storage.saveVariable(currentDomain,0);
-  return;
+}
+
+// calcs remaining time ("calc" is short for calculator)
+async function publishTimerState() {
+  const blacklist   = await getBlacklist();
+  const categoryLog = (await custom_storage.getLocal('categoryLog')) ?? {};
+  const tday        = today();
+  const timerState  = {};
+  for (const cat of blacklist) {
+    const usedSec = categoryLog[cat.timerName]?.date === tday
+      ? categoryLog[cat.timerName].usedSeconds
+      : 0;
+    timerState[cat.timerName] = { remaining: remainingMinutes(cat.maxTime, usedSec), maxTime: cat.maxTime };
+  }
+  await custom_storage.setLocal('timerState', timerState);
 }
