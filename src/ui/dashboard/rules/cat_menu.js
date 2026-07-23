@@ -191,6 +191,11 @@ function renderActionMenu(popup, catIndex, closePopup) {
         .filter((c) => c.checked)
         .map((c) => c.value);
 
+      // If 'image' was checked, force 'popup' to be true as well
+      if (selected.includes('image') && !selected.includes('popup')) {
+        selected.push('popup');
+      }
+      
       category.actions = selected.length ? selected : ['popup'];
       saveAndRender();
       renderActionMenu(popup, catIndex, closePopup);
