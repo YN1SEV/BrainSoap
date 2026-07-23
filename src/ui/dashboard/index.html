@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrainSoap — Dashboard</title>
+  <meta name="description" content="BrainSoap dashboard: manage site rules and view your focus & scroll statistics.">
+
+  <!-- keep variables first, page styles last -->
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="nav/frame.css">
+  <link rel="stylesheet" href="stats/stats.css">
+  <link rel="stylesheet" href="rules/rules.css">
+  <link rel="stylesheet" href="settings/settings.css">
+
+</head>
+
+<body>
+  <button class="mini-btn" id="toggle-sidebar" aria-label="Toggle navigation sidebar" aria-expanded="true">☰</button>
+
+  <!--================================================= Sidebar ==================================================-->
+  <!--============================================================================================================-->
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <header><img src="../../../assets/icons/icon128.png" alt="">BrainSoap</header>
+
+    <nav aria-label="Main navigation">
+      <!--
+      <a href="#home"    ><img src="../../../assets/nav/home.svg"    alt="">Home       </a>
+      -->
+      <a href="#rules"   ><img src="../../../assets/nav/rules.svg"    alt="">Rules      </a>
+      <a href="#stats"   ><img src="../../../assets/nav/stats.svg"    alt="">Statistics </a>
+      <a href="#settings"><img src="../../../assets/nav/settings.svg" alt="">Settings   </a>
+    </nav>
+  </aside>
+
+  <main>
+
+    <!--================================================== HOME  ===================================================-->
+    <!--============================================================================================================-->
+    <!--
+    <section class="page" id="home"></section>
+    -->
+
+    <!--================================================== RULES ===================================================-->
+    <!--============================================================================================================-->
+    <section class="page" id="rules" aria-labelledby="rules-heading">
+      <h1 id="rules-heading">Rules</h1>
+        <ul id="categories"></ul>
+
+        <div class="controls">
+          <form class="add-category-row" id="add-category-form">
+            <label class="visually-hidden" for="add-category-input">New category name</label>
+            <input id="add-category-input" placeholder="Add new Category...">
+            <button id="add-category-btn" class="rules-control">Add</button>
+          </form>
+        </div>
+    </section>
+
+    <!--================================================== STATS ===================================================-->
+    <!--============================================================================================================-->
+    <section class="page" id="stats">
+      <!----------------------------------------------- Week-Graph --------------------------------------------------->
+      <section class="subsection"id="stats_graph">
+        <h1>Last 7 Days</h1>
+
+        <div class="week-summary">
+
+          <!------------------ Focus Activity  ------------------->
+          <div class="stat-item">
+            <div class="stat-top">
+              <span class="stat-label">Hours in Focus Time:</span>
+              <span class="stat-delta" id="focus-delta">Couldn't be loaded</span>
+            </div>
+            <div class="stat-value value" data-count="0">Couldn't be loaded</div>
+          </div>
+
+          <!------------------ Scroll Activity ------------------->
+          <div class="stat-item">
+            <div class="stat-top">
+              <span class="stat-label">Hours in Scroll Time:</span>
+              <span class="stat-delta" id="scroll-delta">Couldn't be loaded</span>
+            </div>
+
+            <div class="stat-value value" data-count="0">Couldn't be loaded</div>
+          </div>
+        </div>
+
+        <!------------------ Graph last week ------------------->
+        <div class="week-graph-container">
+            <canvas id="week-canvas" role="img"
+                    aria-label="Line chart of focus and scroll hours over the last 7 days"></canvas>
+        </div>
+
+      </section>
+
+      <!------------------------------------------------ All-Time Stats ---------------------------------------------->
+      <section class="subsection" id="stats_all_time">
+        <h1>Statistics</h1>
+
+        <ul>
+
+          <!----------------------- Focus ------------------------>
+          <li class="stat-item">
+            <span class="stat-label">Focus Hours</span>
+            <span id="focus-hours" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Focus Sessions</span>
+            <span id="focus-sessions" class="stat-value"></span>
+          </li>
+
+          <!----------------------- Scroll ----------------------->
+          <li class="stat-item">
+            <span class="stat-label">Scroll Hours</span>
+            <span id="scroll-hours" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Scroll Attempts</span>
+            <span id="scroll-attempts" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Current Streak</span>
+            <span id="scrolls-blocked" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Best Streak</span>
+            <span id="best-streak" class="stat-value"></span>
+          </li>
+
+          <!----------------------- Misc  ------------------------>
+          <li class="stat-item">
+            <span class="stat-label">Sites Blocked</span>
+            <span id="sites-blocked" class="stat-value"></span>
+          </li>
+
+          <li class="stat-item">
+            <span class="stat-label">Active Days</span>
+            <span id="active-days" class="stat-value"></span>
+          </li>
+        </ul>
+      </section>
+      <!---------------------------------------------- Most time spent on -------------------------------------------->
+      <section class="subsection" id="stats_top" aria-labelledby="top-heading">
+        <h1 id="top-heading">Most time spent on</h1>
+        <ul id="top-sites-list"></ul>
+      </section>
+      <!---------------------------------------------- Recent Stats -------------------------------------------------->
+      <section class="subsection" id="stats-recent">
+        <h1>Recent Activity</h1>
+        <ul id="activity-list"></ul>
+      </section>
+    </section>
+
+    <!--================================================ SETTINGS  =================================================-->
+    <!--============================================================================================================-->
+    <section class="page" id="settings">
+
+      <!------------------------------------------------- General ---------------------------------------------------->
+      <section class="subsection" id="settings_general" aria-labelledby="settings-general-heading">
+        <h1 id="settings-general-heading">General</h1>
+
+        <!------------------ Theme ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Theme</span>
+            <span class="setting-desc">Choose how BrainSoap looks.</span>
+          </div>
+          <label class="visually-hidden" for="setting-theme">Theme</label>
+          <select id="setting-theme" class="setting-control">
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+
+        <!------------------ Notifications ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Notifications</span>
+            <span class="setting-desc">Allow limit-reached notifications.</span>
+          </div>
+          <input type="checkbox" id="setting-notifications" class="toggle"
+                 aria-label="Toggle notifications" checked>
+        </div>
+
+        <!------------------ Refresh interval ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Refresh interval</span>
+            <span class="setting-desc">How often stats &amp; rules update (seconds).</span>
+          </div>
+          <label class="visually-hidden" for="setting-refresh">Refresh interval in seconds</label>
+          <input id="setting-refresh" class="setting-control setting-number" type="number" min="1" step="1">
+        </div>
+      </section>
+
+      <!------------------------------------------- New category defaults -------------------------------------------->
+      <section class="subsection" id="settings_category" aria-labelledby="settings-category-heading">
+        <h1 id="settings-category-heading">New category defaults</h1>
+
+        <!------------------ Default time limit ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Time limit</span>
+            <span class="setting-desc">Default limit for a new category (minutes).</span>
+          </div>
+          <label class="visually-hidden" for="setting-cat-time">Default time limit in minutes</label>
+          <input id="setting-cat-time" class="setting-control setting-number" type="number" min="1" step="1">
+        </div>
+
+        <!------------------ Default action (+ redirect url) ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Action</span>
+            <span class="setting-desc">What happens when the limit is reached.</span>
+          </div>
+          <div class="setting-action">
+            <label class="visually-hidden" for="setting-cat-redirect">Default redirect URL</label>
+            <input id="setting-cat-redirect" class="setting-control setting-text" type="url"
+                   placeholder="https://example.com" hidden>
+            <div class="setting-action-checkboxes">
+              <label>
+                <input type="checkbox" id="setting-cat-action-popup" class="setting-control" value="popup">
+                Popup
+              </label>
+              <label>
+                <input type="checkbox" id="setting-cat-action-redirect" class="setting-control" value="redirect">
+                Redirect
+              </label>
+              <label>
+                <input type="checkbox" id="setting-cat-action-notify" class="setting-control" value="notify">
+                Notify
+              </label>
+              <label> 
+                <input type="checkbox" id="setting-cat-action-image" class="setting-control" value="image">
+                Image
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-------------------------------------------------- Data ------------------------------------------------------>
+      <section class="subsection" id="settings_data" aria-labelledby="settings-data-heading">
+        <h1 id="settings-data-heading">Data</h1>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Export</span>
+            <span class="setting-desc">Download your settings and stats as a file.</span>
+          </div>
+          <button id="settings-export" class="settings-btn">Export</button>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Import</span>
+            <span class="setting-desc">Restore from a previously exported file.</span>
+          </div>
+          <button id="settings-import" class="settings-btn">Import</button>
+          <input id="settings-import-file" type="file" accept="application/json" hidden>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Reset</span>
+            <span class="setting-desc">RESET EVERYTHING.</span>
+          </div>
+          <button id="settings-reset" class="settings-btn danger">Reset</button>
+        </div>
+
+        <p id="settings-status" class="settings-status" role="status" aria-live="polite"></p>
+      </section>
+
+      <!-------------------------------------------------- About ----------------------------------------------------->
+      <section class="subsection" id="settings_about" aria-labelledby="settings-about-heading">
+        <h1 id="settings-about-heading">About</h1>
+
+        <div class="about-row">
+          <p class="about-text">
+            BrainSoap is a free, open browser extension built as a School Project in Web Engineering.
+            I honestly don't know what to write here, so I will just leave this as a placeholder for now. 
+            If you are reading this, please consider checking out the source code on GitHub and maybe even contributing!
+          </p>
+          <img class="about-qr" src="../../../assets/misc/Git_QR.svg"
+               alt="QR code linking to the BrainSoap Git repository">
+        </div>
+      </section>
+
+    </section>
+
+  </main>
+
+  <div id="copy-toast" popover role="status">Copied to clipboard</div>
+</body>
+
+<!-- Load libraries -->
+<script src="imported/chart.js"></script>
+
+<!-- Load UI components -->
+<script src="nav/nav.js"></script>
+
+<!-- Load rules -->
+<script type="module" src="rules/render_rules.js"></script>
+<script type="module" src="rules/cat_menu.js"></script>
+<script type="module" src="rules/handlers.js"></script>
+
+
+<!-- Load statistics -->
+<script type="module" src="stats/recent.js"></script>
+<script type="module" src="stats/stats.js"></script>
+<script type="module" src="stats/top_sites.js"></script>
+
+<!-- Load settings -->
+<script type="module" src="settings/settings.js"></script>
+
+<!-- Dev test datasets -->
+<script type="module" src="../../dev/fixtures.js"></script>
+
+</html>

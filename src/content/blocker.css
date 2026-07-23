@@ -1,0 +1,189 @@
+/* CSS-Reset für das Overlay, um Konflikte zu vermeiden */
+#doom-blocker-overlay *,
+#doom-blocker-image * {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+
+
+#doom-blocker-overlay,
+#doom-blocker-image {
+  --radius: 8px;
+  --radius-sm: 6px;
+  --ease: 160ms ease;
+}
+
+@media (prefers-color-scheme: light) {
+  #doom-blocker-overlay,
+  #doom-blocker-image {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --surface-3: #e2e8ef;
+    --text: #17202a;
+    --text-muted: #6b7280;
+    --primary: #4969e8;
+    --accent: #168f78;
+    --danger: #c2414b;
+    --border-strong: rgba(24, 35, 48, 0.18);
+    --shadow: rgba(24, 35, 48, 0.1);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  #doom-blocker-overlay,
+  #doom-blocker-image {
+    --bg: #0d1117;
+    --surface: #121821;
+    --surface-3: #202b39;
+    --text: #f4f7fb;
+    --text-muted: #9aa6b2;
+    --primary: #5d7cff;
+    --accent: #2fc9a8;
+    --danger: #ef6b73;
+    --border-strong: rgba(218, 228, 240, 0.18);
+    --shadow: rgba(0, 0, 0, 0.38);
+  }
+}
+
+/* explicit theme choice from Settings overrides the OS preference */
+#doom-blocker-overlay[data-theme="light"],
+#doom-blocker-image[data-theme="light"] {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-3: #e2e8ef;
+  --text: #17202a;
+  --text-muted: #6b7280;
+  --primary: #4969e8;
+  --accent: #168f78;
+  --danger: #c2414b;
+  --border-strong: rgba(24, 35, 48, 0.18);
+  --shadow: rgba(24, 35, 48, 0.1);
+}
+#doom-blocker-overlay[data-theme="dark"],
+#doom-blocker-image[data-theme="dark"] {
+  --bg: #0d1117;
+  --surface: #121821;
+  --surface-3: #202b39;
+  --text: #f4f7fb;
+  --text-muted: #9aa6b2;
+  --primary: #5d7cff;
+  --accent: #2fc9a8;
+  --danger: #ef6b73;
+  --border-strong: rgba(218, 228, 240, 0.18);
+  --shadow: rgba(0, 0, 0, 0.38);
+}
+
+/* full-screen darkening layer */
+#doom-blocker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2147483647; /* Highest possible z-index */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* popup card */
+.blocker-card {
+  background: var(--surface);
+  color: var(--text);
+  padding: 30px;
+  border-radius: var(--radius);
+  text-align: center;
+  width: 85%;
+  max-width: 700px;
+  box-shadow: 0 10px 30px var(--shadow);
+  border: 1px solid var(--border-strong);
+}
+
+.blocker-card h2 {
+  
+  font-size: 35px;
+  color: var(--danger);
+}
+
+.blocker-card p {
+  margin-top: 10;
+  margin-bottom: 30;
+  font-size: 22px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* Wait button */
+#close-blocker {
+  margin-top: 15px;
+  margin-bottom: 30px !important;
+  padding: 14px 28px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: background var(--ease), opacity var(--ease);
+}
+
+#close-blocker:disabled {
+  background: var(--surface-3);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Stop background from scrolling */
+body.blocked-scrolling {
+  overflow: hidden !important;
+}
+
+#doom-blocker-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2147483647; /* Highest possible z-index */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+#doom-blocker-image .blocker-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center;
+  gap: 24px; /* Creates spacing between the image and the button */
+  max-width: 90vw; /* Prevents it from touching the screen edges */
+  max-height: 90vh;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Constrain the image so it fits the screen without distorting */
+#doom-blocker-image .blocker-card img {
+  max-width: 100%;
+  max-height: 70vh; /* Leaves enough room at the bottom for the button */
+  object-fit: contain; /* Preserves the image's aspect ratio */
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+
+
