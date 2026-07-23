@@ -121,7 +121,13 @@ async function initSettings() {
   }
 
   async function saveCategoryActions() {
+    
+    if (catActionImage?.checked && catActionPopup) {
+      catActionPopup.checked = true;
+    }
+
     syncRedirect();
+
     const actions = [catActionPopup, catActionRedirect, catActionNotify, catActionImage]
       .filter((el) => el?.checked)
       .map((el) => el.value);

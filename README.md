@@ -14,8 +14,11 @@ This project was created as a learning Project for DHBW Stuttgart.
     - also in arbitrary combinations
 
 ### planned Features 
->[!info]
+
+>[!INFO]
+>
 >**aka TO-DO list**
+
 - custom image popup
 
 ## Related repositorys
@@ -36,8 +39,11 @@ this was a great help in understanding how to create an extension and what you c
 4. chose the manifest.json file from this repo. 
 5. that should be it. you can now try the extension.
 
-### installing permanantly
+### installing via zip file
 not yet supported, the process to get an extension verified takes too long/is too complicated
+
+### installing from scource
+you can only install from scource if you have a Firefox build which supports not certified extensions. This is for example a Firefox 
 
 ## Folder structure: 
 ```

@@ -151,8 +151,8 @@ function triggerBlock(cat, focusMode, allowNotify = true) {
   // - If "popup" is NOT selected but "redirect" is: redirect immediately
   // - Otherwise: fallback to blocker card
   if (hasPopup) {
-    if (hasImage && cat.imagePath) {
-      showImage(cat.imagePath, hasRedirect ? cat.redirectUrl : null);
+    if (hasImage) {
+      showImage(cat.imagePath || "assets/visuals/stop.png", hasRedirect ? cat.redirectUrl : null);
     } else {
       showBlocker(hasRedirect ? cat.redirectUrl : null);
     }
