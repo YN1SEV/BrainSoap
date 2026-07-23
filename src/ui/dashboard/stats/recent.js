@@ -41,6 +41,12 @@ function createActivityItem(item) {
   return li;
 }
 
+async function getRecentItems() {
+  const recentVisits = await custom_storage.getLocal('recentVisits');
+  if (!Array.isArray(recentVisits)) return [];
+  return [...recentVisits].sort((a, b) => b.lastVisit - a.lastVisit).slice(0, 10);
+}
+
 async function renderActivities() {
   const container = document.getElementById("activity-list");
   if (!container) return;
