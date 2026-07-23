@@ -49,15 +49,32 @@ function renderMainMenu(popup, catIndex, closePopup) {
     { label: 'Delete', action: 'delete', danger: true }
   ];
 
-  popup.innerHTML = `
-    <ul>
-      ${menuOptions.map(({ label, action, danger, expandable }) =>
-        `<li><button class="cat-menu-action${danger ? ' danger' : ''}" data-action="${action}">
-          <span>${label}</span>${expandable ? '<span class="cat-menu-action-chevron" aria-hidden="true">›</span>' : ''}
-        </button></li>`
-      ).join('')}
-    </ul>
-  `;
+  const ul = document.createElement('ul');
+
+  menuOptions.forEach(({ label, action, danger, expandable }) => {
+    const li = document.createElement('li');
+    const button = document.createElement('button');
+    
+    button.className = `cat-menu-action${danger ? ' danger' : ''}`;
+    button.dataset.action = action;
+
+    const spanLabel = document.createElement('span');
+    spanLabel.textContent = label;
+    button.appendChild(spanLabel);
+
+    if (expandable) {
+      const chevron = document.createElement('span');
+      chevron.className = 'cat-menu-action-chevron';
+      chevron.setAttribute('aria-hidden', 'true');
+      chevron.textContent = '›';
+      button.appendChild(chevron);
+    }
+
+    li.appendChild(button);
+    ul.appendChild(li);
+  });
+
+  popup.replaceChildren(ul);
 
   popup.onclick = async (e) => {
     const actionButtonEl = e.target.closest('.cat-menu-action');
@@ -109,6 +126,7 @@ const ACTION_OPTIONS = [
   { value: 'popup', label: 'Popup' },
   { value: 'redirect', label: 'Redirect' },
   { value: 'notify', label: 'Notify' },
+  { value: 'image', label: 'Image'},
 ];
 
 function renderActionMenu(popup, catIndex, closePopup) {
@@ -118,23 +136,49 @@ function renderActionMenu(popup, catIndex, closePopup) {
   const actions = category.actions ?? ['popup'];
   const hasRedirect = actions.includes('redirect');
 
-  popup.innerHTML = `
-    <ul>
-      <li><button class="cat-menu-action" data-action="back">← Back</button></li>
-      ${ACTION_OPTIONS.map(({ value, label }) => `
-        <li class="cat-menu-checkbox-row">
-          <label>
-            <input type="checkbox" class="cat-action-checkbox" value="${value}" ${actions.includes(value) ? 'checked' : ''}>
-            ${label}
-          </label>
-        </li>
-      `).join('')}
-      <li class="cat-menu-redirect-row">
-        <input type="url" class="cat-action-redirect-input" placeholder="https://example.com"
-               value="${escapeHtml(category.redirectUrl || '')}" ${hasRedirect ? '' : 'hidden'}>
-      </li>
-    </ul>
-  `;
+  const ul = document.createElement('ul');
+
+  // Back button
+  const backLi = document.createElement('li');
+  const backBtn = document.createElement('button');
+  backBtn.className = 'cat-menu-action';
+  backBtn.dataset.action = 'back';
+  backBtn.textContent = '← Back';
+  backLi.appendChild(backBtn);
+  ul.appendChild(backLi);
+
+  // Checkboxes
+  ACTION_OPTIONS.forEach(({ value, label }) => {
+    const li = document.createElement('li');
+    li.className = 'cat-menu-checkbox-row';
+
+    const labelEl = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.className = 'cat-action-checkbox';
+    input.value = value;
+    input.checked = actions.includes(value);
+
+    labelEl.append(input, ` ${label}`);
+    li.appendChild(labelEl);
+    ul.appendChild(li);
+  });
+
+  // Redirect Input Row
+  const redirectLi = document.createElement('li');
+  redirectLi.className = 'cat-menu-redirect-row';
+
+  const redirectInput = document.createElement('input');
+  redirectInput.type = 'url';
+  redirectInput.className = 'cat-action-redirect-input';
+  redirectInput.placeholder = 'https://example.com';
+  redirectInput.value = category.redirectUrl || '';
+  if (!hasRedirect) redirectInput.hidden = true;
+
+  redirectLi.appendChild(redirectInput);
+  ul.appendChild(redirectLi);
+
+  popup.replaceChildren(ul);
 
   popup.onclick = (e) => {
     const actionButtonEl = e.target.closest('.cat-menu-action');
@@ -147,7 +191,11 @@ function renderActionMenu(popup, catIndex, closePopup) {
         .filter((c) => c.checked)
         .map((c) => c.value);
 
-      // a category needs at least one action, fall back to popup rather than leaving it inert
+      // If 'image' was checked, force 'popup' to be true as well
+      if (selected.includes('image') && !selected.includes('popup')) {
+        selected.push('popup');
+      }
+      
       category.actions = selected.length ? selected : ['popup'];
       saveAndRender();
       renderActionMenu(popup, catIndex, closePopup);
@@ -165,27 +213,55 @@ function renderItemsMenu(popup, catIndex, closePopup) {
   if (!category) return;
 
   const items = category.items ?? [];
+  const ul = document.createElement('ul');
 
-  const itemRows = items.map((item, index) => `
-    <li class="cat-menu-item-row">
-      <img class="cat-menu-item-icon" src="${faviconUrl(item.url)}" alt="" />
-      <span class="cat-menu-item-name">${escapeHtml(item.name || item.url)}</span>
-      <button class="cat-menu-action" data-action="item-rename" data-item-index="${index}">Rename</button>
-      <button class="cat-menu-action danger" data-action="item-delete" data-item-index="${index}">Delete</button>
-    </li>
-  `).join('');
+  // Back Button
+  const backLi = document.createElement('li');
+  const backBtn = document.createElement('button');
+  backBtn.className = 'cat-menu-action';
+  backBtn.dataset.action = 'back';
+  backBtn.textContent = '← Back';
+  backLi.appendChild(backBtn);
+  ul.appendChild(backLi);
 
-  const emptyRow = items.length === 0
-    ? `<li class="cat-menu-empty">No sites yet</li>`
-    : '';
+  // Empty state fallback
+  if (items.length === 0) {
+    const emptyLi = document.createElement('li');
+    emptyLi.className = 'cat-menu-empty';
+    emptyLi.textContent = 'No sites yet';
+    ul.appendChild(emptyLi);
+  } else {
+    items.forEach((item, index) => {
+      const li = document.createElement('li');
+      li.className = 'cat-menu-item-row';
 
-  popup.innerHTML = `
-    <ul>
-      <li><button class="cat-menu-action" data-action="back">← Back</button></li>
-      ${emptyRow}
-      ${itemRows}
-    </ul>
-  `;
+      const img = document.createElement('img');
+      img.className = 'cat-menu-item-icon';
+      img.src = faviconUrl(item.url);
+      img.alt = '';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'cat-menu-item-name';
+      nameSpan.textContent = item.name || item.url;
+
+      const renameBtn = document.createElement('button');
+      renameBtn.className = 'cat-menu-action';
+      renameBtn.dataset.action = 'item-rename';
+      renameBtn.dataset.itemIndex = index;
+      renameBtn.textContent = 'Rename';
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'cat-menu-action danger';
+      deleteBtn.dataset.action = 'item-delete';
+      deleteBtn.dataset.itemIndex = index;
+      deleteBtn.textContent = 'Delete';
+
+      li.append(img, nameSpan, renameBtn, deleteBtn);
+      ul.appendChild(li);
+    });
+  }
+
+  popup.replaceChildren(ul);
 
   popup.onclick = (e) => {
     const buttonEl = e.target.closest('.cat-menu-action');
@@ -207,14 +283,14 @@ function renderItemsMenu(popup, catIndex, closePopup) {
       if (newName?.trim()) { 
         item.name = newName.trim(); 
         saveAndRender(); 
-        renderItemsMenu(popup, catIndex, closePopup); // Re-render the items list
+        renderItemsMenu(popup, catIndex, closePopup);
       }
     } 
     else if (action === 'item-delete') {
       if (confirm(`Delete "${item.name || item.url}"?`)) { 
         category.items.splice(itemIndex, 1); 
         saveAndRender(); 
-        renderItemsMenu(popup, catIndex, closePopup); // Re-render the items list
+        renderItemsMenu(popup, catIndex, closePopup);
       }
     }
   };

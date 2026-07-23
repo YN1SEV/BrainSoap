@@ -92,6 +92,7 @@ async function initSettings() {
   const catActionPopup = document.getElementById('setting-cat-action-popup');
   const catActionRedirect = document.getElementById('setting-cat-action-redirect');
   const catActionNotify = document.getElementById('setting-cat-action-notify');
+  const catActionImage = document.getElementById('setting-cat-action-image');
   const catRedirectInput = document.getElementById('setting-cat-redirect');
   const exportBtn = document.getElementById('settings-export');
   const importBtn = document.getElementById('settings-import');
@@ -109,6 +110,7 @@ async function initSettings() {
   if (catActionPopup) catActionPopup.checked = catActions.includes('popup');
   if (catActionRedirect) catActionRedirect.checked = catActions.includes('redirect');
   if (catActionNotify) catActionNotify.checked = catActions.includes('notify');
+  if (catActionImage) catActionImage.checked = catActions.includes('image');
   if (catRedirectInput) catRedirectInput.value = catDefaults.redirectUrl ?? '';
   syncRedirect();
   applyTheme(settings.theme);
@@ -119,8 +121,14 @@ async function initSettings() {
   }
 
   async function saveCategoryActions() {
+    
+    if (catActionImage?.checked && catActionPopup) {
+      catActionPopup.checked = true;
+    }
+
     syncRedirect();
-    const actions = [catActionPopup, catActionRedirect, catActionNotify]
+
+    const actions = [catActionPopup, catActionRedirect, catActionNotify, catActionImage]
       .filter((el) => el?.checked)
       .map((el) => el.value);
 
@@ -164,6 +172,7 @@ async function initSettings() {
   catActionPopup?.addEventListener('change', saveCategoryActions);
   catActionRedirect?.addEventListener('change', saveCategoryActions);
   catActionNotify?.addEventListener('change', saveCategoryActions);
+  catActionImage?.addEventListener('change', saveCategoryActions);
 
   catRedirectInput?.addEventListener('change', async () => {
     await saveCategoryDefaults({ redirectUrl: catRedirectInput.value.trim() });

@@ -32,48 +32,81 @@ async function copyToClipboard(text) {
   return ok;
 }
 
-function createRow(item) {
-  const url = escapeHtml(item.url);
-  const label = escapeHtml(domainOf(item.url) || item.url);
-
-  return `
-    <li class="top-site">
-      <img class="favicon" src="${faviconUrl(item.url)}" alt="" />
-      <span class="domain">${label}</span>
-      <span class="duration">${formatUsage(item.durationSeconds)}</span>
-      <button class="top-add" data-url="${url}" aria-label="Copy ${url} and open Rules">+</button>
-      <button class="top-remove" data-url="${url}" aria-label="Remove ${url} from this statistic">✕</button>
-    </li>
-  `;
-}
-
 let lastTopSiteUrls = [];
+
+function createRow(item) {
+  const displayLabel = domainOf(item.url) || item.url;
+
+  const li = document.createElement("li");
+  li.className = "top-site";
+
+  const img = document.createElement("img");
+  img.className = "favicon";
+  img.src = faviconUrl(item.url);
+  img.alt = "";
+
+  const domainSpan = document.createElement("span");
+  domainSpan.className = "domain";
+  domainSpan.textContent = displayLabel;
+
+  const durationSpan = document.createElement("span");
+  durationSpan.className = "duration";
+  durationSpan.textContent = formatUsage(item.durationSeconds);
+
+  // Add button
+  const addButton = document.createElement("button");
+  addButton.className = "top-add";
+  addButton.dataset.url = item.url;
+  addButton.setAttribute("aria-label", `Copy ${item.url} and open Rules`);
+  addButton.textContent = "+";
+
+  // Remove button
+  const removeButton = document.createElement("button");
+  removeButton.className = "top-remove";
+  removeButton.dataset.url = item.url;
+  removeButton.setAttribute("aria-label", `Remove ${item.url} from this statistic`);
+  removeButton.textContent = "✕";
+
+  li.append(img, domainSpan, durationSpan, addButton, removeButton);
+
+  return li;
+}
 
 async function renderTopSites() {
   const container = document.getElementById("top-sites-list");
-  
   if (!container) return;
-  
+
   const topSites = await custom_storage.getLocal("topSites");
 
   if (!Array.isArray(topSites) || topSites.length === 0) {
     lastTopSiteUrls = [];
-    container.innerHTML = `<li class="top-empty">No data yet.</li>`;
+    container.replaceChildren();
+
+    const emptyLi = document.createElement("li");
+    emptyLi.className = "top-empty";
+    emptyLi.textContent = "No data yet.";
+    container.appendChild(emptyLi);
     return;
   }
 
   const urls = topSites.map((item) => item.url);
-  const sameOrder = urls.length === lastTopSiteUrls.length && urls.every((u, i) => u === lastTopSiteUrls[i]);
+  const sameOrder =
+    urls.length === lastTopSiteUrls.length &&
+    urls.every((u, i) => u === lastTopSiteUrls[i]);
 
   if (sameOrder) {
     container.querySelectorAll(".top-site .duration").forEach((el, i) => {
-      el.textContent = formatUsage(topSites[i].durationSeconds);
+      if (topSites[i]) {
+        el.textContent = formatUsage(topSites[i].durationSeconds);
+      }
     });
     return;
   }
 
   lastTopSiteUrls = urls;
-  container.innerHTML = topSites.map(createRow).join("");
+
+  // Modern, linter-safe replacement of all children
+  container.replaceChildren(...topSites.map(createRow));
 }
 
 // wires up the + copy and x remove buttons
