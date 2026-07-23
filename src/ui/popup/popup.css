@@ -1,8 +1,7 @@
-
-body { 
-    width: 300px; 
-    font-family: sans-serif; 
-    background-color: #f9f9f9;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: system-ui, sans-serif;
 }
 
 body {
@@ -12,25 +11,9 @@ body {
   color: var(--text);
 }
 
-
-/*display*/
-.displayStats{ display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    text-align: center; 
-}
-.timeContainer {
-    grid-column: 1 / -1;
-    height: 8px;
-    background: #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 6px;
-}
-.timeBar {
-    height: 100%;
-    width: 0%;
-    background: #4caf50;
-    transition: width 0.3s ease;
+h1 {
+  font-size: 25px;
+  line-height: 25px;
 }
 
 
@@ -56,8 +39,9 @@ header > div img {
   height: 25px;
 }
 
-input:checked + .slider {
-    background-color: #4caf50;
+header a img {
+  width: 28px;
+  height: 28px;
 }
 
 @media (prefers-color-scheme: dark) {
