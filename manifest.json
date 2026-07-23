@@ -25,7 +25,7 @@
     },
     {
       "resources": ["src/browser/storage.js"],
-      "extension_ids": ["*"]
+      "extension_ids": ["BrainSoap@not_a_real_email.com"]
     }
   ],
   "background": {
@@ -37,7 +37,12 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "BrainSoap@yourdomain.com"
+      "id": "BrainSoap@not_a_real_email.com",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
     }
   }
 }
