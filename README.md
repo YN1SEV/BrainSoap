@@ -15,7 +15,7 @@ This project was created as a learning Project for DHBW Stuttgart.
 
 ### planned Features 
 
->[!INFO]
+>[!NOTE]
 >
 >**aka TO-DO list**
 
