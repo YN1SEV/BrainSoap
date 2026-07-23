@@ -33,18 +33,29 @@ class StorageManager {
 	}
 
 	// local storage
-	async setLocal(key, value) {
-		await this._ensureInitialized();
-		this.localCache[key] = value;
-		await chrome.storage.local.set({ [key]: value });
+	async setLocal(key, value) 
+	{
+		try {
+			await this._ensureInitialized();
+			this.localCache[key] = value;
+			await chrome.storage.local.set({ [key]: value });		
+		} catch (e) {
+			console.error(`error while setting ${key} in local storage`, e);
+			throw e;
+		}
 	}
 
 	async getLocal(key) {
-		await this._ensureInitialized();
-		if (this.localCache[key] !== undefined) return this.localCache[key];
+		try {
+			await this._ensureInitialized();
+			if (this.localCache[key] !== undefined) return this.localCache[key];
 
-		const result = await chrome.storage.local.get(key);
-		return result[key];
+			const result = await chrome.storage.local.get(key);
+			return result[key];
+		} catch (e) {
+			console.error(`error while getting ${key} from local storage`, e);
+			throw e;
+		}
 	}
 
 	// wipes session
@@ -68,17 +79,27 @@ class StorageManager {
 
 	// synced storage
 	async setSync(key, value) {
-		await this._ensureInitialized();
-		this.syncCache[key] = value;
-		await chrome.storage.sync.set({ [key]: value });
+		try {
+			await this._ensureInitialized();
+			this.syncCache[key] = value;
+			await chrome.storage.sync.set({ [key]: value });
+		} catch (e) {
+			console.error(`error while setting ${key} in sync storage`, e);
+			throw e;
+		}
 	}
 
 	async getSync(key) {
+		try {
 		await this._ensureInitialized();
 		if (this.syncCache[key] !== undefined) return this.syncCache[key];
 
 		const result = await chrome.storage.sync.get(key);
 		return result[key];
+		} catch (e) {
+			console.error(`error while getting ${key} in sync storage`, e);
+			throw e;
+		}
 	}
 
 	async resetSettings(defaults) {
@@ -104,7 +125,8 @@ class StorageManager {
 			this.syncCache = syncData || {};
 			this.isReady = true;
 			} catch (e) {
-				console.error("StorageManager Init Failed:", e);
+				console.error("error while initializing storage:", e);
+				throw e;
 			}
 	}
 }
