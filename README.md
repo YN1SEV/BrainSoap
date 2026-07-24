@@ -7,7 +7,7 @@ Browser extension to help you avoid extended scrolling by blocking your screen o
 
 ## Features
 - tracking how much time you spend on different sites
-- actions when a limit is exceed
+- actions when a limit is exceeded
     - sending you a message
     - creating a popup
     - showing an image with the popup
@@ -21,9 +21,9 @@ Browser extension to help you avoid extended scrolling by blocking your screen o
 
 - custom image popup
 
-## Related repositorys
+## Related repositories
 
-Much Tanks to [MDN](https://github.com/mdn/webextensions-examples.git) and [fnya](https://github.com/fnya/firefox-extensions-template.git) for providing examples.
+Much thanks to [MDN](https://github.com/mdn/webextensions-examples.git) and [fnya](https://github.com/fnya/firefox-extensions-template.git) for providing examples.
 this was a great help in understanding how to create an extension and what you can do with them.
 
 ## Installation
@@ -37,7 +37,7 @@ this was a great help in understanding how to create an extension and what you c
 1. type in your url bar `about:debugging`
 2. go to This Firefox
 3. click load temporary Add-on
-4. chose the `manifest.json` file from this repo.
+4. choose the `manifest.json` file from this repo.
 5. that should be it. you can now try the extension.
   
 ### installing via zip file
@@ -58,8 +58,8 @@ This section will roughly describe how to install an unsigned extension on such 
 1. type in `about:config` in your URL bar.
 2. disable the setting `xpinstall.signatures.required`. This will allow you to install unsigned extensions.
 > [!CAUTION]
-> changeing these settings can mess up your browser pretty bad.
-> dont go changing things if you dont know what it does.
+> changing these settings can mess up your browser pretty bad.
+> don't go changing things if you don't know what it does.
 3. download the extension files from this repository
 4. create a zip file of the folders `assets`, `src` and the file `manifest.json`
 5. follow the instructions from `installing via zip file`
@@ -109,7 +109,7 @@ This allows testing the components without installing the extension in an actual
 
 ### stress tests
 are performed on an installed installation to test how much it can handle without slowing down.
-the Results can strongly depend on the mashine.
+the Results can strongly depend on the machine.
 
 ### Manual Tests
-manual tests ensure all systems work together as a whole. They are permormed regularly during development and before release.
+manual tests ensure all systems work together as a whole. They are performed regularly during development and before release.
