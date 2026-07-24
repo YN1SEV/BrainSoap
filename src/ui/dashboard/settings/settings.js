@@ -91,10 +91,9 @@ async function initSettings() {
   const notifToggle = document.getElementById('setting-notifications');
   const refreshInput = document.getElementById('setting-refresh');
   const catTimeInput = document.getElementById('setting-cat-time');
-  const catActionPopup = document.getElementById('setting-cat-action-popup');
-  const catActionRedirect = document.getElementById('setting-cat-action-redirect');
+  const catModeRadios = document.querySelectorAll('input[name="setting-cat-mode"]');
   const catActionNotify = document.getElementById('setting-cat-action-notify');
-  const catActionImage = document.getElementById('setting-cat-action-image');
+  const catActionRedirect = document.getElementById('setting-cat-action-redirect');
   const catRedirectInput = document.getElementById('setting-cat-redirect');
   const exportBtn = document.getElementById('settings-export');
   const importBtn = document.getElementById('settings-import');
@@ -109,10 +108,10 @@ async function initSettings() {
   if (refreshInput) refreshInput.value = settings.refreshSeconds ?? defaultSettings.refreshSeconds;
   if (catTimeInput) catTimeInput.value = catDefaults.maxTime;
   const catActions = catDefaults.actions ?? [];
-  if (catActionPopup) catActionPopup.checked = catActions.includes('popup');
-  if (catActionRedirect) catActionRedirect.checked = catActions.includes('redirect');
+  const catMode = catActions.includes('image') ? 'image' : catActions.includes('popup') ? 'popup' : 'neither';
+  catModeRadios.forEach((radio) => { radio.checked = radio.value === catMode; });
   if (catActionNotify) catActionNotify.checked = catActions.includes('notify');
-  if (catActionImage) catActionImage.checked = catActions.includes('image');
+  if (catActionRedirect) catActionRedirect.checked = catActions.includes('redirect');
   if (catRedirectInput) catRedirectInput.value = catDefaults.redirectUrl ?? '';
   syncRedirect();
   applyTheme(settings.theme);
@@ -123,24 +122,14 @@ async function initSettings() {
   }
 
   async function saveCategoryActions() {
-    
-    if (catActionImage?.checked && catActionPopup) {
-      catActionPopup.checked = true;
-    }
-
     syncRedirect();
 
-    const actions = [catActionPopup, catActionRedirect, catActionNotify, catActionImage]
+    const mode = document.querySelector('input[name="setting-cat-mode"]:checked')?.value ?? 'neither';
+    const extras = [catActionNotify, catActionRedirect]
       .filter((el) => el?.checked)
       .map((el) => el.value);
 
-    // a category needs at least one action, fall back to popup rather than leaving it inert
-    if (actions.length === 0) {
-      actions.push('popup');
-      if (catActionPopup) catActionPopup.checked = true;
-    }
-
-    await saveCategoryDefaults({ actions });
+    await saveCategoryDefaults({ actions: mode === 'neither' ? extras : [mode, ...extras] });
     setStatus("Default action saved.");
   }
 
@@ -171,10 +160,9 @@ async function initSettings() {
     setStatus("Default time limit saved.");
   });
 
-  catActionPopup?.addEventListener('change', saveCategoryActions);
-  catActionRedirect?.addEventListener('change', saveCategoryActions);
+  catModeRadios.forEach((radio) => radio.addEventListener('change', saveCategoryActions));
   catActionNotify?.addEventListener('change', saveCategoryActions);
-  catActionImage?.addEventListener('change', saveCategoryActions);
+  catActionRedirect?.addEventListener('change', saveCategoryActions);
 
   catRedirectInput?.addEventListener('change', async () => {
     await saveCategoryDefaults({ redirectUrl: catRedirectInput.value.trim() });
