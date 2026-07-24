@@ -4,7 +4,8 @@ a documentation, and a bit of a confession
 ## The Core Problem
 we route `#rules` / `#stats` / `#settings` with plain `<a href="#stats">` links plus CSS `:target` without JS router.
 
-when a URL hash changes, the browser silently moves its focus navigation starting point to the target element. It does this *even though that section has no `tabindex` and is not focusable itself*. the browser quietly remembers "the next `Tab` press starts searching from here" instead of from wherever focus actually is. 
+when a URL hash changes, the browser silently moves its focus navigation starting point to the target element. It does this *even though that section has no `tabindex` and is not focusable itself*. the browser quietly remembers "the next `Tab` press starts searching from here" instead of from wherever focus actually is.
+
 this only happens in Firefox, Chromium was always fine.
 
 ## The Fix
@@ -15,14 +16,14 @@ const sidebarNav = document.querySelector(".sidebar nav");
 let keyboardActivatedLink = false;
 
 sidebarNav?.addEventListener("click", (e) => {
-  keyboardActivatedLink = e.detail === 0 && !!e.target.closest("a");
+  keyboardActivatedLink = e.detail === 0 && !!e.target.closest("a");
 });
-
+  
 function resetFocusAnchor() {
-  requestAnimationFrame(() => {
-    if (!keyboardActivatedLink) toggleBtn?.focus();
-    keyboardActivatedLink = false;
-  });
+  requestAnimationFrame(() => {
+    if (!keyboardActivatedLink) toggleBtn?.focus();
+    keyboardActivatedLink = false;
+  });
 }
 
 window.addEventListener("load", resetFocusAnchor);
