@@ -16,7 +16,7 @@ const trackable = async (url) => (
 
 
 // catch silent fail
-window.addEventListener("unhandledrejection", (event) => {
+globalThis.addEventListener("unhandledrejection", (event) => {
   console.error("Unhandled Promise Rejection:", event.reason);
 });
 
