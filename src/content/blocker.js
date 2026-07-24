@@ -28,17 +28,25 @@ browser.storage.onChanged.addListener((changes, area) => {
   }
 });
 
-function renderBlocker(seconds, redirectUrl = undefined) {
-  // Prevent duplicate popups
-  if (document.getElementById('doom-blocker-overlay')) return;
+function fetchExtensionText(path) {
+  return fetch(browser.runtime.getURL(path)).then((r) => r.text()).catch(() => '');
+}
 
-  // Sanitize input to a non-negative integer
-  const safeSeconds = Math.max(0, parseInt(seconds, 10) || 0);
+const blockerCssPromise = fetchExtensionText('src/content/blocker.css');
+const overlayHtmlPromise = fetchExtensionText('src/content/blocker-overlay.html');
+const imageHtmlPromise = fetchExtensionText('src/content/blocker-image.html');
 
-  document.body.classList.add('blocked-scrolling');
+function lockPageScroll() {
+  document.body.style.setProperty('overflow', 'hidden', 'important');
+}
+function unlockPageScroll() {
+  document.body.style.removeProperty('overflow');
+}
 
+// "closed" so page scripts can't reach in via host.shadowRoot either.
+function createShadowHost(id) {
   const overlay = document.createElement('div');
-  overlay.id = 'doom-blocker-overlay';
+  overlay.id = id;
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-modal', 'true');
   overlay.setAttribute('aria-label', 'Focus reminder');
@@ -47,18 +55,36 @@ function renderBlocker(seconds, redirectUrl = undefined) {
     overlay.dataset.theme = cachedTheme;
   }
 
-  // Static structure avoids innerHTML linting triggers
-  overlay.innerHTML = `
-    <div class="blocker-card">
-      <h2>Focus Mode</h2>
-      <p>Reality check: Is this how you want to spend your time?</p>
-      <button id="close-blocker" disabled></button>
-    </div>
-  `;
+  const shadow = overlay.attachShadow({ mode: 'closed' });
+  return { overlay, shadow };
+}
+
+function populateShadow(shadow, css, html) {
+  const style = document.createElement('style');
+  style.textContent = css;
+  shadow.appendChild(style);
+
+  const parsed = document.createElement('div');
+  parsed.innerHTML = html;
+  shadow.appendChild(parsed.firstElementChild);
+}
+
+async function renderBlocker(seconds, redirectUrl = undefined) {
+  // Prevent duplicate popups
+  if (document.getElementById('doom-blocker-overlay')) return;
+
+  // Sanitize input to a non-negative integer
+  const safeSeconds = Math.max(0, parseInt(seconds, 10) || 0);
+
+  lockPageScroll();
+
+  const { overlay, shadow } = createShadowHost('doom-blocker-overlay');
+  const [css, html] = await Promise.all([blockerCssPromise, overlayHtmlPromise]);
+  populateShadow(shadow, css, html);
 
   document.body.appendChild(overlay);
 
-  const btn = overlay.querySelector('#close-blocker');
+  const btn = shadow.querySelector('#close-blocker');
   let timeLeft = safeSeconds;
 
   // Handle immediate state if timer is 0
@@ -85,7 +111,7 @@ function renderBlocker(seconds, redirectUrl = undefined) {
   }
 
   btn.onclick = () => {
-    document.body.classList.remove('blocked-scrolling');
+    unlockPageScroll();
     overlay.remove();
     browser.runtime.sendMessage({
       action: 'BLOCKER_CONFIRMED',
@@ -95,7 +121,7 @@ function renderBlocker(seconds, redirectUrl = undefined) {
 }
 
 // covers whole page with single image
-function renderImage(imagePath, redirectUrl = undefined) {
+async function renderImage(imagePath, redirectUrl = undefined) {
   console.log("attempting image render");
   const seconds = 3;
 
@@ -105,31 +131,17 @@ function renderImage(imagePath, redirectUrl = undefined) {
 
     const resolvedPath = browser.runtime.getURL(imagePath);
 
-    document.body.classList.add('blocked-scrolling');
+    lockPageScroll();
 
-    const overlay = document.createElement('div');
-    overlay.id = 'doom-blocker-image';
-    overlay.setAttribute('role', 'dialog');
-    overlay.setAttribute('aria-modal', 'true');
-    overlay.setAttribute('aria-label', 'Focus reminder');
-
-    if (typeof cachedTheme !== 'undefined' && cachedTheme !== 'system') {
-      overlay.dataset.theme = cachedTheme;
-    }
-
-    // Static HTML without template variables to satisfy web-ext lint
-    overlay.innerHTML = `
-      <div class="blocker-card">
-        <img id="blocker-img" alt="Focus reminder image">
-        <button id="close-blocker" disabled></button>
-      </div>
-    `;
+    const { overlay, shadow } = createShadowHost('doom-blocker-image');
+    const [css, html] = await Promise.all([blockerCssPromise, imageHtmlPromise]);
+    populateShadow(shadow, css, html);
 
     document.body.appendChild(overlay);
 
     // Safely assign image source and dynamic button text
-    const img = overlay.querySelector('#blocker-img');
-    const btn = overlay.querySelector('#close-blocker');
+    const img = shadow.querySelector('#blocker-img');
+    const btn = shadow.querySelector('#close-blocker');
 
     if (img) img.src = resolvedPath;
 
@@ -150,7 +162,7 @@ function renderImage(imagePath, redirectUrl = undefined) {
     }, 1000);
 
     btn.onclick = () => {
-      document.body.classList.remove('blocked-scrolling');
+      unlockPageScroll();
       overlay.remove();
       browser.runtime.sendMessage({ 
         action: "BLOCKER_CONFIRMED", 

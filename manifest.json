@@ -14,13 +14,17 @@
     {
       "matches": ["<all_urls>"],
       "js": ["src/content/blocker.js"],
-      "css": ["src/content/blocker.css"],
       "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["assets/visuals/stop.png"],
+      "resources": [
+        "assets/visuals/stop.png",
+        "src/content/blocker.css",
+        "src/content/blocker-overlay.html",
+        "src/content/blocker-image.html"
+      ],
       "matches": ["<all_urls>"]
     },
     {
