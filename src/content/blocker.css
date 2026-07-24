@@ -29,6 +29,7 @@
   --radius: 8px;
   --radius-sm: 6px;
   --ease: 160ms ease;
+  font-size: clamp(16px, 13.5px + 0.4vw, 22px);
 }
 
 /* OS-level preference */
@@ -92,34 +93,36 @@
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   background: var(--surface);
   color: var(--text);
-  padding: 30px;
+  padding: clamp(1.25em, 4vw, 2em);
   border-radius: var(--radius);
   text-align: center;
-  width: 85%;
-  max-width: 700px;
+  width: min(88%, 44em);
   box-shadow: 0 10px 30px var(--shadow);
   border: 1px solid var(--border-strong);
 }
 
 .blocker-card h2 {
-  font-size: 35px;
+  font-size: 1.75em;
+  line-height: 1.15;
   color: var(--danger);
 }
 
 .blocker-card p {
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 22px;
+  margin-inline: auto;
+  max-inline-size: 55ch;
+  font-size: 1.1em;
   line-height: 1.5;
   color: var(--text-muted);
 }
 
 /* Wait button */
 #close-blocker {
-  margin-top: 15px;
-  margin-bottom: 30px !important;
-  padding: 14px 28px;
-  font-size: 20px;
+  margin-top: 0.75em;
+  margin-bottom: 1.5em !important;
+  padding: 0.7em 1.4em;
+  font-size: 1em;
   font-weight: bold;
   border: none;
   border-radius: var(--radius-sm);
@@ -138,9 +141,9 @@
 :host(#doom-blocker-image) .blocker-card {
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
-  gap: 24px; /* Creates spacing between the image and the button */
+  gap: 1.5em; /* Creates spacing between the image and the button */
   max-width: 90vw; /* Prevents it from touching the screen edges */
   max-height: 90vh;
   background: transparent;

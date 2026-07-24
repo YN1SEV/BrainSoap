@@ -4,16 +4,23 @@
   font-family: system-ui, sans-serif;
 }
 
+html {
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  width: 285px;
-  padding: 14px;
+  width: 18rem;
+  padding: 0.875rem;
   background: var(--bg);
   color: var(--text);
+  font-size: 1rem;
+  line-height: 1.4;
 }
 
 h1 {
-  font-size: 25px;
-  line-height: 25px;
+  font-size: 1.5rem;
+  line-height: 1.15;
 }
 
 
@@ -31,17 +38,17 @@ header a {
   align-items: center;
 }
 
-header { margin-bottom: 14px; }
-header > div { gap: 8px; }
+header { margin-bottom: 0.875rem; }
+header > div { gap: 0.5rem; }
 
 header > div img {
-  width: 25px;
-  height: 25px;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 header a img {
-  width: 28px;
-  height: 28px;
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -57,37 +64,37 @@ main > section:first-child {
   flex-direction: column;
 }
 
-main { gap: 12px; }
+main { gap: 0.75rem; }
 
 section {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 0.625rem;
+  border-radius: 0.625rem;
   background: var(--surface);
   border: 1px solid var(--border);
 }
 
 main label {
   width: 100%;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 main label > div {
-  gap: 4px;
+  gap: 0.25rem;
   min-width: 0;
 }
 
 main > section:first-child {
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 #time-bar {
   width: 100%;
-  height: 6px;
+  height: 0.375rem;
   border-radius: 999px;
   overflow: hidden;
-  margin-top: 6px;
+  margin-top: 0.375rem;
   position: relative;
   background: var(--surface-2);
 }
@@ -104,18 +111,18 @@ main > section:first-child {
 }
 
 main label h2 {
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 main label p {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 
 input[type="checkbox"] {
   appearance: none;
-  width: 42px;
-  height: 22px;
+  width: 2.625rem;
+  height: 1.375rem;
   border-radius: 999px;
   position: relative;
   cursor: pointer;
@@ -127,10 +134,10 @@ input[type="checkbox"] {
 input[type="checkbox"]::before {
   content: "";
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 1.125rem;
+  height: 1.125rem;
   top: 50%;
-  left: 2px;
+  left: 0.125rem;
   border-radius: 50%;
   background: var(--text-muted);
   transform: translateY(-50%);
@@ -148,23 +155,23 @@ input[type="checkbox"]:checked {
 }
 
 input[type="checkbox"]:checked::before {
-  transform: translate(20px, -50%);
+  transform: translate(1.25rem, -50%);
   background: var(--primary);
 }
 
 footer {
-  margin-top: 14px;
+  margin-top: 0.875rem;
   text-align: center;
 }
 
 footer a {
   display: block;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 0.625rem;
+  border-radius: 0.5rem;
   background: var(--primary);
   color: var(--dashboard-text);
   text-decoration: none;
-  font-size: 13px;
+  font-size: 0.8125rem;
   transition: background-color 0.2s;
 }
 

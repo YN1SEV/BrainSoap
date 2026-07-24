@@ -3,7 +3,8 @@ import { formatUsage } from "../../../utils/time.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
 import { computeAndSaveStats, excludeFromTopSites } from "../../../services/stats-service.js";
 import { getRefreshMs } from "../../../services/settings-service.js";
-import { faviconUrl, domainOf } from "../../../utils/url.js";
+import { domainOf } from "../../../utils/url.js";
+import { createFaviconImg } from "../../../utils/favicon.js";
 
 // copy text with textarea fallback for old browsers
 async function copyToClipboard(text) {
@@ -40,10 +41,7 @@ function createRow(item) {
   const li = document.createElement("li");
   li.className = "top-site";
 
-  const img = document.createElement("img");
-  img.className = "favicon";
-  img.src = faviconUrl(item.url);
-  img.alt = "";
+  const img = createFaviconImg(item.url);
 
   const domainSpan = document.createElement("span");
   domainSpan.className = "domain";

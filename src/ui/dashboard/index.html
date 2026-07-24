@@ -17,6 +17,8 @@
 </head>
 
 <body>
+  <div class="unsupported-format" role="alert">Sorry, format not supported</div>
+
   <button class="mini-btn" id="toggle-sidebar" aria-label="Toggle navigation sidebar" aria-expanded="true">☰</button>
 
   <!--================================================= Sidebar ==================================================-->
@@ -220,7 +222,8 @@
             <span class="setting-label">Block with</span>
             <span class="setting-desc">How the limit screen is shown.</span>
           </div>
-          <div class="setting-action-checkboxes">
+          <fieldset class="setting-action-checkboxes">
+            <legend class="visually-hidden">Block with</legend>
             <label>
               <input type="radio" name="setting-cat-mode" id="setting-cat-action-popup" class="setting-control" value="popup">
               Popup
@@ -233,7 +236,7 @@
               <input type="radio" name="setting-cat-mode" id="setting-cat-action-neither" class="setting-control" value="neither">
               Neither
             </label>
-          </div>
+          </fieldset>
         </div>
 
         <!------------------ Extra actions (+ redirect url) ------------------->
@@ -246,7 +249,8 @@
             <label class="visually-hidden" for="setting-cat-redirect">Default redirect URL</label>
             <input id="setting-cat-redirect" class="setting-control setting-text" type="url"
                    placeholder="https://example.com" hidden>
-            <div class="setting-action-checkboxes">
+            <fieldset class="setting-action-checkboxes">
+              <legend class="visually-hidden">Also</legend>
               <label>
                 <input type="checkbox" id="setting-cat-action-notify" class="setting-control" value="notify">
                 Notify
@@ -255,7 +259,7 @@
                 <input type="checkbox" id="setting-cat-action-redirect" class="setting-control" value="redirect">
                 Redirect
               </label>
-            </div>
+            </fieldset>
           </div>
         </div>
       </section>

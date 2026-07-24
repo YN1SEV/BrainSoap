@@ -133,6 +133,24 @@ const EXTRA_OPTIONS = [
   { value: 'redirect', label: 'Redirect' },
 ];
 
+function buildFieldsetGroup(legendText) {
+  const li = document.createElement('li');
+  const fieldset = document.createElement('fieldset');
+  fieldset.className = 'cat-menu-fieldset';
+
+  const legend = document.createElement('legend');
+  legend.className = 'cat-menu-subheading';
+  legend.textContent = legendText;
+  fieldset.appendChild(legend);
+
+  const innerUl = document.createElement('ul');
+  innerUl.className = 'cat-menu-fieldset-list';
+  fieldset.appendChild(innerUl);
+
+  li.appendChild(fieldset);
+  return { li, innerUl };
+}
+
 function renderActionMenu(popup, catIndex, closePopup) {
   const category = appData[catIndex];
   if (!category) return;
@@ -152,11 +170,7 @@ function renderActionMenu(popup, catIndex, closePopup) {
   backLi.appendChild(backBtn);
   ul.appendChild(backLi);
 
-  const modeHeading = document.createElement('li');
-  modeHeading.className = 'cat-menu-subheading';
-  modeHeading.textContent = 'Block with';
-  ul.appendChild(modeHeading);
-
+  const { li: modeLi, innerUl: modeUl } = buildFieldsetGroup('Block with');
   MODE_OPTIONS.forEach(({ value, label }) => {
     const li = document.createElement('li');
     li.className = 'cat-menu-checkbox-row';
@@ -171,14 +185,11 @@ function renderActionMenu(popup, catIndex, closePopup) {
 
     labelEl.append(input, ` ${label}`);
     li.appendChild(labelEl);
-    ul.appendChild(li);
+    modeUl.appendChild(li);
   });
+  ul.appendChild(modeLi);
 
-  const extraHeading = document.createElement('li');
-  extraHeading.className = 'cat-menu-subheading';
-  extraHeading.textContent = 'Also';
-  ul.appendChild(extraHeading);
-
+  const { li: extraLi, innerUl: extraUl } = buildFieldsetGroup('Also');
   EXTRA_OPTIONS.forEach(({ value, label }) => {
     const li = document.createElement('li');
     li.className = 'cat-menu-checkbox-row';
@@ -192,8 +203,9 @@ function renderActionMenu(popup, catIndex, closePopup) {
 
     labelEl.append(input, ` ${label}`);
     li.appendChild(labelEl);
-    ul.appendChild(li);
+    extraUl.appendChild(li);
   });
+  ul.appendChild(extraLi);
 
   // Redirect Input Row
   const redirectLi = document.createElement('li');
