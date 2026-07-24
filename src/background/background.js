@@ -137,30 +137,19 @@ async function checkThresholds(isVisit) {
 
 // do what is requested
 function triggerBlock(cat, focusMode, allowNotify = true) {
-  console.log("blocking now")
-  console.log(cat)
   const actions = (cat.actions ?? ["popup"]);
   if (allowNotify && actions.includes("notify")) sendMessage("BrainSoap: Limit Reached", `Time's up on ${cat.timerName}!`, "limit-notify");
-  
-  const hasPopup    = actions.includes("popup");
-  const hasRedirect = actions.includes("redirect");
-  const hasImage    = actions.includes("image");
 
-  // New behavior: 
-  // - If "popup" is selected: show image (if available) or blocker card, with redirect forwarding
-  // - If "popup" is NOT selected but "redirect" is: redirect immediately
-  // - Otherwise: fallback to blocker card
-  if (hasPopup) {
-    if (hasImage) {
-      showImage(cat.imagePath || "assets/visuals/stop.png", hasRedirect ? cat.redirectUrl : null);
-    } else {
-      showBlocker(hasRedirect ? cat.redirectUrl : null);
-    }
-  } else if (hasRedirect) {
-    redirectTo(cat.redirectUrl);
-  } else {
-    showBlocker();
+  const redirectUrl = actions.includes("redirect") ? cat.redirectUrl : null;
+
+  if (actions.includes("image")) {
+    showImage(cat.imagePath || "assets/visuals/stop.png", redirectUrl);
+  } else if (actions.includes("popup")) {
+    showBlocker(redirectUrl);
+  } else if (redirectUrl) {
+    redirectTo(redirectUrl);
   }
+  // notify-only: notification already sent above, nothing more to show
 }
 
 // calcs remaining time ("calc" is short for calculator)
