@@ -53,9 +53,9 @@ This section will roughly describe how to install an unsigned extension on such 
 
 1. type in `about:config` in your URL bar.
 2. disable the setting `xpinstall.signatures.required`. This will allow you to install unsinged extensions.
-    > [!CAUTION]
-    > changeing these settings can mess up your browser pretty bad. 
-    > dont go changing things if you dont know what it does.
+> [!CAUTION]
+> changeing these settings can mess up your browser pretty bad. 
+> dont go changing things if you dont know what it does.
 
 3. download the extension files from this repository
 4. create a zip file of the folders `assets`, `src` and the file `manifest.json`
