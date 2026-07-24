@@ -2,7 +2,8 @@ import { getActiveTabId, freezeTab, sendMessageWithRetry } from "./tabs.js";
 
 export async function redirectTo(url) {
   try {
-    await browser.tabs.update({ url: url, loadReplace: false });
+    const target = /^[a-z][a-z0-9+.-]*:\/\//i.test(url) ? url : `https://${url}`;
+    await browser.tabs.update({ url: target, loadReplace: false });
   } catch (e) {
     console.error("Error occurred while redirecting:", e);
   }

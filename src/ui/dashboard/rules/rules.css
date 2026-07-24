@@ -210,6 +210,14 @@ section#rules > ul,
   background: color-mix(in srgb, var(--danger), transparent 90%);
 }
 
+.cat-menu-subheading {
+  padding: 6px 10px 2px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
 .cat-menu-checkbox-row {
   padding: 6px 10px;
 }
@@ -219,6 +227,10 @@ section#rules > ul,
   gap: 8px;
   font-size: 0.85rem;
   cursor: pointer;
+}
+.cat-menu-checkbox-row input[type="radio"],
+.cat-menu-checkbox-row input[type="checkbox"] {
+  accent-color: var(--primary);
 }
 .cat-menu-redirect-row {
   padding: 4px 10px 6px;

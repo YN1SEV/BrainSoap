@@ -32,12 +32,15 @@ section#settings > section > div {
   align-items: flex-start;
   gap: 4px;
 }
-
 .setting-control,
 .settings-btn {
   flex-shrink: 0;
   color: var(--text);
   cursor: pointer;
+}
+.setting-control[type="radio"],
+.setting-control[type="checkbox"] {
+  accent-color: var(--primary);
 }
 .setting-number {
   width: 84px;
