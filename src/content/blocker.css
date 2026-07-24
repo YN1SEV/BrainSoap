@@ -1,4 +1,4 @@
-/* CSS-Reset für das Overlay, um Konflikte zu vermeiden */
+/* CSS reset for the overlay, to avoid conflicts */
 #doom-blocker-overlay *,
 #doom-blocker-image * {
   margin: 0;
