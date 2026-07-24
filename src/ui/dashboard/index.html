@@ -214,11 +214,33 @@
           <input id="setting-cat-time" class="setting-control setting-number" type="number" min="1" step="1">
         </div>
 
-        <!------------------ Default action (+ redirect url) ------------------->
+        <!------------------ Block mode ------------------->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-label">Action</span>
-            <span class="setting-desc">What happens when the limit is reached.</span>
+            <span class="setting-label">Block with</span>
+            <span class="setting-desc">How the limit screen is shown.</span>
+          </div>
+          <div class="setting-action-checkboxes">
+            <label>
+              <input type="radio" name="setting-cat-mode" id="setting-cat-action-popup" class="setting-control" value="popup">
+              Popup
+            </label>
+            <label>
+              <input type="radio" name="setting-cat-mode" id="setting-cat-action-image" class="setting-control" value="image">
+              Image
+            </label>
+            <label>
+              <input type="radio" name="setting-cat-mode" id="setting-cat-action-neither" class="setting-control" value="neither">
+              Neither
+            </label>
+          </div>
+        </div>
+
+        <!------------------ Extra actions (+ redirect url) ------------------->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-label">Also</span>
+            <span class="setting-desc">Extra actions on top of the block.</span>
           </div>
           <div class="setting-action">
             <label class="visually-hidden" for="setting-cat-redirect">Default redirect URL</label>
@@ -226,20 +248,12 @@
                    placeholder="https://example.com" hidden>
             <div class="setting-action-checkboxes">
               <label>
-                <input type="checkbox" id="setting-cat-action-popup" class="setting-control" value="popup">
-                Popup
+                <input type="checkbox" id="setting-cat-action-notify" class="setting-control" value="notify">
+                Notify
               </label>
               <label>
                 <input type="checkbox" id="setting-cat-action-redirect" class="setting-control" value="redirect">
                 Redirect
-              </label>
-              <label>
-                <input type="checkbox" id="setting-cat-action-notify" class="setting-control" value="notify">
-                Notify
-              </label>
-              <label> 
-                <input type="checkbox" id="setting-cat-action-image" class="setting-control" value="image">
-                Image
               </label>
             </div>
           </div>

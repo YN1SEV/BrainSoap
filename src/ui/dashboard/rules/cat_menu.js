@@ -122,11 +122,15 @@ function renderMainMenu(popup, catIndex, closePopup) {
   };
 }
 
-const ACTION_OPTIONS = [
+const MODE_OPTIONS = [
   { value: 'popup', label: 'Popup' },
-  { value: 'redirect', label: 'Redirect' },
+  { value: 'image', label: 'Image' },
+  { value: 'neither', label: 'Neither' },
+];
+
+const EXTRA_OPTIONS = [
   { value: 'notify', label: 'Notify' },
-  { value: 'image', label: 'Image'},
+  { value: 'redirect', label: 'Redirect' },
 ];
 
 function renderActionMenu(popup, catIndex, closePopup) {
@@ -134,6 +138,7 @@ function renderActionMenu(popup, catIndex, closePopup) {
   if (!category) return;
 
   const actions = category.actions ?? ['popup'];
+  const mode = actions.includes('image') ? 'image' : actions.includes('popup') ? 'popup' : 'neither';
   const hasRedirect = actions.includes('redirect');
 
   const ul = document.createElement('ul');
@@ -147,15 +152,41 @@ function renderActionMenu(popup, catIndex, closePopup) {
   backLi.appendChild(backBtn);
   ul.appendChild(backLi);
 
-  // Checkboxes
-  ACTION_OPTIONS.forEach(({ value, label }) => {
+  const modeHeading = document.createElement('li');
+  modeHeading.className = 'cat-menu-subheading';
+  modeHeading.textContent = 'Block with';
+  ul.appendChild(modeHeading);
+
+  MODE_OPTIONS.forEach(({ value, label }) => {
+    const li = document.createElement('li');
+    li.className = 'cat-menu-checkbox-row';
+
+    const labelEl = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = `cat-mode-${catIndex}`;
+    input.className = 'cat-mode-radio';
+    input.value = value;
+    input.checked = mode === value;
+
+    labelEl.append(input, ` ${label}`);
+    li.appendChild(labelEl);
+    ul.appendChild(li);
+  });
+
+  const extraHeading = document.createElement('li');
+  extraHeading.className = 'cat-menu-subheading';
+  extraHeading.textContent = 'Also';
+  ul.appendChild(extraHeading);
+
+  EXTRA_OPTIONS.forEach(({ value, label }) => {
     const li = document.createElement('li');
     li.className = 'cat-menu-checkbox-row';
 
     const labelEl = document.createElement('label');
     const input = document.createElement('input');
     input.type = 'checkbox';
-    input.className = 'cat-action-checkbox';
+    input.className = 'cat-extra-checkbox';
     input.value = value;
     input.checked = actions.includes(value);
 
@@ -185,21 +216,23 @@ function renderActionMenu(popup, catIndex, closePopup) {
     if (actionButtonEl?.dataset.action === 'back') renderMainMenu(popup, catIndex, closePopup);
   };
 
-  popup.querySelectorAll('.cat-action-checkbox').forEach((checkbox) => {
-    checkbox.addEventListener('change', () => {
-      const selected = [...popup.querySelectorAll('.cat-action-checkbox')]
-        .filter((c) => c.checked)
-        .map((c) => c.value);
+  const applySelection = () => {
+    const selectedMode = popup.querySelector('.cat-mode-radio:checked')?.value ?? 'neither';
+    const extras = [...popup.querySelectorAll('.cat-extra-checkbox')]
+      .filter((c) => c.checked)
+      .map((c) => c.value);
 
-      // If 'image' was checked, force 'popup' to be true as well
-      if (selected.includes('image') && !selected.includes('popup')) {
-        selected.push('popup');
-      }
-      
-      category.actions = selected.length ? selected : ['popup'];
-      saveAndRender();
-      renderActionMenu(popup, catIndex, closePopup);
-    });
+    category.actions = selectedMode === 'neither' ? extras : [selectedMode, ...extras];
+    saveAndRender();
+    renderActionMenu(popup, catIndex, closePopup);
+  };
+
+  popup.querySelectorAll('.cat-mode-radio').forEach((radio) => {
+    radio.addEventListener('change', applySelection);
+  });
+
+  popup.querySelectorAll('.cat-extra-checkbox').forEach((checkbox) => {
+    checkbox.addEventListener('change', applySelection);
   });
 
   popup.querySelector('.cat-action-redirect-input')?.addEventListener('change', (e) => {

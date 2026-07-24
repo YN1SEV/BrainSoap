@@ -1,3 +1,5 @@
+globalThis.browser ??= globalThis.chrome;
+
 const NAMES = ["empty", "casual", "power", "streak", "broken-streak", "overflow", "stress-test"];
 
 window.bs = {
@@ -5,8 +7,8 @@ window.bs = {
 
   async load(name) {
     const data = await (await fetch(new URL(`./fixtures/${name}.json`, import.meta.url))).json();
-    await chrome.storage.sync.set(data.sync);
-    await chrome.storage.local.set(data.local);
+    await browser.storage.sync.set(data.sync);
+    await browser.storage.local.set(data.local);
     location.reload();
   },
 };

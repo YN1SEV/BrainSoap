@@ -1,23 +1,39 @@
-/* CSS-Reset für das Overlay, um Konflikte zu vermeiden */
-#doom-blocker-overlay *,
-#doom-blocker-image * {
+* {
   margin: 0;
   padding: 0;
   border: 0;
+  box-sizing: border-box;
 }
 
+:host {
+  all: initial !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 2147483647 !important; /* highest possible z-index */
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+}
 
-
-#doom-blocker-overlay,
-#doom-blocker-image {
+:host {
   --radius: 8px;
   --radius-sm: 6px;
   --ease: 160ms ease;
 }
 
+/* OS-level preference */
 @media (prefers-color-scheme: light) {
-  #doom-blocker-overlay,
-  #doom-blocker-image {
+  :host {
     --bg: #f4f6f8;
     --surface: #ffffff;
     --surface-3: #e2e8ef;
@@ -32,8 +48,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  #doom-blocker-overlay,
-  #doom-blocker-image {
+  :host {
     --bg: #0d1117;
     --surface: #121821;
     --surface-3: #202b39;
@@ -48,8 +63,7 @@
 }
 
 /* explicit theme choice from Settings overrides the OS preference */
-#doom-blocker-overlay[data-theme="light"],
-#doom-blocker-image[data-theme="light"] {
+:host([data-theme="light"]) {
   --bg: #f4f6f8;
   --surface: #ffffff;
   --surface-3: #e2e8ef;
@@ -61,8 +75,7 @@
   --border-strong: rgba(24, 35, 48, 0.18);
   --shadow: rgba(24, 35, 48, 0.1);
 }
-#doom-blocker-overlay[data-theme="dark"],
-#doom-blocker-image[data-theme="dark"] {
+:host([data-theme="dark"]) {
   --bg: #0d1117;
   --surface: #121821;
   --surface-3: #202b39;
@@ -75,26 +88,8 @@
   --shadow: rgba(0, 0, 0, 0.38);
 }
 
-/* full-screen darkening layer */
-#doom-blocker-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2147483647; /* Highest possible z-index */
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-}
-
-/* popup card */
 .blocker-card {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   background: var(--surface);
   color: var(--text);
   padding: 30px;
@@ -107,14 +102,13 @@
 }
 
 .blocker-card h2 {
-  
   font-size: 35px;
   color: var(--danger);
 }
 
 .blocker-card p {
-  margin-top: 10;
-  margin-bottom: 30;
+  margin-top: 0;
+  margin-bottom: 0;
   font-size: 22px;
   line-height: 1.5;
   color: var(--text-muted);
@@ -141,29 +135,7 @@
   cursor: not-allowed;
   opacity: 0.6;
 }
-
-/* Stop background from scrolling */
-body.blocked-scrolling {
-  overflow: hidden !important;
-}
-
-#doom-blocker-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2147483647; /* Highest possible z-index */
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-}
-
-#doom-blocker-image .blocker-card {
+:host(#doom-blocker-image) .blocker-card {
   display: flex;
   flex-direction: column;
   align-items: center; 
@@ -177,7 +149,7 @@ body.blocked-scrolling {
 }
 
 /* Constrain the image so it fits the screen without distorting */
-#doom-blocker-image .blocker-card img {
+:host(#doom-blocker-image) .blocker-card img {
   max-width: 100%;
   max-height: 70vh; /* Leaves enough room at the bottom for the button */
   object-fit: contain; /* Preserves the image's aspect ratio */
