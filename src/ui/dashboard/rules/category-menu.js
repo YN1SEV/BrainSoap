@@ -1,16 +1,16 @@
-import { appData, saveAndRender } from "./render_rules.js";
+import { appData, saveAndRender } from "./rules.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
 import { faviconUrl } from "../../../utils/url.js";
-import { custom_storage } from "../../../browser/storage.js";
+import { customStorage } from "../../../browser/storage.js";
 
 async function syncTimerState(category) {
-  const timerState = (await custom_storage.getLocal('timerState')) ?? {};
+  const timerState = (await customStorage.getLocal('timerState')) ?? {};
   const entry = timerState[category.timerName];
   if (!entry) return;
 
   entry.maxTime = category.maxTime;
   entry.remaining = Math.min(entry.remaining, category.maxTime);
-  await custom_storage.setLocal('timerState', timerState);
+  await customStorage.setLocal('timerState', timerState);
 }
 
 export function showCategoryMenu(catIndex, anchorEl) {

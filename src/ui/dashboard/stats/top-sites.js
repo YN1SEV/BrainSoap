@@ -1,8 +1,8 @@
-import { custom_storage } from "../../../browser/storage.js";
+import { customStorage } from "../../../browser/storage.js";
 import { formatUsage } from "../../../utils/time.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
 import { computeAndSaveStats, excludeFromTopSites } from "../../../services/stats-service.js";
-import { getRefreshMs } from "../../../utils/settings.js";
+import { getRefreshMs } from "../../../services/settings-service.js";
 import { faviconUrl, domainOf } from "../../../utils/url.js";
 
 // copy text with textarea fallback for old browsers
@@ -76,7 +76,7 @@ async function renderTopSites() {
   const container = document.getElementById("top-sites-list");
   if (!container) return;
 
-  const topSites = await custom_storage.getLocal("topSites");
+  const topSites = await customStorage.getLocal("topSites");
 
   if (!Array.isArray(topSites) || topSites.length === 0) {
     lastTopSiteUrls = [];

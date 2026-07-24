@@ -1,14 +1,14 @@
-import { custom_storage } from "../browser/storage.js";
-import { defaultSettings } from "./defaults.js";
+import { customStorage } from "../browser/storage.js";
+import { defaultSettings } from "../utils/defaults.js";
 
 // read settings merged over the defaults so missing keys always resolve
 export async function getSettings() {
-  return { ...defaultSettings, ...(await custom_storage.getSync('settings')) };
+  return { ...defaultSettings, ...(await customStorage.getSync('settings')) };
 }
 
 export async function saveSettings(patch) {
   const next = { ...(await getSettings()), ...patch };
-  await custom_storage.setSync('settings', next);
+  await customStorage.setSync('settings', next);
   return next;
 }
 

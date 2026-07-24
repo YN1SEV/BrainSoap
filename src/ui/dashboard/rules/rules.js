@@ -1,4 +1,4 @@
-import { custom_storage } from "../../../browser/storage.js";
+import { customStorage } from "../../../browser/storage.js";
 import { faviconUrl } from "../../../utils/url.js";
 
 export let appData = [];
@@ -16,7 +16,7 @@ function el(tag, attrs = {}, children = []) {
 }
 
 export async function loadAndRenderRules() {
-  const stored = await custom_storage.getSync('blacklist');
+  const stored = await customStorage.getSync('blacklist');
 
   if (stored && Array.isArray(stored)) {
     appData = stored;
@@ -26,7 +26,7 @@ export async function loadAndRenderRules() {
 }
 
 export async function saveRules() {
-  await custom_storage.setSync('blacklist', appData);
+  await customStorage.setSync('blacklist', appData);
 }
 
 export async function saveAndRender() {
@@ -47,7 +47,7 @@ export async function renderCategories() {
   const container = document.getElementById('categories');
   if (!container) return;
 
-  const timerState = (await custom_storage.getLocal('timerState')) ?? {};
+  const timerState = (await customStorage.getLocal('timerState')) ?? {};
   container.replaceChildren(...appData.map((cat, i) => createCategoryNode(cat, i, timerState)));
 }
 
@@ -121,7 +121,7 @@ export async function refreshTimers() {
 
   if (!container) return;
 
-  const timerState = (await custom_storage.getLocal('timerState')) ?? {};
+  const timerState = (await customStorage.getLocal('timerState')) ?? {};
 
   container.querySelectorAll('.category').forEach((li, index) => {
     const category = appData[index];

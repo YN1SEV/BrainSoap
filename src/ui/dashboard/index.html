@@ -7,9 +7,9 @@
   <meta name="description" content="BrainSoap dashboard: manage site rules and view your focus & scroll statistics.">
 
   <!-- keep variables first, page styles last -->
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../theme.css">
   <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="nav/frame.css">
+  <link rel="stylesheet" href="nav/nav.css">
   <link rel="stylesheet" href="stats/stats.css">
   <link rel="stylesheet" href="rules/rules.css">
   <link rel="stylesheet" href="settings/settings.css">
@@ -302,7 +302,7 @@
             I honestly don't know what to write here, so I will just leave this as a placeholder for now. 
             If you are reading this, please consider checking out the source code on GitHub and maybe even contributing!
           </p>
-          <img class="about-qr" src="../../../assets/misc/Git_QR.svg"
+          <img class="about-qr" src="../../../assets/misc/git-qr.svg"
                alt="QR code linking to the BrainSoap Git repository">
         </div>
       </section>
@@ -315,26 +315,23 @@
 </body>
 
 <!-- Load libraries -->
-<script src="imported/chart.js"></script>
+<script src="vendor/chart.js"></script>
 
 <!-- Load UI components -->
 <script src="nav/nav.js"></script>
 
 <!-- Load rules -->
-<script type="module" src="rules/render_rules.js"></script>
-<script type="module" src="rules/cat_menu.js"></script>
+<script type="module" src="rules/rules.js"></script>
+<script type="module" src="rules/category-menu.js"></script>
 <script type="module" src="rules/handlers.js"></script>
 
 
 <!-- Load statistics -->
 <script type="module" src="stats/recent.js"></script>
 <script type="module" src="stats/stats.js"></script>
-<script type="module" src="stats/top_sites.js"></script>
+<script type="module" src="stats/top-sites.js"></script>
 
 <!-- Load settings -->
 <script type="module" src="settings/settings.js"></script>
-
-<!-- Dev test datasets -->
-<script type="module" src="../../dev/fixtures.js"></script>
 
 </html>

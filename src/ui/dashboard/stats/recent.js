@@ -1,6 +1,6 @@
-import { custom_storage } from "../../../browser/storage.js";
+import { customStorage } from "../../../browser/storage.js";
 import { escapeHtml } from "../../../utils/sanitize.js";
-import { getRefreshMs } from "../../../utils/settings.js";
+import { getRefreshMs } from "../../../services/settings-service.js";
 import { formatUsage } from "../../../utils/time.js";
 import { faviconUrl, domainOf } from "../../../utils/url.js";
 
@@ -42,7 +42,7 @@ function createActivityItem(item) {
 }
 
 async function getRecentItems() {
-  const recentVisits = await custom_storage.getLocal('recentVisits');
+  const recentVisits = await customStorage.getLocal('recentVisits');
   if (!Array.isArray(recentVisits)) return [];
   return [...recentVisits].sort((a, b) => b.lastVisit - a.lastVisit).slice(0, 10);
 }

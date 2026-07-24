@@ -1,6 +1,6 @@
-import { custom_storage } from "../../../browser/storage.js";
+import { customStorage } from "../../../browser/storage.js";
 import { computeAndSaveStats } from "../../../services/stats-service.js";
-import { getRefreshMs } from "../../../utils/settings.js";
+import { getRefreshMs } from "../../../services/settings-service.js";
 
 
 // weekday names in order ending on today
@@ -66,7 +66,7 @@ function renderChart(canvasElement, focusData, scrollData) {
 
 async function renderStats() {
   await computeAndSaveStats();
-  const stats = await custom_storage.getLocal('usageStats');
+  const stats = await customStorage.getLocal('usageStats');
   if (!stats) {
     console.warn('No usageStats found in storage');
     return;
