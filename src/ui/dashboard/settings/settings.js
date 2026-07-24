@@ -3,6 +3,8 @@ import { defaultSettings, defaultBlacklist } from "../../../utils/defaults.js";
 import { getSettings, saveSettings } from "../../../utils/settings.js";
 import { applyTheme } from "../../../utils/themes.js";
 
+globalThis.browser ??= globalThis.chrome;
+
 const EXPORT_FILENAME = "brainsoap-backup.json";
 
 // patch the nested new-category defaults without dropping the other keys
@@ -20,8 +22,8 @@ function setStatus(message) {
 
 async function exportData() {
   const [sync, local] = await Promise.all([
-    chrome.storage.sync.get(null),
-    chrome.storage.local.get(null),
+    browser.storage.sync.get(null),
+    browser.storage.local.get(null),
   ]);
 
   const payload = {
@@ -52,8 +54,8 @@ async function importData(file) {
       return;
     }
 
-    await chrome.storage.sync.set(data.sync);
-    if (data.local) await chrome.storage.local.set(data.local);
+    await browser.storage.sync.set(data.sync);
+    if (data.local) await browser.storage.local.set(data.local);
 
     setStatus("Imported. Reloading…");
     setTimeout(() => location.reload(), 600);
@@ -74,7 +76,7 @@ async function resetAll() {
 
   await custom_storage.setSync('settings', { ...defaultSettings });
   await custom_storage.setSync('blacklist', defaultBlacklist);
-  await chrome.storage.local.remove(STATS_KEYS);
+  await browser.storage.local.remove(STATS_KEYS);
 
   setStatus("Reset to defaults. Reloading…");
   setTimeout(() => location.reload(), 600);
