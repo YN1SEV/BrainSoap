@@ -19,13 +19,10 @@ export async function freezeTab(tabId) {
     await browser.scripting.executeScript({
       target: { tabId: tabId },
       func: () => {
-        console.log("Freezing media...");
         const media = document.querySelectorAll('video, audio');
         media.forEach(m => m.pause());
       }
     });
-
-    console.log(`Tab ${tabId} frozen.`);
 
   } catch (error) {
     console.error("MV3 Freeze Error:", error);
@@ -36,7 +33,6 @@ export async function unmuteCurrentTab() {
   try {
     const tabId = await getActiveTabId();
     await browser.tabs.update(tabId, { muted: false });
-    console.log(`Tab ${tabId} has been unmuted.`);
   } catch (error) {
     console.error("Failed to unfreeze tab:", error);
   }
@@ -46,7 +42,6 @@ export async function unmuteCurrentTab() {
 export async function sendMessageWithRetry(tabId, message, retries = 3, delay = 100) {
   for (let i = 0; i < retries; i++) {
     try {
-      console.log("sending: ", message)
       return await browser.tabs.sendMessage(tabId, message);
     } catch (err) {
       if (i === retries - 1) throw err; // Out of retries, propagate error

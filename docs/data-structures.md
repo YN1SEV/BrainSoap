@@ -1,8 +1,8 @@
-# Communication Specification (Frontend, Backend)
+# Communication Specification (Foreground, Background)
 
---- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 
-# Frontend -> Backend
+# Foreground -> Background
 ### Blacklist
 Sent only when changes occur. Used for timer restriction logic.
 
@@ -38,11 +38,11 @@ const blacklist = [
 
 
 ### Presence
-Frontend sends a periodic heartbeat signal.
+Foreground sends a periodic heartbeat signal.
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 
-# Backend Processing
+# Background Processing
 ### Parsed Timer Structure
 Derived from blacklist. Inactive URLs are excluded.
 
@@ -64,7 +64,7 @@ const parsed = {
 
 --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 
-# Backend -> Frontend
+# Background -> Foreground
 ### Timer State
 Remaining time per timer.
 

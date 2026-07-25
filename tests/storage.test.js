@@ -1,9 +1,9 @@
 import { describe, test, expect, spyOn, mock, beforeEach } from 'bun:test';
-// 1. Import mocks FIRST so globalThis.chrome is set up before custom_storage is instantiated
-import { localStorage, syncStorage, triggerStorageChange } from './mockStorage.js';
-import { custom_storage } from '../src/browser/storage.js'; // Your exported instance
+// 1. Import mocks FIRST so globalThis.chrome is set up before customStorage is instantiated
+import { localStorage, syncStorage, triggerStorageChange } from './mock-storage.js';
+import { customStorage } from '../src/browser/storage.js'; // Your exported instance
 
-describe('custom_storage (StorageManager Instance)', () => {
+describe('customStorage (StorageManager Instance)', () => {
   beforeEach(async () => {
     // Silence console logs for this test suite
     let errorSpy = spyOn(console, 'error').mockImplementation(() => {});
@@ -20,11 +20,11 @@ describe('custom_storage (StorageManager Instance)', () => {
     syncStorage.set.mockClear();
 
     // Reset instance cache state between tests
-    custom_storage.localCache = {};
-    custom_storage.syncCache = {};
+    customStorage.localCache = {};
+    customStorage.syncCache = {};
 
     // Ensure initial promise has completed
-    await custom_storage.initPromise;
+    await customStorage.initPromise;
   });
 
   // ==========================================
@@ -32,37 +32,37 @@ describe('custom_storage (StorageManager Instance)', () => {
   // ==========================================
   describe('Happy Paths', () => {
     test('setLocal stores key-value pair in browser storage and local cache', async () => {
-      await custom_storage.setLocal('userTheme', 'dark');
+      await customStorage.setLocal('userTheme', 'dark');
 
-      expect(await custom_storage.getLocal('userTheme')).toBe('dark');
+      expect(await customStorage.getLocal('userTheme')).toBe('dark');
       expect(localStorage.set).toHaveBeenCalledWith({ userTheme: 'dark' });
     });
 
     test('getLocal retrieves value from cache without calling storage API', async () => {
-      await custom_storage.setLocal('cachedKey', 'cachedValue');
+      await customStorage.setLocal('cachedKey', 'cachedValue');
       localStorage.get.mockClear();
 
-      const val = await custom_storage.getLocal('cachedKey');
+      const val = await customStorage.getLocal('cachedKey');
 
       expect(val).toBe('cachedValue');
       expect(localStorage.get).not.toHaveBeenCalled();
     });
 
     test('clearLocalStorage removes only non-protected keys', async () => {
-      await custom_storage.setLocal('dayLog', 'KEEP_ME');
-      await custom_storage.setLocal('tempSessionData', 'DELETE_ME');
+      await customStorage.setLocal('dayLog', 'KEEP_ME');
+      await customStorage.setLocal('tempSessionData', 'DELETE_ME');
 
-      await custom_storage.clearLocalStorage();
+      await customStorage.clearLocalStorage();
 
-      expect(await custom_storage.getLocal('dayLog')).toBe('KEEP_ME');
+      expect(await customStorage.getLocal('dayLog')).toBe('KEEP_ME');
       expect(localStorage.state['tempSessionData']).toBeUndefined();
       expect(localStorage.remove).toHaveBeenCalledWith(['tempSessionData']);
     });
 
     test('setSync and getSync handle sync storage interactions', async () => {
-      await custom_storage.setSync('syncSetting', { enabled: true });
+      await customStorage.setSync('syncSetting', { enabled: true });
 
-      const val = await custom_storage.getSync('syncSetting');
+      const val = await customStorage.getSync('syncSetting');
 
       expect(val).toEqual({ enabled: true });
       expect(syncStorage.set).toHaveBeenCalledWith({ syncSetting: { enabled: true } });
@@ -70,29 +70,29 @@ describe('custom_storage (StorageManager Instance)', () => {
 
     test('resetSettings updates default settings in sync storage', async () => {
       const defaults = { theme: 'light', sound: true };
-      await custom_storage.resetSettings(defaults);
+      await customStorage.resetSettings(defaults);
 
-      expect(await custom_storage.getSync('settings')).toEqual(defaults);
+      expect(await customStorage.getSync('settings')).toEqual(defaults);
     });
 
     test('checkSettingsExists sets defaults if no settings exist', async () => {
       const defaults = { exist: true, version: 1 };
       
-      await custom_storage.checkSettingsExists(defaults);
+      await customStorage.checkSettingsExists(defaults);
 
-      expect(await custom_storage.getSync('settings')).toEqual(defaults);
+      expect(await customStorage.getSync('settings')).toEqual(defaults);
     });
 
     test('onChanged listener updates localCache on external storage updates', async () => {
       triggerStorageChange({ externalKey: { newValue: 'externalVal' } }, 'local');
 
-      expect(await custom_storage.getLocal('externalKey')).toBe('externalVal');
+      expect(await customStorage.getLocal('externalKey')).toBe('externalVal');
     });
 
     test('getLocal fetches directly from browser storage on cache miss', async () => {
       localStorage.state['uncachedKey'] = 'directBrowserValue';
 
-      const val = await custom_storage.getLocal('uncachedKey');
+      const val = await customStorage.getLocal('uncachedKey');
 
       expect(val).toBe('directBrowserValue');
       expect(localStorage.get).toHaveBeenCalledWith('uncachedKey');
@@ -101,7 +101,7 @@ describe('custom_storage (StorageManager Instance)', () => {
     test('getSync fetches directly from browser storage on cache miss', async () => {
       syncStorage.state['uncachedSyncKey'] = 'directSyncValue';
 
-      const val = await custom_storage.getSync('uncachedSyncKey');
+      const val = await customStorage.getSync('uncachedSyncKey');
 
       expect(val).toBe('directSyncValue');
       expect(syncStorage.get).toHaveBeenCalledWith('uncachedSyncKey');
@@ -109,26 +109,26 @@ describe('custom_storage (StorageManager Instance)', () => {
 
     test('checkSettingsExists does NOT overwrite if settings already exist', async () => {
       const existingSettings = { exist: true, theme: 'dark' };
-      await custom_storage.setSync('settings', existingSettings);
+      await customStorage.setSync('settings', existingSettings);
 
       const defaults = { exist: true, theme: 'light' };
-      await custom_storage.checkSettingsExists(defaults);
+      await customStorage.checkSettingsExists(defaults);
 
-      expect(await custom_storage.getSync('settings')).toEqual(existingSettings);
+      expect(await customStorage.getSync('settings')).toEqual(existingSettings);
     });
 
     test('onChanged listener updates syncCache on external sync storage updates', async () => {
       triggerStorageChange({ externalSyncKey: { newValue: 'syncVal' } }, 'sync');
 
-      expect(await custom_storage.getSync('externalSyncKey')).toBe('syncVal');
+      expect(await customStorage.getSync('externalSyncKey')).toBe('syncVal');
     });
 
     test('onChanged listener removes items from syncCache when deleted externally', async () => {
-      await custom_storage.setSync('tempSyncKey', 'value');
+      await customStorage.setSync('tempSyncKey', 'value');
 
       triggerStorageChange({ tempSyncKey: { newValue: undefined } }, 'sync');
 
-      expect(custom_storage.syncCache['tempSyncKey']).toBeUndefined();
+      expect(customStorage.syncCache['tempSyncKey']).toBeUndefined();
     });
   });
 
@@ -139,31 +139,31 @@ describe('custom_storage (StorageManager Instance)', () => {
     test('setLocal throws when browser storage write fails', async () => {
       localStorage.shouldFail = true;
 
-      expect(custom_storage.setLocal('key', 'val')).rejects.toThrow('Storage write error');
+      expect(customStorage.setLocal('key', 'val')).rejects.toThrow('Storage write error');
     });
 
     test('setSync throws when browser sync write fails', async () => {
       syncStorage.shouldFail = true;
 
-      expect(custom_storage.setSync('key', 'val')).rejects.toThrow('Storage write error');
+      expect(customStorage.setSync('key', 'val')).rejects.toThrow('Storage write error');
     });
 
     test('clearLocalStorage does nothing if no deletable keys exist', async () => {
-      await custom_storage.setLocal('installDate', '2026-01-01'); // Protected key
+      await customStorage.setLocal('installDate', '2026-01-01'); // Protected key
       localStorage.remove.mockClear();
 
-      await custom_storage.clearLocalStorage();
+      await customStorage.clearLocalStorage();
 
       expect(localStorage.remove).not.toHaveBeenCalled();
     });
 
     test('onChanged listener removes items from cache when deleted externally', async () => {
-      await custom_storage.setLocal('tempKey', 'value');
+      await customStorage.setLocal('tempKey', 'value');
 
       // Simulate external deletion (newValue is undefined)
       triggerStorageChange({ tempKey: { newValue: undefined } }, 'local');
 
-      expect(custom_storage.localCache['tempKey']).toBeUndefined();
+      expect(customStorage.localCache['tempKey']).toBeUndefined();
     });
 
     test('getLocal throws when browser local storage get fails on cache miss', async () => {
@@ -171,7 +171,7 @@ describe('custom_storage (StorageManager Instance)', () => {
         throw new Error('Local read error');
       });
 
-      expect(custom_storage.getLocal('missingKey')).rejects.toThrow('Local read error');
+      expect(customStorage.getLocal('missingKey')).rejects.toThrow('Local read error');
     });
 
     test('getSync throws when browser sync storage get fails on cache miss', async () => {
@@ -179,16 +179,16 @@ describe('custom_storage (StorageManager Instance)', () => {
         throw new Error('Sync read error');
       });
 
-      expect(custom_storage.getSync('missingKey')).rejects.toThrow('Sync read error');
+      expect(customStorage.getSync('missingKey')).rejects.toThrow('Sync read error');
     });
 
     test('clearLocalStorage throws when browser storage remove API fails', async () => {
-      await custom_storage.setLocal('tempData', 'deleteMe');
+      await customStorage.setLocal('tempData', 'deleteMe');
       localStorage.remove = mock(async () => {
         throw new Error('Removal failed');
       });
 
-      expect(custom_storage.clearLocalStorage()).rejects.toThrow('Removal failed');
+      expect(customStorage.clearLocalStorage()).rejects.toThrow('Removal failed');
     });
   });
 });

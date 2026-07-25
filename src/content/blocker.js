@@ -8,14 +8,12 @@ globalThis.browser ??= globalThis.chrome;
 if (!window.hasBlockerListener) {
   window.hasBlockerListener = true;
 
-  const listener = browser.runtime.onMessage.addListener((message) => {
-    if (message.action === "TRIGGER_BLOCK") {   
-      console.log("rendering something")
+  browser.runtime.onMessage.addListener((message) => {
+    if (message.action === "TRIGGER_BLOCK") {
       if (message.imagePath) renderImage(message.imagePath, message.redirectUrl)
       else renderBlocker(message.seconds, message.redirectUrl);
     }
   });
-  console.log(listener)
 }
 
 let cachedTheme = 'system';
@@ -64,9 +62,13 @@ function populateShadow(shadow, css, html) {
   style.textContent = css;
   shadow.appendChild(style);
 
-  const parsed = document.createElement('div');
-  parsed.innerHTML = html;
-  shadow.appendChild(parsed.firstElementChild);
+  // reworked to comply with firefox safety standards
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  
+  Array.from(doc.body.childNodes).forEach((node) => {
+    shadow.appendChild(document.importNode(node, true));
+  });
 }
 
 async function renderBlocker(seconds, redirectUrl = undefined) {
@@ -122,7 +124,6 @@ async function renderBlocker(seconds, redirectUrl = undefined) {
 
 // covers whole page with single image
 async function renderImage(imagePath, redirectUrl = undefined) {
-  console.log("attempting image render");
   const seconds = 3;
 
   try {

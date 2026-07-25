@@ -1,26 +1,40 @@
-import { appData, saveAndRender } from "./render_rules.js";
-import { escapeHtml } from "../../../utils/sanitize.js";
+import { appData, saveAndRender } from "./rules.js";
 import { faviconUrl } from "../../../utils/url.js";
-import { custom_storage } from "../../../browser/storage.js";
+import { customStorage } from "../../../browser/storage.js";
 
 async function syncTimerState(category) {
-  const timerState = (await custom_storage.getLocal('timerState')) ?? {};
+  const timerState = (await customStorage.getLocal('timerState')) ?? {};
   const entry = timerState[category.timerName];
   if (!entry) return;
 
   entry.maxTime = category.maxTime;
   entry.remaining = Math.min(entry.remaining, category.maxTime);
-  await custom_storage.setLocal('timerState', timerState);
+  await customStorage.setLocal('timerState', timerState);
+}
+
+function focusFirstAction(popup) {
+  popup.querySelector('.cat-menu-action')?.focus();
+}
+
+function releaseTrigger(catIndex) {
+  const trigger = document.querySelector(`.cat-menu-btn[data-cat-index="${catIndex}"]`);
+  trigger?.setAttribute('aria-expanded', 'false');
+  trigger?.focus();
 }
 
 export function showCategoryMenu(catIndex, anchorEl) {
-  let existing = document.querySelector('.cat-menu-popup');
-  if (existing) existing.remove();
+  const superseded = document.querySelector('.cat-menu-popup');
+  if (superseded) {
+    superseded.dataset.superseded = 'true';
+    superseded.remove();
+  }
 
   const popup = document.createElement('div');
   popup.className = 'cat-menu-popup';
   popup.popover = 'auto'; // browser handles top layer, Esc and click-outside
   popup.dataset.catIndex = catIndex;
+  popup.setAttribute('role', 'group');
+  popup.setAttribute('aria-label', `Options for ${appData[catIndex]?.timerName ?? 'category'}`);
 
   const rect = anchorEl.getBoundingClientRect();
   const popupWidth = 250;
@@ -29,11 +43,17 @@ export function showCategoryMenu(catIndex, anchorEl) {
 
   const closePopup = () => popup.hidePopover();
   popup.addEventListener('toggle', (e) => {
-    if (e.newState === 'closed') popup.remove();
+    if (e.newState === 'open') {
+      focusFirstAction(popup);
+      return;
+    }
+    popup.remove();
+    if (!popup.dataset.superseded) releaseTrigger(catIndex);
   });
 
   renderMainMenu(popup, catIndex, closePopup);
   document.body.appendChild(popup);
+  anchorEl.setAttribute('aria-expanded', 'true');
   popup.showPopover();
 }
 
@@ -75,6 +95,7 @@ function renderMainMenu(popup, catIndex, closePopup) {
   });
 
   popup.replaceChildren(ul);
+  focusFirstAction(popup);
 
   popup.onclick = async (e) => {
     const actionButtonEl = e.target.closest('.cat-menu-action');
@@ -133,6 +154,24 @@ const EXTRA_OPTIONS = [
   { value: 'redirect', label: 'Redirect' },
 ];
 
+function buildFieldsetGroup(legendText) {
+  const li = document.createElement('li');
+  const fieldset = document.createElement('fieldset');
+  fieldset.className = 'cat-menu-fieldset';
+
+  const legend = document.createElement('legend');
+  legend.className = 'cat-menu-subheading';
+  legend.textContent = legendText;
+  fieldset.appendChild(legend);
+
+  const innerUl = document.createElement('ul');
+  innerUl.className = 'cat-menu-fieldset-list';
+  fieldset.appendChild(innerUl);
+
+  li.appendChild(fieldset);
+  return { li, innerUl };
+}
+
 function renderActionMenu(popup, catIndex, closePopup) {
   const category = appData[catIndex];
   if (!category) return;
@@ -152,11 +191,7 @@ function renderActionMenu(popup, catIndex, closePopup) {
   backLi.appendChild(backBtn);
   ul.appendChild(backLi);
 
-  const modeHeading = document.createElement('li');
-  modeHeading.className = 'cat-menu-subheading';
-  modeHeading.textContent = 'Block with';
-  ul.appendChild(modeHeading);
-
+  const { li: modeLi, innerUl: modeUl } = buildFieldsetGroup('Block with');
   MODE_OPTIONS.forEach(({ value, label }) => {
     const li = document.createElement('li');
     li.className = 'cat-menu-checkbox-row';
@@ -171,14 +206,11 @@ function renderActionMenu(popup, catIndex, closePopup) {
 
     labelEl.append(input, ` ${label}`);
     li.appendChild(labelEl);
-    ul.appendChild(li);
+    modeUl.appendChild(li);
   });
+  ul.appendChild(modeLi);
 
-  const extraHeading = document.createElement('li');
-  extraHeading.className = 'cat-menu-subheading';
-  extraHeading.textContent = 'Also';
-  ul.appendChild(extraHeading);
-
+  const { li: extraLi, innerUl: extraUl } = buildFieldsetGroup('Also');
   EXTRA_OPTIONS.forEach(({ value, label }) => {
     const li = document.createElement('li');
     li.className = 'cat-menu-checkbox-row';
@@ -192,8 +224,9 @@ function renderActionMenu(popup, catIndex, closePopup) {
 
     labelEl.append(input, ` ${label}`);
     li.appendChild(labelEl);
-    ul.appendChild(li);
+    extraUl.appendChild(li);
   });
+  ul.appendChild(extraLi);
 
   // Redirect Input Row
   const redirectLi = document.createElement('li');
@@ -203,6 +236,7 @@ function renderActionMenu(popup, catIndex, closePopup) {
   redirectInput.type = 'url';
   redirectInput.className = 'cat-action-redirect-input';
   redirectInput.placeholder = 'https://example.com';
+  redirectInput.setAttribute('aria-label', 'Redirect URL');
   redirectInput.value = category.redirectUrl || '';
   if (!hasRedirect) redirectInput.hidden = true;
 
@@ -210,6 +244,7 @@ function renderActionMenu(popup, catIndex, closePopup) {
   ul.appendChild(redirectLi);
 
   popup.replaceChildren(ul);
+  focusFirstAction(popup);
 
   popup.onclick = (e) => {
     const actionButtonEl = e.target.closest('.cat-menu-action');
@@ -223,8 +258,8 @@ function renderActionMenu(popup, catIndex, closePopup) {
       .map((c) => c.value);
 
     category.actions = selectedMode === 'neither' ? extras : [selectedMode, ...extras];
+    redirectInput.hidden = !extras.includes('redirect');
     saveAndRender();
-    renderActionMenu(popup, catIndex, closePopup);
   };
 
   popup.querySelectorAll('.cat-mode-radio').forEach((radio) => {
@@ -273,20 +308,24 @@ function renderItemsMenu(popup, catIndex, closePopup) {
       img.src = faviconUrl(item.url);
       img.alt = '';
 
+      const siteLabel = item.name || item.url;
+
       const nameSpan = document.createElement('span');
       nameSpan.className = 'cat-menu-item-name';
-      nameSpan.textContent = item.name || item.url;
+      nameSpan.textContent = siteLabel;
 
       const renameBtn = document.createElement('button');
       renameBtn.className = 'cat-menu-action';
       renameBtn.dataset.action = 'item-rename';
       renameBtn.dataset.itemIndex = index;
+      renameBtn.setAttribute('aria-label', `Rename ${siteLabel}`);
       renameBtn.textContent = 'Rename';
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'cat-menu-action danger';
       deleteBtn.dataset.action = 'item-delete';
       deleteBtn.dataset.itemIndex = index;
+      deleteBtn.setAttribute('aria-label', `Delete ${siteLabel}`);
       deleteBtn.textContent = 'Delete';
 
       li.append(img, nameSpan, renameBtn, deleteBtn);
@@ -295,6 +334,7 @@ function renderItemsMenu(popup, catIndex, closePopup) {
   }
 
   popup.replaceChildren(ul);
+  focusFirstAction(popup);
 
   popup.onclick = (e) => {
     const buttonEl = e.target.closest('.cat-menu-action');
