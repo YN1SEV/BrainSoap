@@ -78,6 +78,7 @@ BrainSoap
 ├───src
 │   ├───background
 │   ├───browser
+│   ├───config
 │   ├───content
 │   ├───services
 │   ├───ui

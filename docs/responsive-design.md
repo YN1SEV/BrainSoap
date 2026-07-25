@@ -20,7 +20,7 @@ html {
 
 ### Exceptions to the rem/vw system
 
-**Popup** and **Blocker Overlay** are not effected, because they don't use the full width and injections seem to get the `rem` from Host.
+**Popup** and **Blocker Overlay** are not entirely effected, because they don't use the full width and injections seem to get the `rem` from Host.
 
 ---
 

@@ -1,4 +1,4 @@
-//timer map is slightly faster in backend
+//timer map is slightly faster in background
 
 import { ruleTarget } from "../utils/url.js";
 

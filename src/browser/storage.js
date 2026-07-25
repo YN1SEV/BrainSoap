@@ -10,7 +10,7 @@ class StorageManager {
 
 		this.initPromise = this._initCache();
 
-		// ensures FE and BE are synced
+		// ensures FB and BG are synced
 		this.browserApi.storage.onChanged.addListener((changes, areaName) => {
 			if (areaName === 'local') {
 				for (let [key, { newValue }] of Object.entries(changes)) {
