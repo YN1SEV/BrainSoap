@@ -21,6 +21,7 @@
     {
       "resources": [
         "assets/visuals/stop.png",
+        "assets/visuals/Stopper_plain.svg",
         "src/content/blocker.css",
         "src/content/blocker-overlay.html",
         "src/content/blocker-image.html"
