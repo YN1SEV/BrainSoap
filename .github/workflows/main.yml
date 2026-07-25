@@ -1,0 +1,27 @@
+name: CI (Lint & Test)
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Run web-ext lint
+        uses: kewisch/action-web-ext@v2
+        with:
+          cmd: lint
+          source: .
+
+      - name: Run tests
+        run: bun test
