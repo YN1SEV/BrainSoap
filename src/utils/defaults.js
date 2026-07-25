@@ -27,7 +27,7 @@ export const defaultBlacklist = [
     timerName: "Entertainment",
     maxTime: 60,
     actions: ["image"],
-    imagePath: "assets/visuals/stop.png",
+    imagePath: "assets/visuals/Stopper_plain.svg",
     items: [
       { name: "YouTube", url: "youtube.com", active: true },
       { name: "Netflix", url: "netflix.com", active: true },
