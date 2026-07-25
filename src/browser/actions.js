@@ -36,7 +36,6 @@ export async function showBlocker(redirectUrl = null) {
 
 // freezes tab and covers it with a full screen image instead
 export async function showImage(imagePath, redirectUrl = null) {
-  console.log("showing image")
   const tabID = await getActiveTabId();
   freezeTab(tabID);
   const msg = { action: "TRIGGER_BLOCK", imagePath: imagePath };

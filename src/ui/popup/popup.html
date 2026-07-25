@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=285, initial-scale=1.0">
   <meta name="description" content="Quick control panel for BrainSoap browser extension">
 
   <title>BrainSoap - Quick Panel</title>
 
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../theme.css">
   <link rel="stylesheet" href="popup.css">
 
   <script type="module" src="popup.js"></script>
@@ -27,7 +27,8 @@
       rel="noopener"
       class="icon-btn"
     >
-      <img src="../../../assets/nav/settings.svg" alt="Open Rules">
+      <img src="../../../assets/nav/settings.svg" alt="">
+      <span class="visually-hidden">Open rules in the dashboard</span>
     </a>
   </header>
 
@@ -40,7 +41,13 @@
         <span id="display-streak">Loading…</span>
         <span id="display-time"></span>
       </div>
-      <div id="time-bar" role="presentation"></div>
+      <div id="time-bar"
+           role="progressbar"
+           aria-label="Time limit used"
+           aria-valuemin="0"
+           aria-valuemax="100"
+           aria-valuenow="0"
+           aria-valuetext="No limit"></div>
     </section>
 
 <!-- Toggles for important Features -->
@@ -77,4 +84,5 @@
     </a>
   </footer>
 </body>
+</html>
 

@@ -79,17 +79,14 @@ BrainSoap
 │   ├───background
 │   ├───browser
 │   ├───content
-│   ├───dev
-│   │   └───fixtures
 │   ├───services
 │   ├───ui
 │   │   ├───dashboard
-│   │   │   ├───dev
-│   │   │   ├───imported
 │   │   │   ├───nav
 │   │   │   ├───rules
 │   │   │   ├───settings
-│   │   │   └───stats
+│   │   │   ├───stats
+│   │   │   └───vendor
 │   │   └───popup
 │   └───utils
 └───tests

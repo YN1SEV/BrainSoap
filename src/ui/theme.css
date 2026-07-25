@@ -1,13 +1,23 @@
-
 :root {
-  --sidebar-width: 250px;
-  --stats-boarder-width: 800px;
-  --main-min-width: 300px;
+  --sidebar-width: 13rem;
+  --content-max: clamp(60rem, 75%, 100rem);
+  --measure: 70ch;          /* comfortable max line length for body copy */
 
-  --radius: 8px;
-  --radius-sm: 6px;
-  --panel-padding: 18px;
+  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
   --ease: 160ms ease;
+
+  --space-2xs: 0.3125rem;   /*  5px @1920 */
+  --space-xs: 0.4375rem;    /*  7px @1920 */
+  --space-sm: 0.625rem;     /* 10px @1920 */
+  --space-md: 0.875rem;     /* 14px @1920 */
+  --space-lg: 1.25rem;      /* 20px @1920 */
+  --space-xl: 1.875rem;     /* 30px @1920 */
+  --panel-padding: 1.125rem;
+
+  --fs-base: 1rem;
+  --fs-h1: 1.9rem;
+  --fs-section: 1.2rem;
 
   --dashboard-text: white;
 }

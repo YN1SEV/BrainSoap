@@ -1,6 +1,6 @@
-import { appData, saveRules, saveAndRender, refreshTimers, loadAndRenderRules } from "./render_rules.js";
-import { showCategoryMenu } from "./cat_menu.js";
-import { getNewCategoryDefaults, getRefreshMs } from "../../../utils/settings.js";
+import { appData, saveRules, saveAndRender, refreshTimers, loadAndRenderRules } from "./rules.js";
+import { showCategoryMenu } from "./category-menu.js";
+import { getNewCategoryDefaults, getRefreshMs } from "../../../services/settings-service.js";
 import { hasOptOutPrefix, domainOf } from "../../../utils/url.js";
 
 // build a fresh category from the user's configured defaults
@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const activeEl = document.activeElement;
     const isTyping = activeEl && (activeEl.tagName === 'INPUT' || activeEl.isContentEditable);
     if (!isTyping) {
-      console.log("refreshing rules...");
       await refreshTimers();
     }
   }, await getRefreshMs());

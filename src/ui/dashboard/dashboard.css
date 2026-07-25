@@ -1,4 +1,8 @@
 
+html {
+  font-size: clamp(0.875rem, min(0.833vw, 1.5vh), 2rem);
+}
+
 * {
   box-sizing: border-box;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
@@ -23,8 +27,8 @@
 }
 
 *::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 0.625rem;
+  height: 0.625rem;
 }
 *::-webkit-scrollbar-track {
   background: var(--scrollbar-track);
@@ -49,7 +53,8 @@ body {
     var(--bg);
   color: var(--text);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  font-size: 14px;
+  font-size: var(--fs-base);
+  line-height: 1.5;
 }
 a {
   color: inherit;
@@ -63,21 +68,28 @@ input {
 
 main {
   flex: 1;
+  min-width: 0;
   overflow-y: auto;
 }
 main > section {
   display: none;
   height: 100vh;
-  padding: 24px;
+  padding: var(--space-lg);
   border-left: 1px solid var(--border);
 }
 main > section:target {
   display: block;
 }
 
+main:not(:has(> section:target)) > #rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
 [popover]:popover-open {
-  margin: 16px auto auto;
-  padding: 10px 16px;
+  margin: 1rem auto auto;
+  padding: 0.625em 1em;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--surface);
@@ -117,15 +129,19 @@ section#rules:target,
 section#settings:target {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  font-size: clamp(0.95rem, 0.9rem + 0.35vw, 1.15rem);
+  gap: var(--space-md);
 }
 
 section#rules > *,
 section#settings > section {
-  width: 100%;
-  max-width: clamp(680px, 62vw, 940px);
+  inline-size: 100%;
+  max-inline-size: var(--content-max);
   margin-inline: auto;
+}
+
+p {
+  max-inline-size: var(--measure);
+  text-wrap: pretty;
 }
 
 .category,
@@ -139,7 +155,7 @@ section#settings > section {
 .category,
 section#settings > section {
   box-shadow: 0 1px 2px var(--shadow);
-  padding: 6px var(--panel-padding) 10px;
+  padding: var(--space-2xs) var(--panel-padding) var(--space-xs);
 }
 
 .item + .item,
@@ -160,8 +176,9 @@ section#settings > section {
   color: var(--text-muted);
 }
 
-.rules-control:focus,
-.setting-control:focus {
+/* :focus-visible only, so a mouse click does not leave a ring behind */
+.rules-control:focus-visible,
+.setting-control:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
@@ -200,9 +217,50 @@ section#settings > section {
   color: var(--danger);
 }
 
+/* shared look for every "nothing here yet" placeholder */
 .cat-menu-empty,
-.top-empty {
-  padding: 4px 6px;
+.top-empty,
+.activity-empty {
+  padding: 0.25em 0.4em;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.85em;
+}
+
+/*==================================================== Scaling =====================================================*/
+/*====================================================================================================================*/
+
+@media (max-width: 599px) {
+  body:not(.hide-sidebar) main {
+    display: none;
+  }
+}
+@media (max-width: 349px) {
+  body.hide-sidebar main {
+    display: none;
+  }
+}
+
+.unsupported-format {
+  display: none;
+}
+
+@media (max-width: 249px), (max-height: 349px) {
+  body > aside,
+  body > main,
+  body > button {
+    display: none !important;
+  }
+  .unsupported-format {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    padding: 1rem;
+    text-align: center;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.95em;
+  }
 }
