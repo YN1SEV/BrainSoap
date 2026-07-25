@@ -153,8 +153,9 @@
 
 /* Constrain the image so it fits the screen without distorting */
 :host(#doom-blocker-image) .blocker-card img {
-  max-width: 100%;
-  max-height: 70vh; /* Leaves enough room at the bottom for the button */
+  width: 90vw;
+  max-width: 90vw;
+  max-height: 90vh; /* Leaves enough room at the bottom for the button */
   object-fit: contain; /* Preserves the image's aspect ratio */
   border-radius: var(--radius);
   box-shadow: 0 4px 20px var(--shadow);
