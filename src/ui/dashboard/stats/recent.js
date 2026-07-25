@@ -1,5 +1,4 @@
 import { customStorage } from "../../../browser/storage.js";
-import { escapeHtml } from "../../../utils/sanitize.js";
 import { getRefreshMs } from "../../../services/settings-service.js";
 import { formatUsage } from "../../../utils/time.js";
 import { domainOf } from "../../../utils/url.js";
@@ -87,7 +86,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // refresh on the configured interval
   setInterval(async () => {
-    console.log("Updating Activities...");
     await renderActivities();
   }, await getRefreshMs());
 });

@@ -35,8 +35,22 @@ function setWeekDeltas(focusPercent, scrollPercent) {
   if (scrollEl) scrollEl.textContent = formatWeekDelta(scrollPercent);
 }
 
+function describeChart(canvasElement, focusData, scrollData) {
+  const labels = getRotatedWeekLabels();
+  const perDay = labels
+    .map((day, i) => `${day}: ${(focusData[i] ?? 0).toFixed(1)} h focus, ${(scrollData[i] ?? 0).toFixed(1)} h scroll`)
+    .join('; ');
+
+  canvasElement.setAttribute(
+    'aria-label',
+    `Line chart of focus and scroll hours over the last 7 days. ${perDay}.`
+  );
+}
+
 // draw the weekly line chart or update it if it already exists
 function renderChart(canvasElement, focusData, scrollData) {
+  describeChart(canvasElement, focusData, scrollData);
+
   const existingChart = Chart.getChart(canvasElement);
 
   if (existingChart) {
@@ -72,6 +86,10 @@ async function renderStats() {
     return;
   }
 
+  const focusChartData = stats.chart?.focus || [];
+  const scrollChartData = stats.chart?.scroll || [];
+  const sumHours = (hours) => hours.reduce((total, value) => total + value, 0);
+
   updateDOMText({
     "focus-hours": stats.focusHours ?? 0,
     "focus-sessions": stats.focusSessions ?? 0,
@@ -80,22 +98,12 @@ async function renderStats() {
     "scrolls-blocked": stats.currentStreak ?? 0,
     "best-streak": stats.bestStreak ?? 0,
     "sites-blocked": stats.blockedSites ?? 0,
-    "active-days": stats.activeDays ?? 0
+    "active-days": stats.activeDays ?? 0,
+    "week-focus-total": `${sumHours(focusChartData).toFixed(1)} h`,
+    "week-scroll-total": `${sumHours(scrollChartData).toFixed(1)} h`
   });
 
-  const focusChartData = stats.chart?.focus || [];
-  const scrollChartData = stats.chart?.scroll || [];
-
-  const totalFocus = focusChartData.reduce((a, b) => a + b, 0);
-  const totalScroll = scrollChartData.reduce((a, b) => a + b, 0);
-
-  const summaryElements = document.querySelectorAll(".week-summary .stat-value");
-  if (summaryElements?.length >= 2) {
-    summaryElements[0].textContent = `${totalFocus.toFixed(1)} h`;
-    summaryElements[1].textContent = `${totalScroll.toFixed(1)} h`;
-  }
-
-  const canvasElement = document.querySelector("#week-canvas");
+  const canvasElement = document.getElementById("week-canvas");
   if (canvasElement) {
     renderChart(canvasElement, focusChartData, scrollChartData);
   }
@@ -106,7 +114,6 @@ async function renderStats() {
 document.addEventListener('DOMContentLoaded', async () => {
   await renderStats();
   setInterval(async () => {
-    console.log("Updating Stats...");
     await renderStats();
   }, await getRefreshMs());
 });

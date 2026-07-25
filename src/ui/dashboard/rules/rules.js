@@ -6,10 +6,10 @@ export let appData = [];
 // Minimal DOM element builder to satisfy web-ext linting
 function el(tag, attrs = {}, children = []) {
   const element = document.createElement(tag);
-  Object.entries(attrs).forEach(([k, v]) => {
-    if (k === 'className') element.className = v;
-    else if (k === 'textContent') element.textContent = v;
-    else element.setAttribute(k, v);
+  Object.entries(attrs).forEach(([key, value]) => {
+    if (key === 'className') element.className = value;
+    else if (key === 'textContent') element.textContent = value;
+    else element.setAttribute(key, value);
   });
   element.append(...[children].flat().filter(Boolean));
   return element;
@@ -58,7 +58,7 @@ function createCategoryNode(category, catIndex, timerState = {}) {
   const hasActive = category.items.some(i => i?.active);
   const timerText = categoryTimerText(category, timerState);
 
-  return el('li', { className: 'category', tabindex: '0', role: 'region', 'aria-label': name }, [
+  return el('li', { className: 'category', tabindex: '0', role: 'group', 'aria-label': name }, [
     el('header', {}, [
       el('h2', { textContent: name }),
       el('div', { className: 'cat-controls' }, [
@@ -73,6 +73,8 @@ function createCategoryNode(category, catIndex, timerState = {}) {
           className: 'cat-menu-btn rules-control',
           'data-cat-index': catIndex,
           'aria-label': `Options for ${name}`,
+          'aria-haspopup': 'menu',
+          'aria-expanded': 'false',
           textContent: '⋯'
         })
       ])

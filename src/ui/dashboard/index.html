@@ -60,7 +60,7 @@
       <section class="subsection" id="stats_graph" aria-labelledby="graph-heading">
         <h2 id="graph-heading">Last 7 Days</h2>
 
-        <div class="week-summary">
+        <div class="week-summary" aria-live="polite">
 
           <!------------------ Focus Activity  ------------------->
           <div class="stat-item">
@@ -68,7 +68,7 @@
               <span class="stat-label">Hours in Focus Time:</span>
               <span class="stat-delta" id="focus-delta">Couldn't be loaded</span>
             </div>
-            <div class="stat-value value" data-count="0">Couldn't be loaded</div>
+            <div class="stat-value" id="week-focus-total">Couldn't be loaded</div>
           </div>
 
           <!------------------ Scroll Activity ------------------->
@@ -78,7 +78,7 @@
               <span class="stat-delta" id="scroll-delta">Couldn't be loaded</span>
             </div>
 
-            <div class="stat-value value" data-count="0">Couldn't be loaded</div>
+            <div class="stat-value" id="week-scroll-total">Couldn't be loaded</div>
           </div>
         </div>
 
@@ -94,7 +94,7 @@
       <section class="subsection" id="stats_all_time" aria-labelledby="alltime-heading">
         <h2 id="alltime-heading">Overview</h2>
 
-        <ul>
+        <ul aria-live="polite">
 
           <!----------------------- Focus ------------------------>
           <li class="stat-item">
@@ -143,12 +143,12 @@
       <!---------------------------------------------- Most time spent on -------------------------------------------->
       <section class="subsection" id="stats_top" aria-labelledby="top-heading">
         <h2 id="top-heading">Most time spent on</h2>
-        <ul id="top-sites-list"></ul>
+        <ul id="top-sites-list" aria-live="polite"></ul>
       </section>
       <!---------------------------------------------- Recent Stats -------------------------------------------------->
       <section class="subsection" id="stats-recent" aria-labelledby="recent-heading">
         <h2 id="recent-heading">Recent Activity</h2>
-        <ul id="activity-list"></ul>
+        <ul id="activity-list" aria-live="polite"></ul>
       </section>
     </section>
 
@@ -219,15 +219,22 @@
           <fieldset class="setting-action-checkboxes">
             <legend class="visually-hidden">Block with</legend>
             <label>
-              <input type="radio" name="setting-cat-mode" id="setting-cat-action-popup" class="setting-control" value="popup">
+              <input type="radio" name="setting-cat-mode" 
+                     id="setting-cat-action-popup" 
+                     class="setting-control" value="popup"
+              >
               Popup
             </label>
             <label>
-              <input type="radio" name="setting-cat-mode" id="setting-cat-action-image" class="setting-control" value="image">
+              <input type="radio" name="setting-cat-mode" 
+                     id="setting-cat-action-image" 
+                     class="setting-control" value="image">
               Image
             </label>
             <label>
-              <input type="radio" name="setting-cat-mode" id="setting-cat-action-neither" class="setting-control" value="neither">
+              <input type="radio" name="setting-cat-mode" 
+                     id="setting-cat-action-neither" 
+                     class="setting-control" value="neither">
               Neither
             </label>
           </fieldset>
@@ -315,7 +322,8 @@
   <script src="vendor/chart.js"></script>
 
   <!-- Load UI components -->
-  <script src="nav/nav.js"></script>
+  <script type="module" src="nav/sidebar-toggle.js"></script>
+  <script type="module" src="nav/keyboard-nav.js"></script>
 
   <!-- Load rules -->
   <script type="module" src="rules/rules.js"></script>

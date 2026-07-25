@@ -81,6 +81,12 @@ main > section:target {
   display: block;
 }
 
+main:not(:has(> section:target)) > #rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
 [popover]:popover-open {
   margin: 1rem auto auto;
   padding: 0.625em 1em;
@@ -170,8 +176,9 @@ section#settings > section {
   color: var(--text-muted);
 }
 
-.rules-control:focus,
-.setting-control:focus {
+/* :focus-visible only, so a mouse click does not leave a ring behind */
+.rules-control:focus-visible,
+.setting-control:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
@@ -210,8 +217,10 @@ section#settings > section {
   color: var(--danger);
 }
 
+/* shared look for every "nothing here yet" placeholder */
 .cat-menu-empty,
-.top-empty {
+.top-empty,
+.activity-empty {
   padding: 0.25em 0.4em;
   color: var(--text-muted);
   font-size: 0.85em;

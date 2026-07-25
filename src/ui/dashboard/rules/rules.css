@@ -65,13 +65,10 @@ section#rules > ul,
   color: var(--text-muted);
 }
 
-.items:focus {
+.items:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 4px;
   border-radius: var(--radius-sm);
-}
-.items[data-focus-mode="open"] {
-  box-shadow: inset 0 0 0 1px var(--primary-soft);
 }
 
 .item {

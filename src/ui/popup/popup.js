@@ -18,6 +18,12 @@ async function activeDomain() {
   }
 }
 
+function paintTimeBar(bar, usedPercent, spokenLabel) {
+  bar.style.setProperty('--time-bar-progress', `${usedPercent}%`);
+  bar.setAttribute('aria-valuenow', String(usedPercent));
+  bar.setAttribute('aria-valuetext', spokenLabel);
+}
+
 async function updateStatus() {
   const pageEl = document.getElementById('display-streak');
   const minEl  = document.getElementById('display-time');
@@ -27,7 +33,7 @@ async function updateStatus() {
   if (!domain) {
     pageEl.textContent = 'No active page';
     minEl.textContent = '';
-    bar.style.setProperty('--time-bar-progress', '0%');
+    paintTimeBar(bar, 0, 'No active page');
     return;
   }
 
@@ -36,17 +42,17 @@ async function updateStatus() {
 
   if (!timer) {
     minEl.textContent = 'no limit';
-    bar.style.setProperty('--time-bar-progress', '0%');
+    paintTimeBar(bar, 0, 'No limit');
     return;
   }
 
   minEl.textContent = `${timer.remaining} min`;
 
-  const usedPct = timer.maxTime > 0 
-    ? Math.round(((timer.maxTime - timer.remaining) / timer.maxTime) * 100) 
+  const usedPercent = timer.maxTime > 0
+    ? Math.round(((timer.maxTime - timer.remaining) / timer.maxTime) * 100)
     : 0;
-    
-  bar.style.setProperty('--time-bar-progress', `${usedPct}%`);
+
+  paintTimeBar(bar, usedPercent, `${timer.remaining} of ${timer.maxTime} minutes left`);
 }
 
 const focusToggle = () => document.getElementById('toggle-focus');

@@ -1,6 +1,5 @@
 import { customStorage } from "../../../browser/storage.js";
 import { formatUsage } from "../../../utils/time.js";
-import { escapeHtml } from "../../../utils/sanitize.js";
 import { computeAndSaveStats, excludeFromTopSites } from "../../../services/stats-service.js";
 import { getRefreshMs } from "../../../services/settings-service.js";
 import { domainOf } from "../../../utils/url.js";

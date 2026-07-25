@@ -56,6 +56,7 @@ aside nav a:hover {
   border-color: var(--border);
 }
 body:has(#rules:target) aside nav a[href="#rules"],
+body:not(:has(main > section:target)) aside nav a[href="#rules"],
 body:has(#stats:target) aside nav a[href="#stats"],
 body:has(#settings:target) aside nav a[href="#settings"] {
   background: var(--primary-soft);
@@ -73,6 +74,7 @@ aside nav a::before {
   transition: 0.2s ease;
 }
 body:has(#rules:target) aside nav a[href="#rules"]::before,
+body:not(:has(main > section:target)) aside nav a[href="#rules"]::before,
 body:has(#stats:target) aside nav a[href="#stats"]::before,
 body:has(#settings:target) aside nav a[href="#settings"]::before {
   background: var(--primary);

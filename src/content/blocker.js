@@ -8,14 +8,12 @@ globalThis.browser ??= globalThis.chrome;
 if (!window.hasBlockerListener) {
   window.hasBlockerListener = true;
 
-  const listener = browser.runtime.onMessage.addListener((message) => {
-    if (message.action === "TRIGGER_BLOCK") {   
-      console.log("rendering something")
+  browser.runtime.onMessage.addListener((message) => {
+    if (message.action === "TRIGGER_BLOCK") {
       if (message.imagePath) renderImage(message.imagePath, message.redirectUrl)
       else renderBlocker(message.seconds, message.redirectUrl);
     }
   });
-  console.log(listener)
 }
 
 let cachedTheme = 'system';
@@ -122,7 +120,6 @@ async function renderBlocker(seconds, redirectUrl = undefined) {
 
 // covers whole page with single image
 async function renderImage(imagePath, redirectUrl = undefined) {
-  console.log("attempting image render");
   const seconds = 3;
 
   try {

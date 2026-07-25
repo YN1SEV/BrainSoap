@@ -23,49 +23,68 @@ h1 {
   line-height: 1.15;
 }
 
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 
 header,
-main label,
-[aria-live] {
+.toggle-control,
+.status-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-header > div,
-header a {
+.header-left,
+.icon-btn {
   display: flex;
   align-items: center;
 }
 
 header { margin-bottom: 0.875rem; }
-header > div { gap: 0.5rem; }
+.header-left { gap: 0.5rem; }
 
-header > div img {
+.header-left img {
   width: 1.5rem;
   height: 1.5rem;
 }
 
-header a img {
+.icon-btn img {
   width: 1.75rem;
   height: 1.75rem;
 }
 
 @media (prefers-color-scheme: dark) {
-  header a img {
+  .icon-btn img {
     filter: invert(1) brightness(1.2) contrast(1.1);
   }
 }
 
 main,
-main label > div,
-main > section:first-child {
+.control-text,
+.status {
   display: flex;
   flex-direction: column;
 }
 
 main { gap: 0.75rem; }
 
+/* shared card look for every panel in the popup */
 section {
   display: flex;
   justify-content: space-between;
@@ -75,17 +94,17 @@ section {
   border: 1px solid var(--border);
 }
 
-main label {
+.toggle-control {
   width: 100%;
   gap: 0.75rem;
 }
 
-main label > div {
+.control-text {
   gap: 0.25rem;
   min-width: 0;
 }
 
-main > section:first-child {
+.status {
   gap: 0.5rem;
 }
 
@@ -110,11 +129,11 @@ main > section:first-child {
   transition: width 0.3s ease;
 }
 
-main label h2 {
+.control-text h2 {
   font-size: 0.875rem;
 }
 
-main label p {
+.control-text p {
   font-size: 0.75rem;
   color: var(--text-muted);
 }
@@ -164,7 +183,7 @@ footer {
   text-align: center;
 }
 
-footer a {
+.dashboard-btn {
   display: block;
   padding: 0.625rem;
   border-radius: 0.5rem;
@@ -175,6 +194,6 @@ footer a {
   transition: background-color 0.2s;
 }
 
-footer a:hover {
+.dashboard-btn:hover {
   background: color-mix(in srgb, var(--primary), black 15%);
 }
