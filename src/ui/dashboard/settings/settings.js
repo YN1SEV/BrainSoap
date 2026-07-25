@@ -1,6 +1,6 @@
-import { custom_storage } from "../../../browser/storage.js";
+import { customStorage } from "../../../browser/storage.js";
 import { defaultSettings, defaultBlacklist } from "../../../utils/defaults.js";
-import { getSettings, saveSettings } from "../../../utils/settings.js";
+import { getSettings, saveSettings } from "../../../services/settings-service.js";
 import { applyTheme } from "../../../utils/themes.js";
 
 globalThis.browser ??= globalThis.chrome;
@@ -74,8 +74,8 @@ const STATS_KEYS = [
 async function resetAll() {
   if (!confirm("Reset all settings, rules and stats to their defaults?")) return;
 
-  await custom_storage.setSync('settings', { ...defaultSettings });
-  await custom_storage.setSync('blacklist', defaultBlacklist);
+  await customStorage.setSync('settings', { ...defaultSettings });
+  await customStorage.setSync('blacklist', defaultBlacklist);
   await browser.storage.local.remove(STATS_KEYS);
 
   setStatus("Reset to defaults. Reloading…");

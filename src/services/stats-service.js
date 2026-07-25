@@ -1,6 +1,6 @@
 // needs rework 
 
-import { custom_storage } from "../browser/storage.js";
+import { customStorage } from "../browser/storage.js";
 import { toDateKey, last7DateKeys, prev7DateKeys, calcStreak } from "../utils/time.js";
 import { buildTimerMap, categoriesForDomain, remainingMinutes } from "./timer-service.js";
 import { ruleTarget, domainOf } from "../utils/url.js";
@@ -8,13 +8,13 @@ import { ruleTarget, domainOf } from "../utils/url.js";
 const RECENT_RESUME_MS = 5 * 60 * 1000; // revisits within this window resume the same entry
 const RECENT_MAX       = 30;
 
-const getDayLog      = () => custom_storage.getLocal("dayLog")      .then(v => v ?? {});
-const getRecentVisits= () => custom_storage.getLocal("recentVisits").then(v => v ?? []);
-const getDomainLog   = () => custom_storage.getLocal("domainLog")   .then(v => v ?? {});
-const getCategoryLog = () => custom_storage.getLocal("categoryLog").then(v => v ?? {});
-const getActiveDates = () => custom_storage.getLocal("activeDates").then(v => v ?? []);
-const getBlacklist   = () => custom_storage.getSync("blacklist")   .then(v => v ?? []);
-const getTopExcluded = () => custom_storage.getLocal("topExcluded") .then(v => v ?? []);
+const getDayLog      = () => customStorage.getLocal("dayLog")      .then(v => v ?? {});
+const getRecentVisits= () => customStorage.getLocal("recentVisits").then(v => v ?? []);
+const getDomainLog   = () => customStorage.getLocal("domainLog")   .then(v => v ?? {});
+const getCategoryLog = () => customStorage.getLocal("categoryLog").then(v => v ?? {});
+const getActiveDates = () => customStorage.getLocal("activeDates").then(v => v ?? []);
+const getBlacklist   = () => customStorage.getSync("blacklist")   .then(v => v ?? []);
+const getTopExcluded = () => customStorage.getLocal("topExcluded") .then(v => v ?? []);
 
 const emptyDay       = () => ({ 
   focusSeconds: 0, 
@@ -61,8 +61,8 @@ export async function logDomainTime(domain, seconds, focusMode = false) {
   recent.splice(RECENT_MAX);
 
   const writes = [
-    custom_storage.setLocal("domainLog", domainLog),
-    custom_storage.setLocal("recentVisits", recent),
+    customStorage.setLocal("domainLog", domainLog),
+    customStorage.setLocal("recentVisits", recent),
   ];
 
   const categories = focusMode ? [] : categoriesForDomain(domain, buildTimerMap(blacklist));
@@ -70,7 +70,7 @@ export async function logDomainTime(domain, seconds, focusMode = false) {
     const day = dayLog[today] ?? emptyDay(); 
     day.scrollSeconds += seconds; 
     dayLog[today] = day;
-    writes.push(custom_storage.setLocal("dayLog", dayLog));
+    writes.push(customStorage.setLocal("dayLog", dayLog));
 
     for (const name of categories) {
       categoryLog[name] = { 
@@ -78,7 +78,7 @@ export async function logDomainTime(domain, seconds, focusMode = false) {
         date: today 
       };
     }
-    writes.push(custom_storage.setLocal("categoryLog", categoryLog));
+    writes.push(customStorage.setLocal("categoryLog", categoryLog));
   }
   
   await Promise.all(writes);
@@ -91,7 +91,7 @@ async function bumpToday(mutate) {
   const day = dayLog[today] ?? emptyDay();
   mutate(day);
   dayLog[today] = day;
-  await custom_storage.setLocal("dayLog", dayLog);
+  await customStorage.setLocal("dayLog", dayLog);
 }
 
 export async function logFocusSessionEnd() { await bumpToday(day => day.focusSessions++); }
@@ -99,18 +99,18 @@ export async function logBlock()           { await bumpToday(day => day.blockedC
 
 // start counting focus time from now
 export async function startFocusTracking() {
-  await custom_storage.setLocal("focusSince", Date.now());
+  await customStorage.setLocal("focusSince", Date.now());
 }
 
 export async function accrueFocusTime() {
-  const since = await custom_storage.getLocal("focusSince");
+  const since = await customStorage.getLocal("focusSince");
   if (!since) return;
 
   const delta = Math.floor((Date.now() - since) / 1000);
   if (delta > 0) await bumpToday(day => (day.focusSeconds += delta));
 
-  const focusMode = await custom_storage.getLocal("focusMode");
-  await custom_storage.setLocal("focusSince", focusMode ? Date.now() : null);
+  const focusMode = await customStorage.getLocal("focusMode");
+  await customStorage.setLocal("focusSince", focusMode ? Date.now() : null);
 }
 
 // remember that the user showed up today
@@ -119,7 +119,7 @@ export async function logActiveDay() {
   const dates = await getActiveDates();
   if (!dates.includes(today)) {
     const updatedDates = [...dates, today].sort();
-    await custom_storage.setLocal("activeDates", updatedDates);
+    await customStorage.setLocal("activeDates", updatedDates);
   }
 }
 
@@ -220,8 +220,8 @@ export async function computeAndSaveStats() {
 
   // Save all processed stats
   await Promise.all([
-    custom_storage.setLocal("usageStats", usageStats),
-    custom_storage.setLocal("topSites", topSites)
+    customStorage.setLocal("usageStats", usageStats),
+    customStorage.setLocal("topSites", topSites)
   ]);
 
   return usageStats;
@@ -233,6 +233,6 @@ export async function excludeFromTopSites(url) {
 
   if (topExcluded.includes(url)) return;
 
-  await custom_storage.setLocal("topExcluded", [...topExcluded, url]);
+  await customStorage.setLocal("topExcluded", [...topExcluded, url]);
   await computeAndSaveStats();
 }

@@ -10,7 +10,7 @@ class StorageManager {
 
 		this.initPromise = this._initCache();
 
-		// ensures FE and BE are synced
+		// ensures FB and BG are synced
 		this.browserApi.storage.onChanged.addListener((changes, areaName) => {
 			if (areaName === 'local') {
 				for (let [key, { newValue }] of Object.entries(changes)) {
@@ -132,5 +132,5 @@ class StorageManager {
 }
 
 // expose globally for non-module UI scripts
-export const custom_storage = new StorageManager();
-try { window.custom_storage = custom_storage; } catch (e) {}
+export const customStorage = new StorageManager();
+try { window.customStorage = customStorage; } catch (e) {}

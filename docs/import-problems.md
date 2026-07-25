@@ -24,8 +24,8 @@ die Form war ca. so
 ```
 
 1. es sind in der Standartform keine Imports/exports möglich (mit dem Fehler "imports/exports only at the top-level of a module")
-2. demnach folgend konnten Scripte nicht wirklich zwischen Frontend und backend geteilt werden.
-    wenn man versucht die Scripte im fronted zu importieren braucht man ein exports und dann wirft das backend wieder ein Fehler und wenn man wiederum sagt dann importier ich's auch da dann schmeissts nochmal ein Fehler?
+2. demnach folgend konnten Scripte nicht wirklich zwischen Foreground und Background geteilt werden.
+	wenn man versucht die Scripte im fronted zu importieren braucht man ein exports und dann wirft das Background wieder ein Fehler und wenn man wiederum sagt dann importier ich's auch da dann schmeissts nochmal ein Fehler?
 
 genau ein gewaltiger Haufen Scheiße
 ## Lösung

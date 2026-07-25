@@ -1,4 +1,4 @@
-import { custom_storage } from "../../browser/storage.js";
+import { customStorage } from "../../browser/storage.js";
 import { getCleanedIdentifier, isTrackableUrl } from "../../utils/url.js";
 import { logFocusSessionEnd, startFocusTracking, accrueFocusTime, shortestTimer, computeAndSaveStats } from "../../services/stats-service.js";
 
@@ -11,11 +11,17 @@ async function activeDomain() {
     
     if (!isTrackableUrl(tab?.url)) return null;
     
-    const blacklist = (await custom_storage.getSync('blacklist')) ?? [];
+    const blacklist = (await customStorage.getSync('blacklist')) ?? [];
     return getCleanedIdentifier(tab.url, blacklist);
   } catch {
     return null;
   }
+}
+
+function paintTimeBar(bar, usedPercent, spokenLabel) {
+  bar.style.setProperty('--time-bar-progress', `${usedPercent}%`);
+  bar.setAttribute('aria-valuenow', String(usedPercent));
+  bar.setAttribute('aria-valuetext', spokenLabel);
 }
 
 async function updateStatus() {
@@ -27,7 +33,7 @@ async function updateStatus() {
   if (!domain) {
     pageEl.textContent = 'No active page';
     minEl.textContent = '';
-    bar.style.setProperty('--time-bar-progress', '0%');
+    paintTimeBar(bar, 0, 'No active page');
     return;
   }
 
@@ -36,17 +42,17 @@ async function updateStatus() {
 
   if (!timer) {
     minEl.textContent = 'no limit';
-    bar.style.setProperty('--time-bar-progress', '0%');
+    paintTimeBar(bar, 0, 'No limit');
     return;
   }
 
   minEl.textContent = `${timer.remaining} min`;
 
-  const usedPct = timer.maxTime > 0 
-    ? Math.round(((timer.maxTime - timer.remaining) / timer.maxTime) * 100) 
+  const usedPercent = timer.maxTime > 0
+    ? Math.round(((timer.maxTime - timer.remaining) / timer.maxTime) * 100)
     : 0;
-    
-  bar.style.setProperty('--time-bar-progress', `${usedPct}%`);
+
+  paintTimeBar(bar, usedPercent, `${timer.remaining} of ${timer.maxTime} minutes left`);
 }
 
 const focusToggle = () => document.getElementById('toggle-focus');
@@ -58,14 +64,14 @@ const setFocusEnabled = (enabled) => {
 
 async function turnFocusOff() {
   await logFocusSessionEnd();
-  await custom_storage.setLocal('focusMode', false);
+  await customStorage.setLocal('focusMode', false);
   await accrueFocusTime();
 }
 
 async function loadToggles() {
   const [focusMode, paused] = await Promise.all([
-    custom_storage.getLocal('focusMode'),
-    custom_storage.getLocal('paused'),
+    customStorage.getLocal('focusMode'),
+    customStorage.getLocal('paused'),
   ]);
 
   focusToggle().checked = !!focusMode;
@@ -75,7 +81,7 @@ async function loadToggles() {
 
 async function onFocusChange(e) {
   if (e.target.checked) {
-    await custom_storage.setLocal('focusMode', true);
+    await customStorage.setLocal('focusMode', true);
     await startFocusTracking();
     await browser.runtime.sendMessage({ action: "RECHECK_TAB" });
   } else {
@@ -86,7 +92,7 @@ async function onFocusChange(e) {
 
 async function onPauseChange(e) {
   if (e.target.checked) {
-    await custom_storage.setLocal('paused', true);
+    await customStorage.setLocal('paused', true);
     
     if (focusToggle().checked) {
       focusToggle().checked = false;
@@ -95,7 +101,7 @@ async function onPauseChange(e) {
     
     setFocusEnabled(false);
   } else {
-    await custom_storage.setLocal('paused', false);
+    await customStorage.setLocal('paused', false);
     setFocusEnabled(true);
   }
 }

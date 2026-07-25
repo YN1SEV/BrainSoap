@@ -1,8 +1,8 @@
-import { custom_storage } from "../../../browser/storage.js";
-import { escapeHtml } from "../../../utils/sanitize.js";
-import { getRefreshMs } from "../../../utils/settings.js";
+import { customStorage } from "../../../browser/storage.js";
+import { getRefreshMs } from "../../../services/settings-service.js";
 import { formatUsage } from "../../../utils/time.js";
-import { faviconUrl, domainOf } from "../../../utils/url.js";
+import { domainOf } from "../../../utils/url.js";
+import { createFaviconImg } from "../../../utils/favicon.js";
 
 let lastActivityKeys = [];
 
@@ -15,10 +15,7 @@ function createActivityItem(item) {
   const li = document.createElement("li");
   li.className = "activity-item";
 
-  const img = document.createElement("img");
-  img.className = "favicon";
-  img.src = faviconUrl(item.url);
-  img.alt = "";
+  const img = createFaviconImg(item.url);
 
   const domainSpan = document.createElement("span");
   domainSpan.className = "domain";
@@ -42,7 +39,7 @@ function createActivityItem(item) {
 }
 
 async function getRecentItems() {
-  const recentVisits = await custom_storage.getLocal('recentVisits');
+  const recentVisits = await customStorage.getLocal('recentVisits');
   if (!Array.isArray(recentVisits)) return [];
   return [...recentVisits].sort((a, b) => b.lastVisit - a.lastVisit).slice(0, 10);
 }
@@ -89,7 +86,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // refresh on the configured interval
   setInterval(async () => {
-    console.log("Updating Activities...");
     await renderActivities();
   }, await getRefreshMs());
 });
