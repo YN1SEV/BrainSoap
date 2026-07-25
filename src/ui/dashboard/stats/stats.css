@@ -18,11 +18,11 @@ section#stats > section {
   min-width: 0;
   min-height: 0;
 }
-section#stats h1,
+section#stats h2,
 section#stats p {
   margin: 0;
 }
-section#stats h1 {
+section#stats h2 {
   font-size: var(--fs-section);
   font-weight: 750;
   line-height: 1.2;
