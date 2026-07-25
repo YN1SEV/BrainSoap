@@ -64,9 +64,13 @@ function populateShadow(shadow, css, html) {
   style.textContent = css;
   shadow.appendChild(style);
 
-  const parsed = document.createElement('div');
-  parsed.innerHTML = html;
-  shadow.appendChild(parsed.firstElementChild);
+  // reworked to comply with firefox safety standards
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  
+  Array.from(doc.body.childNodes).forEach((node) => {
+    shadow.appendChild(document.importNode(node, true));
+  });
 }
 
 async function renderBlocker(seconds, redirectUrl = undefined) {
