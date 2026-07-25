@@ -143,7 +143,7 @@ function triggerBlock(cat, focusMode, allowNotify = true) {
   const redirectUrl = actions.includes("redirect") ? cat.redirectUrl : null;
 
   if (actions.includes("image")) {
-    showImage(cat.imagePath || "assets/visuals/stop.png", redirectUrl);
+    showImage(cat.imagePath || "assets/visuals/Stopper_plain.svg", redirectUrl);
   } else if (actions.includes("popup")) {
     showBlocker(redirectUrl);
   } else if (redirectUrl) {
