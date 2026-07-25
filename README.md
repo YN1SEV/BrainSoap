@@ -1,6 +1,6 @@
 # BrainSoap
 --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-Browser extension to help you avoid extended scrolling by blocking your screen or redirecting you to a more productive site.
+A Browser extension to help you avoid extended scrolling by blocking your screen or redirecting you to a more productive site.
 
 >[!NOTE]
 > This project was created as a learning Project for DHBW Stuttgart.
@@ -28,28 +28,32 @@ this was a great help in understanding how to create an extension and what you c
 
 ## Installation
 
-### for contributing
-1. pull this repo to your local machine.
-2. get the mentioned repos for examples
-3. more material will follow soon. This project is not complete yet, but it's a start!
+### via release
+1. head over to the releases
+2. select one you like (we recommend the latest)
+3. select the .xpi file
+4. allow firefox to install the addon 
+5. you are ready to use the extension
 
-### via temporary addon (firefox)
-1. type in your url bar `about:debugging`
-2. go to This Firefox
-3. click load temporary Add-on
-4. choose the `manifest.json` file from this repo.
-5. that should be it. you can now try the extension.
-  
-### installing via zip file
-1. get a zip file from this repo
+### via .xpi file
+1. get a zip file from a release
 2. open Firefox and go to `about:addons`
 3. select the gear (tools for add-ons)
 4. select install add-on from file
 5. you are ready to use the extension
 
+### via temporary addon (firefox)
+> [!NOTE]
+> This will be gone when you restart your browser
+
+1. type in your url bar `about:debugging`
+2. go to This Firefox
+3. click load temporary Add-on
+4. choose the `manifest.json` file from this repo. or the .xpi file from the release
+5. that should be it. you can now try the extension.
+
 ### installing from source
 > [!NOTE]
->
 > this is not the way Firefox intended extensions to be installed
 
 you can only install from source if you have a Firefox build which supports not certified extensions. This is for example a Firefox Developer build.
@@ -94,7 +98,7 @@ BrainSoap
 ```
 
 ## Testing process
-
+web-ext and unit tests are performed on any commit to the main or dev Branch
 ### web-ext
 all code is verified with [web-ext](https://github.com/mozilla/web-ext).
 web-ext is a command line tool that allows you to test your extension locally.
