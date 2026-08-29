@@ -28,6 +28,18 @@ this was a great help in understanding how to create an extension and what you c
 
 ## Installation
 
+### Opera GX
+1. run `bun run build` from the `BrainSoap` folder
+2. open Opera GX and go to `opera://extensions`
+3. enable developer mode
+4. click load unpacked and choose `BrainSoap/dist/opera-gx`
+5. the extension should now be available in Opera GX
+
+### Opera GX release build
+1. run `bun run build` from the `BrainSoap` folder
+2. zip the contents of `BrainSoap/dist/opera-gx` if you want a distributable archive later
+3. load the unpacked folder in Opera GX for local testing
+
 ### via release
 1. head over to the releases
 2. select one you like (we recommend the latest)
@@ -67,6 +79,16 @@ This section will roughly describe how to install an unsigned extension on such 
 3. download the extension files from this repository
 4. create a zip file of the folders `assets`, `src` and the file `manifest.json`
 5. follow the instructions from `installing via zip file`
+
+### build output
+
+The Opera GX build script creates `BrainSoap/dist/opera-gx` with the same extension root layout that the manifest expects:
+
+- `manifest.json`
+- `assets/`
+- `src/`
+
+That folder can be loaded directly as an unpacked extension in Opera GX.
 
 ## Folder structure:
 

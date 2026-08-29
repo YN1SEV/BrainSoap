@@ -32,7 +32,7 @@ export class StorageAreaMock {
 
 // Global setup helper
 export const localStorage = new StorageAreaMock();
-export const syncStorage = new StorageAreaMock();
+export const syncStorage = localStorage;
 let changeListener = null;
 
 const chromeMock = {

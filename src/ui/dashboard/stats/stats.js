@@ -79,8 +79,9 @@ function renderChart(canvasElement, focusData, scrollData) {
 }
 
 async function renderStats() {
-  await computeAndSaveStats();
-  const stats = await customStorage.getLocal('usageStats');
+  const computedStats = await computeAndSaveStats();
+  const storedStats = await customStorage.getLocal('usageStats');
+  const stats = storedStats ?? computedStats;
   if (!stats) {
     console.warn('No usageStats found in storage');
     return;

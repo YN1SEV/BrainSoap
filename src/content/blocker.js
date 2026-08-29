@@ -4,12 +4,29 @@
 //cross browser compatibility
 globalThis.browser ??= globalThis.chrome;
 
+const pageRoot = document.documentElement;
+const debug = (...args) => console.log("[BrainSoap blocker]", ...args);
+
+window.addEventListener("error", (event) => {
+  console.error("[BrainSoap blocker] uncaught error", event.error ?? event.message);
+});
+
+window.addEventListener("unhandledrejection", (event) => {
+  console.error("[BrainSoap blocker] unhandled rejection", event.reason);
+});
+
+function getOverlayParent() {
+  return document.body ?? pageRoot;
+}
+
 //prevent duplicates
 if (!window.hasBlockerListener) {
   window.hasBlockerListener = true;
 
   browser.runtime.onMessage.addListener((message) => {
+    debug("message received", message);
     if (message.action === "TRIGGER_BLOCK") {
+      debug("triggering render", { imagePath: message.imagePath, seconds: message.seconds, redirectUrl: message.redirectUrl });
       if (message.imagePath) renderImage(message.imagePath, message.redirectUrl)
       else renderBlocker(message.seconds, message.redirectUrl);
     }
@@ -17,11 +34,11 @@ if (!window.hasBlockerListener) {
 }
 
 let cachedTheme = 'system';
-browser.storage.sync.get('settings')
+browser.storage.local.get('settings')
   .then(({ settings }) => { cachedTheme = settings?.theme ?? 'system'; })
   .catch(() => {});
 browser.storage.onChanged.addListener((changes, area) => {
-  if (area === 'sync' && changes.settings) {
+  if (area === 'local' && changes.settings) {
     cachedTheme = changes.settings.newValue?.theme ?? 'system';
   }
 });
@@ -35,10 +52,12 @@ const overlayHtmlPromise = fetchExtensionText('src/content/blocker-overlay.html'
 const imageHtmlPromise = fetchExtensionText('src/content/blocker-image.html');
 
 function lockPageScroll() {
-  document.body.style.setProperty('overflow', 'hidden', 'important');
+  pageRoot.style.setProperty('overflow', 'hidden', 'important');
+  if (document.body) document.body.style.setProperty('overflow', 'hidden', 'important');
 }
 function unlockPageScroll() {
-  document.body.style.removeProperty('overflow');
+  pageRoot.style.removeProperty('overflow');
+  if (document.body) document.body.style.removeProperty('overflow');
 }
 
 // "closed" so page scripts can't reach in via host.shadowRoot either.
@@ -72,6 +91,7 @@ function populateShadow(shadow, css, html) {
 }
 
 async function renderBlocker(seconds, redirectUrl = undefined) {
+  debug("renderBlocker:start", { seconds, redirectUrl });
   // Prevent duplicate popups
   if (document.getElementById('doom-blocker-overlay')) return;
 
@@ -84,7 +104,7 @@ async function renderBlocker(seconds, redirectUrl = undefined) {
   const [css, html] = await Promise.all([blockerCssPromise, overlayHtmlPromise]);
   populateShadow(shadow, css, html);
 
-  document.body.appendChild(overlay);
+  getOverlayParent().appendChild(overlay);
 
   const btn = shadow.querySelector('#close-blocker');
   let timeLeft = safeSeconds;
@@ -113,6 +133,7 @@ async function renderBlocker(seconds, redirectUrl = undefined) {
   }
 
   btn.onclick = () => {
+    debug("renderBlocker:confirm", { redirectUrl });
     unlockPageScroll();
     overlay.remove();
     browser.runtime.sendMessage({
@@ -127,6 +148,7 @@ async function renderImage(imagePath, redirectUrl = undefined) {
   const seconds = 3;
 
   try {
+    debug("renderImage:start", { imagePath, redirectUrl });
     // Prevent duplicate popups
     if (document.getElementById('doom-blocker-image')) return;
 
@@ -138,7 +160,7 @@ async function renderImage(imagePath, redirectUrl = undefined) {
     const [css, html] = await Promise.all([blockerCssPromise, imageHtmlPromise]);
     populateShadow(shadow, css, html);
 
-    document.body.appendChild(overlay);
+    getOverlayParent().appendChild(overlay);
 
     // Safely assign image source and dynamic button text
     const img = shadow.querySelector('#blocker-img');
@@ -163,6 +185,7 @@ async function renderImage(imagePath, redirectUrl = undefined) {
     }, 1000);
 
     btn.onclick = () => {
+      debug("renderImage:confirm", { redirectUrl });
       unlockPageScroll();
       overlay.remove();
       browser.runtime.sendMessage({ 

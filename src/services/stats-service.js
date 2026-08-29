@@ -2,8 +2,9 @@
 
 import { customStorage } from "../browser/storage.js";
 import { toDateKey, last7DateKeys, prev7DateKeys, calcStreak } from "../utils/time.js";
-import { buildTimerMap, categoriesForDomain, remainingMinutes } from "./timer-service.js";
+import { buildTimerMap, categoriesForDomain, matchingCategories, remainingMinutes, usedSecondsToday } from "./timer-service.js";
 import { ruleTarget, domainOf } from "../utils/url.js";
+import { defaultBlacklist } from "../utils/defaults.js";
 
 const RECENT_RESUME_MS = 5 * 60 * 1000; // revisits within this window resume the same entry
 const RECENT_MAX       = 30;
@@ -13,7 +14,7 @@ const getRecentVisits= () => customStorage.getLocal("recentVisits").then(v => v 
 const getDomainLog   = () => customStorage.getLocal("domainLog")   .then(v => v ?? {});
 const getCategoryLog = () => customStorage.getLocal("categoryLog").then(v => v ?? {});
 const getActiveDates = () => customStorage.getLocal("activeDates").then(v => v ?? []);
-const getBlacklist   = () => customStorage.getSync("blacklist")   .then(v => v ?? []);
+const getBlacklist   = () => customStorage.getSyncFresh("blacklist", defaultBlacklist).then(v => Array.isArray(v) ? v : defaultBlacklist);
 const getTopExcluded = () => customStorage.getLocal("topExcluded") .then(v => v ?? []);
 
 const emptyDay       = () => ({ 
@@ -109,7 +110,7 @@ export async function accrueFocusTime() {
   const delta = Math.floor((Date.now() - since) / 1000);
   if (delta > 0) await bumpToday(day => (day.focusSeconds += delta));
 
-  const focusMode = await customStorage.getLocal("focusMode");
+  const focusMode = await customStorage.getLocalFresh("focusMode");
   await customStorage.setLocal("focusSince", focusMode ? Date.now() : null);
 }
 
@@ -130,6 +131,9 @@ export async function shortestTimer(domain) {
     getBlacklist(),
     getCategoryLog()
   ]);
+  const focusMode = !!(await customStorage.getLocalFresh("focusMode"));
+  const session = await customStorage.getLocalFresh("session");
+  const activeCategoryNames = new Set(session?.domain ? matchingCategories(blacklist, session.domain).map((category) => category.timerName) : []);
 
   const today = toDateKey();
   let bestTimer = null;
@@ -144,7 +148,21 @@ export async function shortestTimer(domain) {
     
     if (!isActive) continue;
 
-    const timeUsedToday = usedToday(categoryLog, category.timerName, today);
+    if (focusMode) {
+      return {
+        remaining: 0,
+        maxTime: category.maxTime,
+        name: category.timerName,
+      };
+    }
+
+    const timeUsedToday = usedSecondsToday(
+      categoryLog,
+      category.timerName,
+      today,
+      session,
+      activeCategoryNames.has(category.timerName) ? session?.domain : null
+    );
     const remaining = remainingMinutes(category.maxTime, timeUsedToday);
     
     if (!bestTimer || remaining < bestTimer.remaining) {
@@ -154,6 +172,14 @@ export async function shortestTimer(domain) {
         name: category.timerName 
       };
     }   
+  }
+
+  if (focusMode) {
+    return {
+      remaining: 0,
+      maxTime: 0,
+      name: domain,
+    };
   }
 
   return bestTimer;

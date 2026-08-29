@@ -1,9 +1,20 @@
+const debug = (...args) => console.log("[BrainSoap tabs]", ...args);
+
 export async function getActiveTabId() {
   try {
-    // Query for the tab that is active and in the current window
-    const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+    const queryOptions = [
+      { active: true, lastFocusedWindow: true },
+      { active: true, currentWindow: true },
+    ];
 
-    if (tabs.length > 0) return tabs[0].id;
+    for (const options of queryOptions) {
+      const tabs = await browser.tabs.query(options);
+      if (tabs.length > 0) {
+        debug("getActiveTabId", { options, tabId: tabs[0].id, url: tabs[0].url });
+        return tabs[0].id;
+      }
+    }
+
   } catch (error) {
     console.error("Error finding active tab:", error);
   }
@@ -12,6 +23,7 @@ export async function getActiveTabId() {
 
 export async function freezeTab(tabId) {
   try {
+    debug("freezeTab", { tabId });
     // mute tab via tabs API
     await browser.tabs.update(tabId, { muted: true });
 
@@ -42,8 +54,10 @@ export async function unmuteCurrentTab() {
 export async function sendMessageWithRetry(tabId, message, retries = 3, delay = 100) {
   for (let i = 0; i < retries; i++) {
     try {
+      debug("sendMessageWithRetry attempt", { tabId, attempt: i + 1, retries, message });
       return await browser.tabs.sendMessage(tabId, message);
     } catch (err) {
+      debug("sendMessageWithRetry failed", { tabId, attempt: i + 1, error: String(err) });
       if (i === retries - 1) throw err; // Out of retries, propagate error
       await new Promise(resolve => setTimeout(resolve, delay)); // Wait before retrying
     }

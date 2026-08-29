@@ -3,11 +3,18 @@
   "description": "A browser extension to help users manage their time spent on distracting websites by providing customizable blocking and redirection features.",
   "version": "1.1.0",
   "manifest_version": 3,
-  "permissions": ["storage", "tabs","activeTab", "scripting", "alarms", "notifications"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "scripting",
+    "alarms",
+    "notifications"
+  ],
   "icons": {
-    "16":  "assets/icons/icon16.png",
-    "32":  "assets/icons/icon32.png",
-    "48":  "assets/icons/icon48.png",
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
     "128": "assets/icons/icon128.png"
   },
   "content_scripts": [
@@ -30,26 +37,14 @@
     },
     {
       "resources": ["src/browser/storage.js"],
-      "extension_ids": ["BrainSoap@not_a_real_email.com"]
+      "matches": ["<all_urls>"]
     }
   ],
   "background": {
     "service_worker": "src/background/background.js",
-    "scripts": ["src/background/background.js"],
     "type": "module"
   },
   "action": {
     "default_popup": "src/ui/popup/popup.html"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "BrainSoap@gmx.net",
-      "update_url": "https://raw.githubusercontent.com/YN1SEV/main/update.json",
-      "data_collection_permissions": {
-        "required": [
-          "none"
-        ]
-      }
-    }
   }
 }

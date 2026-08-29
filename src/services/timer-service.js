@@ -36,3 +36,13 @@ export function matchingCategories(blacklist = [], domain) {
 export function remainingMinutes(maxTimeMinutes, usedSeconds) {
   return Math.max(0, maxTimeMinutes - Math.floor(usedSeconds / 60));
 }
+
+export function usedSecondsToday(log = {}, name, today, session = null, activeDomain = null) {
+  const storedSeconds = log[name]?.date === today ? log[name].usedSeconds : 0;
+
+  if (!session?.domain || !session?.since) return storedSeconds;
+  if (session.domain !== activeDomain) return storedSeconds;
+
+  const liveSeconds = Math.max(0, Math.floor((Date.now() - session.since) / 1000));
+  return storedSeconds + liveSeconds;
+}

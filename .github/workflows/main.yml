@@ -25,3 +25,6 @@ jobs:
 
       - name: Run tests
         run: bun test
+
+      - name: Run Opera GX build
+        run: bun run build

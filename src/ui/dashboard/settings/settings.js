@@ -22,7 +22,7 @@ function setStatus(message) {
 
 async function exportData() {
   const [sync, local] = await Promise.all([
-    browser.storage.sync.get(null),
+    browser.storage.local.get(null),
     browser.storage.local.get(null),
   ]);
 
@@ -49,13 +49,12 @@ async function importData(file) {
   try {
     const data = JSON.parse(await file.text());
 
-    if (data?.app !== "BrainSoap" || !data.sync) {
+    if (data?.app !== "BrainSoap" || (!data.local && !data.sync)) {
       setStatus("That file isn't a BrainSoap backup.");
       return;
     }
 
-    await browser.storage.sync.set(data.sync);
-    if (data.local) await browser.storage.local.set(data.local);
+    await browser.storage.local.set(data.local ?? data.sync);
 
     setStatus("Imported. Reloading…");
     setTimeout(() => location.reload(), 600);

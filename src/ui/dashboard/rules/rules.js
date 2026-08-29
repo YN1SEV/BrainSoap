@@ -1,4 +1,5 @@
 import { customStorage } from "../../../browser/storage.js";
+import { defaultBlacklist } from "../../../utils/defaults.js";
 import { faviconUrl } from "../../../utils/url.js";
 
 export let appData = [];
@@ -16,11 +17,9 @@ function el(tag, attrs = {}, children = []) {
 }
 
 export async function loadAndRenderRules() {
-  const stored = await customStorage.getSync('blacklist');
+  const stored = await customStorage.getSync('blacklist', defaultBlacklist);
 
-  if (stored && Array.isArray(stored)) {
-    appData = stored;
-  }
+  appData = Array.isArray(stored) ? stored : defaultBlacklist;
 
   await renderCategories();
 }

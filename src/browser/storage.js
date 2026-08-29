@@ -3,6 +3,7 @@ class StorageManager {
 		
 		// cross-browser
 		this.browserApi = globalThis.browser ?? globalThis.chrome;
+		this.debug = (...args) => console.log("[BrainSoap storage]", ...args);
 
 		this.localCache = {};
 		this.syncCache = {};
@@ -16,6 +17,9 @@ class StorageManager {
 				for (let [key, { newValue }] of Object.entries(changes)) {
 					if (newValue === undefined) delete this.localCache[key];
 					else this.localCache[key] = newValue;
+
+					if (newValue === undefined) delete this.syncCache[key];
+					else this.syncCache[key] = newValue;
 				}
 			}
 			if (areaName === 'sync') {
@@ -37,6 +41,7 @@ class StorageManager {
 	{
 		try {
 			await this._ensureInitialized();
+			this.debug("setLocal", { key, hasValue: value !== undefined });
 			this.localCache[key] = value;
 			await this.browserApi.storage.local.set({ [key]: value });		
 		} catch (e) {
@@ -48,6 +53,7 @@ class StorageManager {
 	async getLocal(key) {
 		try {
 			await this._ensureInitialized();
+			this.debug("getLocal", { key, cached: this.localCache[key] !== undefined });
 			if (this.localCache[key] !== undefined) return this.localCache[key];
 
 			const result = await this.browserApi.storage.local.get(key);
@@ -58,8 +64,23 @@ class StorageManager {
 		}
 	}
 
+	async getLocalFresh(key) {
+		try {
+			await this._ensureInitialized();
+			this.debug("getLocalFresh", { key });
+			const result = await this.browserApi.storage.local.get(key);
+			const value = result[key];
+			if (value !== undefined) this.localCache[key] = value;
+			return value;
+		} catch (e) {
+			console.error(`error while getting ${key} from local storage`, e);
+			throw e;
+		}
+	}
+
 	// wipes session
 	async clearLocalStorage() {
+		this.debug("clearLocalStorage");
 		const KEEP = new Set([
       'dayLog', 
       'domainLog', 
@@ -68,6 +89,10 @@ class StorageManager {
       'recentVisits', 
       'topExcluded', 
       'activeDates', 
+	'focusMode',
+	'paused',
+	'settings',
+	'blacklist',
       'installDate'
     ]);
 
@@ -81,25 +106,36 @@ class StorageManager {
 	async setSync(key, value) {
 		try {
 			await this._ensureInitialized();
+			this.debug("setSync->local", { key, hasValue: value !== undefined });
+			this.localCache[key] = value;
 			this.syncCache[key] = value;
-			await this.browserApi.storage.sync.set({ [key]: value });
+			await this.browserApi.storage.local.set({ [key]: value });
 		} catch (e) {
 			console.error(`error while setting ${key} in sync storage`, e);
 			throw e;
 		}
 	}
 
-	async getSync(key) {
+	async getSync(key, fallbackValue = undefined, fresh = false) {
 		try {
 		await this._ensureInitialized();
-		if (this.syncCache[key] !== undefined) return this.syncCache[key];
+		this.debug("getSync->local", { key, cached: this.syncCache[key] !== undefined, fresh });
+		if (!fresh && this.syncCache[key] !== undefined) return this.syncCache[key];
 
-		const result = await this.browserApi.storage.sync.get(key);
-		return result[key];
+		const result = await this.browserApi.storage.local.get(key);
+		const value = result[key] ?? fallbackValue;
+		if (value !== undefined) this.localCache[key] = value;
+		if (value !== undefined) this.syncCache[key] = value;
+		return value;
 		} catch (e) {
 			console.error(`error while getting ${key} in sync storage`, e);
+			if (fallbackValue !== undefined) return fallbackValue;
 			throw e;
 		}
+	}
+
+	async getSyncFresh(key, fallbackValue = undefined) {
+		return this.getSync(key, fallbackValue, true);
 	}
 
 	async resetSettings(defaults) {
@@ -117,13 +153,12 @@ class StorageManager {
 	// --- initialize storage ---
 	async _initCache() {
 		try {
-			const [localData, syncData] = await Promise.all([
-				this.browserApi.storage.local.get(null),
-				this.browserApi.storage.sync.get(null)
-			]);
+			this.debug("initCache:start");
+			const localData = await this.browserApi.storage.local.get(null);
 			this.localCache = localData || {};
-			this.syncCache = syncData || {};
+			this.syncCache = { ...this.localCache };
 			this.isReady = true;
+			this.debug("initCache:done", { keys: Object.keys(this.localCache) });
 			} catch (e) {
 				console.error("error while initializing storage:", e);
 				throw e;

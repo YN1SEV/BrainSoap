@@ -430,3 +430,6 @@ FodyWeavers.xsd
 
 #Firefox build artifacts
 web-ext-artifacts/
+
+# Opera GX build artifacts
+dist/
