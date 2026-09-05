@@ -3,7 +3,7 @@ import { defaultSettings, defaultBlacklist } from "../utils/defaults.js";
 import { getCleanedIdentifier, isTrackableUrl } from "../utils/url.js";
 import { toDateKey } from "../utils/time.js";
 import { getActiveTabId } from "../browser/tabs.js";
-import { redirectTo } from "../browser/actions.js";
+import { redirectTo, unfreezeTab } from "../browser/actions.js";
 import { logActiveDay, accrueFocusTime, computeAndSaveStats } from "../services/stats-service.js";
 import { startSession, flushSession, checkThresholds, publishTimerState, getBlacklist } from "../services/session-service.js";
 import { debugLog, debugError } from "../utils/debug.js";
@@ -60,8 +60,8 @@ async function migrateMobileRules() {
   let changed = false;
   for (const category of blacklist) {
     for (const item of category.items ?? []) {
-      if (item.name === 'YouTube' && item.url === 'youtube.com') {
-        item.url = 'm.youtube.com';
+      if (item.name === 'YouTube' && item.url === 'm.youtube.com') {
+        item.url = 'youtube.com';
         changed = true;
       }
     }
@@ -98,18 +98,27 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
 });
 
 // track url switching within tab
-browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+async function handleTabUpdated(tabId, changeInfo, tab) {
   if (changeInfo.url) {
     debugLog("tab URL changed", { tabId, url: tab.url });
     return queueTracking(async () => {
       await startSession(await trackable(tab.url), true, tabId);
     });
   }
-});
+}
+
+try {
+  browser.tabs.onUpdated.addListener(handleTabUpdated, { properties: ["url"] });
+  debugLog("tabs.onUpdated URL filter supported");
+} catch {
+  browser.tabs.onUpdated.addListener(handleTabUpdated);
+  debugLog("tabs.onUpdated URL filter unavailable; using runtime filter");
+}
 
 // content script confirms the blocker was dismissed
-browser.runtime.onMessage.addListener(async (message) => {
+browser.runtime.onMessage.addListener(async (message, sender) => {
   if (message.action === "BLOCKER_CONFIRMED") {
+    await unfreezeTab(sender.tab?.id);
     if (message.url !== undefined) await redirectTo(message.url);
     return;
   }

@@ -1,5 +1,7 @@
 import { debugLog, debugError } from "../utils/debug.js";
 
+let tabMuteSupported;
+
 export async function getActiveTabId() {
   try {
     const queries = [
@@ -29,6 +31,8 @@ export async function getActiveTabId() {
 export async function freezeTab(tabId) {
   if (tabId == null) return;
 
+  await setTabMuted(tabId, true);
+
   try {
     await browser.tabs.sendMessage(tabId, { action: "PAUSE_MEDIA" });
     return;
@@ -46,6 +50,21 @@ export async function freezeTab(tabId) {
     });
   } catch (error) {
     console.error("Media pause failed:", error);
+  }
+}
+
+export async function setTabMuted(tabId, muted) {
+  if (tabId == null || tabMuteSupported === false) return false;
+
+  try {
+    await browser.tabs.update(tabId, { muted });
+    tabMuteSupported = true;
+    debugLog("tab mute supported", { tabId, muted });
+    return true;
+  } catch {
+    tabMuteSupported = false;
+    debugLog("tab mute unavailable; using media controls", { tabId });
+    return false;
   }
 }
 

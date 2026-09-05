@@ -29,7 +29,7 @@ export const defaultBlacklist = [
     actions: ["image"],
     imagePath: "assets/visuals/Stopper_plain.svg",
     items: [
-      { name: "YouTube", url: "m.youtube.com", active: true },
+      { name: "YouTube", url: "youtube.com", active: true },
       { name: "Netflix", url: "netflix.com", active: true },
       { name: "Reddit",  url: "reddit.com",  active: true },
     ],

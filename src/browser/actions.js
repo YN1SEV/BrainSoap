@@ -1,4 +1,4 @@
-import { getActiveTabId, freezeTab, sendMessageWithRetry } from "./tabs.js";
+import { getActiveTabId, freezeTab, sendMessageWithRetry, setTabMuted } from "./tabs.js";
 import { debugLog, debugError } from "../utils/debug.js";
 
 export async function redirectTo(url, tabId = null) {
@@ -42,6 +42,10 @@ export async function showBlocker(redirectUrl = null, tabId = null) {
   } catch (error) {
     debugError("blocker message failed", error, { tabId: targetTabId });
   }
+}
+
+export async function unfreezeTab(tabId) {
+  await setTabMuted(tabId, false);
 }
 
 // freezes tab and covers it with a full screen image instead

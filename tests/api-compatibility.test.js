@@ -49,7 +49,7 @@ describe("Firefox Android browser API compatibility", () => {
     const { freezeTab } = await import("../src/browser/tabs.js");
     await freezeTab(7);
 
-    assert.deepEqual(updates, []);
+    assert.deepEqual(updates, [[7, { muted: true }]]);
     assert.deepEqual(pauseMessage, { action: "PAUSE_MEDIA" });
   });
 

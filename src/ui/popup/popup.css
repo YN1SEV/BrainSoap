@@ -18,7 +18,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   padding: 0.875rem;
-  background: transparent;
+  background: var(--bg);
   color: var(--text);
   font-size: 1rem;
   line-height: 1.4;
@@ -79,6 +79,14 @@ header { margin-bottom: 0.875rem; }
   .icon-btn img {
     filter: invert(1) brightness(1.2) contrast(1.1);
   }
+}
+
+html[data-theme="light"] .icon-btn img {
+  filter: none;
+}
+
+html[data-theme="dark"] .icon-btn img {
+  filter: invert(1) brightness(1.2) contrast(1.1);
 }
 
 main,
