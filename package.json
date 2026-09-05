@@ -1,0 +1,9 @@
+{
+  "name": "brainsoap-extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/api-compatibility.test.js",
+    "android:logs": "powershell -ExecutionPolicy Bypass -File scripts/android-logs.ps1"
+  }
+}
