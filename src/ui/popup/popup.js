@@ -112,4 +112,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   focusToggle().addEventListener('change', onFocusChange);
   pauseToggle().addEventListener('change', onPauseChange);
+  setInterval(updateStatus, 5000);
 });

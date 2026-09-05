@@ -4,6 +4,7 @@
   "version": "1.1.0",
   "manifest_version": 3,
   "permissions": ["storage", "tabs","activeTab", "scripting", "alarms", "notifications"],
+  "host_permissions": ["<all_urls>"],
   "icons": {
     "16":  "assets/icons/icon16.png",
     "32":  "assets/icons/icon32.png",
@@ -44,12 +45,14 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "BrainSoap@gmx.net",
-      "update_url": "https://raw.githubusercontent.com/YN1SEV/main/update.json",
       "data_collection_permissions": {
         "required": [
           "none"
         ]
       }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
     }
   }
 }

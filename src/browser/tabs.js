@@ -1,21 +1,42 @@
+import { debugLog, debugError } from "../utils/debug.js";
+
 export async function getActiveTabId() {
   try {
-    // Query for the tab that is active and in the current window
-    const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+    const queries = [
+      { active: true, lastFocusedWindow: true },
+      { active: true, currentWindow: true },
+      { active: true }
+    ];
 
-    if (tabs.length > 0) return tabs[0].id;
+    for (const query of queries) {
+      try {
+        const tabs = await browser.tabs.query(query);
+        const tabId = tabs.find((tab) => tab?.id != null)?.id;
+        if (tabId != null) {
+          debugLog("active tab selected", { query, tabId });
+          return tabId;
+        }
+      } catch {
+        // Try the next query shape for Firefox Android compatibility.
+      }
+    }
   } catch (error) {
-    console.error("Error finding active tab:", error);
+    debugError("active tab lookup failed", error);
   }
   return null;
 }
 
 export async function freezeTab(tabId) {
-  try {
-    // mute tab via tabs API
-    await browser.tabs.update(tabId, { muted: true });
+  if (tabId == null) return;
 
-    // pause media via manifest V3 scripting API
+  try {
+    await browser.tabs.sendMessage(tabId, { action: "PAUSE_MEDIA" });
+    return;
+  } catch (error) {
+    // The content script may not be ready on a newly loaded page.
+  }
+
+  try {
     await browser.scripting.executeScript({
       target: { tabId: tabId },
       func: () => {
@@ -23,29 +44,39 @@ export async function freezeTab(tabId) {
         media.forEach(m => m.pause());
       }
     });
-
   } catch (error) {
-    console.error("MV3 Freeze Error:", error);
-  }
-}
-
-export async function unmuteCurrentTab() {
-  try {
-    const tabId = await getActiveTabId();
-    await browser.tabs.update(tabId, { muted: false });
-  } catch (error) {
-    console.error("Failed to unfreeze tab:", error);
+    console.error("Media pause failed:", error);
   }
 }
 
 // message sender with retry
-export async function sendMessageWithRetry(tabId, message, retries = 3, delay = 100) {
+export async function sendMessageWithRetry(tabId, message, retries = 8, delay = 250) {
+  debugLog("sending tab message", { tabId, action: message.action });
+  let lastError;
+
   for (let i = 0; i < retries; i++) {
     try {
       return await browser.tabs.sendMessage(tabId, message);
-    } catch (err) {
-      if (i === retries - 1) throw err; // Out of retries, propagate error
-      await new Promise(resolve => setTimeout(resolve, delay)); // Wait before retrying
+    } catch (error) {
+      lastError = error;
+
+      if (i === 0) {
+        try {
+          await browser.scripting.executeScript({
+            target: { tabId },
+            files: ["src/content/blocker.js"],
+            injectImmediately: true,
+          });
+        } catch (injectionError) {
+          debugError("content script injection unavailable", injectionError, { tabId });
+        }
+      }
+
+      if (i < retries - 1) {
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
     }
   }
+
+  throw lastError;
 }
