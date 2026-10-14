@@ -2,6 +2,32 @@
 
 import { ruleTarget } from "../utils/url.js";
 
+export const LIMIT_RESET_MODES = Object.freeze({
+  AFTER_BLOCK: "after-block",
+  LOCAL_MIDNIGHT: "local-midnight",
+});
+
+export function normalizeLimitResetMode(mode) {
+  return mode === LIMIT_RESET_MODES.AFTER_BLOCK
+    ? LIMIT_RESET_MODES.AFTER_BLOCK
+    : LIMIT_RESET_MODES.LOCAL_MIDNIGHT;
+}
+
+export function categoryUsedSeconds(categoryLog, timerName, dateKey) {
+  const entry = categoryLog[timerName];
+  return entry?.date === dateKey ? entry.usedSeconds : 0;
+}
+
+export function shouldResetAfterBlock(category, focusMode = false) {
+  return !focusMode && normalizeLimitResetMode(category.resetMode) === LIMIT_RESET_MODES.AFTER_BLOCK;
+}
+
+export function resetCategoryUsage(categoryLog, timerName) {
+  const nextLog = { ...categoryLog };
+  delete nextLog[timerName];
+  return nextLog;
+}
+
 export function buildTimerMap(blacklist = []) {
   const map = {};
   for (const category of blacklist) {

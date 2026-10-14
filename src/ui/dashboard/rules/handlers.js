@@ -1,6 +1,7 @@
 import { appData, saveRules, saveAndRender, refreshTimers, loadAndRenderRules } from "./rules.js";
 import { showCategoryMenu } from "./category-menu.js";
 import { getNewCategoryDefaults, getRefreshMs } from "../../../services/settings-service.js";
+import { normalizeLimitResetMode } from "../../../services/timer-service.js";
 import { hasOptOutPrefix, domainOf } from "../../../utils/url.js";
 
 // build a fresh category from the user's configured defaults
@@ -12,6 +13,7 @@ async function makeCategory(name) {
   const category = {
     timerName: name,
     maxTime: Number.isFinite(parsedMaxTime) ? parsedMaxTime : 60,
+    resetMode: normalizeLimitResetMode(d.resetMode),
     actions,
     items: [],
   };

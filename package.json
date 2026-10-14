@@ -1,0 +1,12 @@
+{
+  "name": "brainsoap-extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "bun test tests",
+    "android:logs": "powershell -ExecutionPolicy Bypass -File scripts/android-logs.ps1"
+  },
+  "dependencies": {
+    "web-ext": "^5.1.0"
+  }
+}
