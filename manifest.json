@@ -1,7 +1,7 @@
 {
   "name": "BrainSoap",
   "description": "A browser extension to help users manage their time spent on distracting websites by providing customizable blocking and redirection features.",
-  "version": "1.2.0",
+  "version": "1.3.1",
   "manifest_version": 3,
   "permissions": ["storage", "tabs","activeTab", "scripting", "alarms", "notifications"],
   "host_permissions": ["<all_urls>"],
@@ -28,10 +28,6 @@
         "src/content/blocker-image.html"
       ],
       "matches": ["<all_urls>"]
-    },
-    {
-      "resources": ["src/browser/storage.js"],
-      "extension_ids": ["BrainSoap@not_a_real_email.com"]
     }
   ],
   "background": {

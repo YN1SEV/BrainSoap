@@ -21,6 +21,10 @@ export async function getRefreshMs() {
 
 // defaults applied when the user creates a new rules category
 export async function getNewCategoryDefaults() {
-  const { newCategoryDefaults } = await getSettings();
-  return { ...defaultSettings.newCategoryDefaults, ...newCategoryDefaults };
+  const settings = await getSettings();
+  return {
+    ...defaultSettings.newCategoryDefaults,
+    ...settings.newCategoryDefaults,
+    resetMode: settings.defaultLimitResetMode,
+  };
 }
