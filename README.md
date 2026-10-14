@@ -8,11 +8,11 @@ A Browser extension to help you avoid extended scrolling by blocking your screen
 ## Features
 - tracking how much time you spend on different sites
 - actions when a limit is exceeded
-    - sending you a message
-    - creating a popup
-    - showing an image with the popup
-    - redirecting you to a different URL
-    - also in arbitrary combinations
+  - sending you a message
+  - creating a popup
+  - showing an image with the popup
+  - redirecting you to a different URL
+  - also in arbitrary combinations
 
 ### planned Features
 
@@ -28,18 +28,16 @@ this was a great help in understanding how to create an extension and what you c
 
 ## Installation
 
+### via the mozilla add-ons store
+1. head over to the [mozilla add-ons store](https://addons.mozilla.org/en-US/firefox/addon/brainsoap/) and click install
+2. give the required permissions if prompted
+3. you are ready to use the extension
+
 ### via release
 1. head over to the releases
 2. select one you like (we recommend the latest)
 3. select the .xpi file
 4. allow firefox to install the addon 
-5. you are ready to use the extension
-
-### via .xpi file
-1. get a zip file from a release
-2. open Firefox and go to `about:addons`
-3. select the gear (tools for add-ons)
-4. select install add-on from file
 5. you are ready to use the extension
 
 ### via temporary addon (firefox)
@@ -54,9 +52,9 @@ this was a great help in understanding how to create an extension and what you c
 
 ### installing from source
 > [!NOTE]
-> this is not the way Firefox intended extensions to be installed
+> this is not the way Firefox intendeds extensions to be installed
 
-you can only install from source if you have a Firefox build which supports not certified extensions. This is for example a Firefox Developer build.
+you can only install from source if you have a Firefox build which supports uncertified extensions. This is for example a Firefox Developer build.
 This section will roughly describe how to install an unsigned extension on such a Build.
 
 1. type in `about:config` in your URL bar.
