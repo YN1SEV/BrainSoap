@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "BrainSoap@gmx.net": {
+      "updates": [
+        {
+          "version": "1.1.0",
+          "update_link": "https://github.com/YN1SEV/BrainSoap/releases/download/v1.1.0/ed701850d94740429401-1.1.0.xpi"
+        }
+      ]
+    }
+  }
+}

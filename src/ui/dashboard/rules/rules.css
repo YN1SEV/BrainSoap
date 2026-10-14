@@ -12,6 +12,14 @@ section#rules > ul {
   display: grid;
   gap: var(--space-md);
 }
+
+@media (min-width: 900px) {
+  section#rules > ul {
+    grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+    align-items: start;
+  }
+}
+
 section#rules > ul,
 .items,
 .cat-menu-popup ul {

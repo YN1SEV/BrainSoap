@@ -4,12 +4,17 @@
 //cross browser compatibility
 globalThis.browser ??= globalThis.chrome;
 
+console.log(`[BrainSoap] content script loaded ${location.href}`);
+
 //prevent duplicates
 if (!window.hasBlockerListener) {
   window.hasBlockerListener = true;
 
   browser.runtime.onMessage.addListener((message) => {
-    if (message.action === "TRIGGER_BLOCK") {
+    console.log(`[BrainSoap] content message received ${message.action}`);
+    if (message.action === "PAUSE_MEDIA") {
+      document.querySelectorAll('video, audio').forEach((media) => media.pause());
+    } else if (message.action === "TRIGGER_BLOCK") {
       if (message.imagePath) renderImage(message.imagePath, message.redirectUrl)
       else renderBlocker(message.seconds, message.redirectUrl);
     }
@@ -35,10 +40,20 @@ const overlayHtmlPromise = fetchExtensionText('src/content/blocker-overlay.html'
 const imageHtmlPromise = fetchExtensionText('src/content/blocker-image.html');
 
 function lockPageScroll() {
-  document.body.style.setProperty('overflow', 'hidden', 'important');
+  document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+  document.body?.style.setProperty('overflow', 'hidden', 'important');
 }
 function unlockPageScroll() {
-  document.body.style.removeProperty('overflow');
+  document.documentElement.style.removeProperty('overflow');
+  document.body?.style.removeProperty('overflow');
+}
+
+function waitForBody() {
+  if (document.body) return Promise.resolve(document.body);
+
+  return new Promise((resolve) => {
+    document.addEventListener('DOMContentLoaded', () => resolve(document.body), { once: true });
+  });
 }
 
 // "closed" so page scripts can't reach in via host.shadowRoot either.
@@ -72,8 +87,11 @@ function populateShadow(shadow, css, html) {
 }
 
 async function renderBlocker(seconds, redirectUrl = undefined) {
-  // Prevent duplicate popups
-  if (document.getElementById('doom-blocker-overlay')) return;
+  try {
+    // Prevent duplicate popups
+    if (document.getElementById('doom-blocker-overlay')) return;
+
+    await waitForBody();
 
   // Sanitize input to a non-negative integer
   const safeSeconds = Math.max(0, parseInt(seconds, 10) || 0);
@@ -112,14 +130,17 @@ async function renderBlocker(seconds, redirectUrl = undefined) {
     }, 1000);
   }
 
-  btn.onclick = () => {
-    unlockPageScroll();
-    overlay.remove();
-    browser.runtime.sendMessage({
-      action: 'BLOCKER_CONFIRMED',
-      url: redirectUrl,
-    });
-  };
+    btn.onclick = () => {
+      unlockPageScroll();
+      overlay.remove();
+      browser.runtime.sendMessage({
+        action: 'BLOCKER_CONFIRMED',
+        url: redirectUrl,
+      });
+    };
+  } catch (error) {
+    console.error("Error rendering blocker:", error);
+  }
 }
 
 // covers whole page with single image
@@ -129,6 +150,8 @@ async function renderImage(imagePath, redirectUrl = undefined) {
   try {
     // Prevent duplicate popups
     if (document.getElementById('doom-blocker-image')) return;
+
+    await waitForBody();
 
     const resolvedPath = browser.runtime.getURL(imagePath);
 

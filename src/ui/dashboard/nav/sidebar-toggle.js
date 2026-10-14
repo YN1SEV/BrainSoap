@@ -1,9 +1,20 @@
 const toggleButton = document.getElementById("toggle-sidebar");
+const scrim = document.querySelector(".sidebar-scrim");
 const sidebarNav = document.querySelector(".sidebar nav");
 
-toggleButton?.addEventListener("click", () => {
-  const isHidden = document.body.classList.toggle("hide-sidebar");
+function setSidebarHidden(isHidden) {
+  document.body.classList.toggle("hide-sidebar", isHidden);
   toggleButton.setAttribute("aria-expanded", String(!isHidden));
+}
+
+toggleButton?.addEventListener("click", () => {
+  setSidebarHidden(!document.body.classList.contains("hide-sidebar"));
+});
+
+scrim?.addEventListener("click", () => setSidebarHidden(true));
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") setSidebarHidden(true);
 });
 
 let linkActivatedByKeyboard = false;

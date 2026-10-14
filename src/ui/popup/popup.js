@@ -1,6 +1,7 @@
 import { customStorage } from "../../browser/storage.js";
 import { getCleanedIdentifier, isTrackableUrl } from "../../utils/url.js";
 import { logFocusSessionEnd, startFocusTracking, accrueFocusTime, shortestTimer, computeAndSaveStats } from "../../services/stats-service.js";
+import { applyTheme } from "../../utils/themes.js";
 
 globalThis.browser ??= globalThis.chrome;
 
@@ -107,9 +108,15 @@ async function onPauseChange(e) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const settings = await customStorage.getSync('settings');
+  const theme = settings?.theme ?? 'system';
+  applyTheme(theme);
+  document.documentElement.dataset.theme = theme;
+
   await computeAndSaveStats();
   await Promise.all([updateStatus(), loadToggles()]);
   
   focusToggle().addEventListener('change', onFocusChange);
   pauseToggle().addEventListener('change', onPauseChange);
+  setInterval(updateStatus, 5000);
 });

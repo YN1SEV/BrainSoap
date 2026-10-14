@@ -229,17 +229,6 @@ section#settings > section {
 /*==================================================== Scaling =====================================================*/
 /*====================================================================================================================*/
 
-@media (max-width: 599px) {
-  body:not(.hide-sidebar) main {
-    display: none;
-  }
-}
-@media (max-width: 349px) {
-  body.hide-sidebar main {
-    display: none;
-  }
-}
-
 .unsupported-format {
   display: none;
 }

@@ -11,6 +11,7 @@
   inset: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
+  height: 100dvh !important;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
@@ -146,13 +147,15 @@
   gap: 1.5em; /* Creates spacing between the image and the button */
   max-width: 90vw; /* Prevents it from touching the screen edges */
   max-height: 90vh;
+  max-height: 90dvh;
   background: transparent;
   border: none;
   box-shadow: none;
 }
 :host(#doom-blocker-image) #close-blocker {
   width: min(72vw, 32rem);
-  min-width: 18rem;
+  min-width: 0;
+  max-width: 100%;
   min-height: 5vh;
   padding: 1.6vh 2vw;
   font-size: clamp(1rem, 1.6vh, 1.4rem);
@@ -162,7 +165,8 @@
 :host(#doom-blocker-image) .blocker-card img {
   width: 90vw;
   max-width: 90vw;
-  max-height: 90vh; /* Leaves enough room at the bottom for the button */
+  max-height: calc(90vh - 6rem); /* Leaves room for the button */
+  max-height: calc(90dvh - 6rem);
   object-fit: contain; /* Preserves the image's aspect ratio */
   border-radius: var(--radius);
   box-shadow: 0 4px 20px var(--shadow);
