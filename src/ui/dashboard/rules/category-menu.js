@@ -1,6 +1,7 @@
 import { appData, saveAndRender } from "./rules.js";
 import { faviconUrl } from "../../../utils/url.js";
 import { customStorage } from "../../../browser/storage.js";
+import { LIMIT_RESET_MODES, normalizeLimitResetMode } from "../../../services/timer-service.js";
 
 async function syncTimerState(category) {
   const timerState = (await customStorage.getLocal('timerState')) ?? {};
@@ -66,7 +67,8 @@ function renderMainMenu(popup, catIndex, closePopup) {
     { label: 'Change Timer', action: 'change-timer' },
     { label: 'Change Action', action: 'change-action', expandable: true },
     { label: 'Items', action: 'items', expandable: true },
-    { label: 'Delete', action: 'delete', danger: true }
+    { label: 'Reset mode', action: 'reset-mode', expandable: true },
+    { label: 'Delete', action: 'delete', danger: true },
   ];
 
   const ul = document.createElement('ul');
@@ -139,8 +141,62 @@ function renderMainMenu(popup, catIndex, closePopup) {
         renderActionMenu(popup, catIndex, closePopup);
         break;
       }
+      case 'reset-mode': {
+        renderResetModeMenu(popup, catIndex, closePopup);
+        break;
+      }
     }
   };
+}
+
+function renderResetModeMenu(popup, catIndex, closePopup) {
+  const category = appData[catIndex];
+  if (!category) return;
+
+  const ul = document.createElement('ul');
+  const backLi = document.createElement('li');
+  const backBtn = document.createElement('button');
+  backBtn.className = 'cat-menu-action';
+  backBtn.dataset.action = 'back';
+  backBtn.textContent = '← Back';
+  backLi.appendChild(backBtn);
+  ul.appendChild(backLi);
+
+  const { li, innerUl } = buildFieldsetGroup('Reset limit');
+  const options = [
+    { value: LIMIT_RESET_MODES.AFTER_BLOCK, label: 'After each block' },
+    { value: LIMIT_RESET_MODES.LOCAL_MIDNIGHT, label: 'At local midnight' },
+  ];
+  const selected = normalizeLimitResetMode(category.resetMode);
+
+  options.forEach(({ value, label }) => {
+    const optionLi = document.createElement('li');
+    optionLi.className = 'cat-menu-checkbox-row';
+    const labelEl = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = `cat-reset-mode-${catIndex}`;
+    input.value = value;
+    input.checked = selected === value;
+    labelEl.append(input, ` ${label}`);
+    optionLi.appendChild(labelEl);
+    innerUl.appendChild(optionLi);
+  });
+  ul.appendChild(li);
+  popup.replaceChildren(ul);
+  focusFirstAction(popup);
+
+  popup.onclick = (e) => {
+    const actionButtonEl = e.target.closest('.cat-menu-action');
+    if (actionButtonEl?.dataset.action === 'back') renderMainMenu(popup, catIndex, closePopup);
+  };
+
+  popup.querySelectorAll('input[type="radio"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      category.resetMode = radio.value;
+      saveAndRender();
+    });
+  });
 }
 
 const MODE_OPTIONS = [

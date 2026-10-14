@@ -1,6 +1,6 @@
 import { customStorage } from "../browser/storage.js";
-import { toDateKey } from "../utils/time.js";
-import { matchingCategories, remainingMinutes } from "./timer-service.js";
+import { toLocalDateKey } from "../utils/time.js";
+import { matchingCategories, remainingMinutes, categoryUsedSeconds, resetCategoryUsage, shouldResetAfterBlock } from "./timer-service.js";
 import { logDomainTime, logBlock } from "./stats-service.js";
 import { redirectTo, sendMessage, showBlocker, showImage } from "../browser/actions.js";
 import { debugLog } from "../utils/debug.js";
@@ -46,16 +46,21 @@ export async function checkThresholds(isVisit, tabId = null) {
   if (!cats.length) return;
 
   const focusMode = !!(await customStorage.getLocal('focusMode'));
-  const categoryLog = (await customStorage.getLocal('categoryLog')) ?? {};
+  let categoryLog = (await customStorage.getLocal('categoryLog')) ?? {};
   const allowNotify = (await customStorage.getSync('settings'))?.notificationsEnabled !== false;
-  const today = toDateKey();
+  const today = toLocalDateKey();
 
   for (const cat of cats) {
-    const used = categoryLog[cat.timerName]?.date === today ? categoryLog[cat.timerName].usedSeconds : 0;
+    const used = categoryUsedSeconds(categoryLog, cat.timerName, today);
     debugLog("category usage", { category: cat.timerName, used, limit: cat.maxTime * 60, focusMode });
     if (!focusMode && used < cat.maxTime * 60) continue;
     await triggerBlock(cat, focusMode, allowNotify, tabId);
     if (isVisit) await logBlock();
+    if (shouldResetAfterBlock(cat, focusMode)) {
+      categoryLog = resetCategoryUsage(categoryLog, cat.timerName);
+      await customStorage.setLocal('categoryLog', categoryLog);
+      await publishTimerState();
+    }
     if (focusMode) break;
   }
 }
@@ -83,12 +88,10 @@ async function triggerBlock(cat, focusMode, allowNotify = true, tabId = null) {
 export async function publishTimerState() {
   const blacklist   = await getBlacklist();
   const categoryLog = (await customStorage.getLocal('categoryLog')) ?? {};
-  const today       = toDateKey();
+  const today       = toLocalDateKey();
   const timerState  = {};
   for (const cat of blacklist) {
-    const usedSec = categoryLog[cat.timerName]?.date === today
-      ? categoryLog[cat.timerName].usedSeconds
-      : 0;
+    const usedSec = categoryUsedSeconds(categoryLog, cat.timerName, today);
     timerState[cat.timerName] = { remaining: remainingMinutes(cat.maxTime, usedSec), maxTime: cat.maxTime };
   }
   await customStorage.setLocal('timerState', timerState);

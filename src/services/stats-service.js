@@ -1,8 +1,8 @@
 // needs rework 
 
 import { customStorage } from "../browser/storage.js";
-import { toDateKey, last7DateKeys, prev7DateKeys, calcStreak } from "../utils/time.js";
-import { buildTimerMap, categoriesForDomain, remainingMinutes } from "./timer-service.js";
+import { toDateKey, toLocalDateKey, last7DateKeys, prev7DateKeys, calcStreak } from "../utils/time.js";
+import { buildTimerMap, categoriesForDomain, remainingMinutes, categoryUsedSeconds } from "./timer-service.js";
 import { ruleTarget, domainOf } from "../utils/url.js";
 
 const RECENT_RESUME_MS = 5 * 60 * 1000; // revisits within this window resume the same entry
@@ -23,15 +23,12 @@ const emptyDay       = () => ({
   blockedCount: 0 
 });
 
-const usedToday = (log, name, today) => {
-  return log[name]?.date === today ? log[name].usedSeconds : 0;
-};
-
 // core stats logging
 export async function logDomainTime(domain, seconds, focusMode = false) {
   if (!domain || seconds <= 0) return;
 
   const today = toDateKey();
+  const limitDate = toLocalDateKey();
   const [blacklist, dayLog, domainLog, categoryLog, recent] = await Promise.all([
     getBlacklist(),
     getDayLog(),
@@ -74,8 +71,8 @@ export async function logDomainTime(domain, seconds, focusMode = false) {
 
     for (const name of categories) {
       categoryLog[name] = { 
-        usedSeconds: usedToday(categoryLog, name, today) + seconds, 
-        date: today 
+        usedSeconds: categoryUsedSeconds(categoryLog, name, limitDate) + seconds,
+        date: limitDate
       };
     }
     writes.push(customStorage.setLocal("categoryLog", categoryLog));
@@ -131,7 +128,6 @@ export async function shortestTimer(domain) {
     getCategoryLog()
   ]);
 
-  const today = toDateKey();
   let bestTimer = null;
 
   for (const category of blacklist) {
@@ -144,7 +140,7 @@ export async function shortestTimer(domain) {
     
     if (!isActive) continue;
 
-    const timeUsedToday = usedToday(categoryLog, category.timerName, today);
+    const timeUsedToday = categoryUsedSeconds(categoryLog, category.timerName, toLocalDateKey());
     const remaining = remainingMinutes(category.maxTime, timeUsedToday);
     
     if (!bestTimer || remaining < bestTimer.remaining) {

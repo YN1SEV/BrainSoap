@@ -3,6 +3,14 @@ export function toDateKey(date = new Date()) {
   return date.toISOString().slice(0, 10);
 }
 
+// local calendar date as a YYYY-MM-DD key
+export function toLocalDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 // the last 7 date keys oldest first ending on today
 export function last7DateKeys(today = new Date()) {
   return Array.from({ length: 7 }, (_, i) => {

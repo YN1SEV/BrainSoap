@@ -8,6 +8,7 @@ export const defaultSettings = {
     actions: ["popup"],        // "popup" | "redirect" | "notify"
     redirectUrl: "",           // used when action includes "redirect"
   },
+  defaultLimitResetMode: "local-midnight"
 };
 
 export const defaultBlacklist = [
