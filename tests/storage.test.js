@@ -1,7 +1,17 @@
-import { describe, test, expect, spyOn, mock, beforeEach } from 'bun:test';
+import { describe, test, expect, spyOn, mock, beforeEach, afterEach } from 'bun:test';
 // 1. Import mocks FIRST so globalThis.chrome is set up before customStorage is instantiated
 import { localStorage, syncStorage, triggerStorageChange } from './mock-storage.js';
 import { customStorage } from '../src/browser/storage.js'; // Your exported instance
+
+// Original mock implementations, restored in afterEach.
+// Without this, the throwing mocks installed by the unhappy-path tests leak
+// into every test file that runs after this one, because bun test executes
+// all files sequentially in one process with a shared module registry.
+const realApi = {
+  localStorageGet: localStorage.get,
+  localStorageRemove: localStorage.remove,
+  syncStorageGet: syncStorage.get,
+};
 
 describe('customStorage (StorageManager Instance)', () => {
   beforeEach(async () => {
@@ -25,6 +35,14 @@ describe('customStorage (StorageManager Instance)', () => {
 
     // Ensure initial promise has completed
     await customStorage.initPromise;
+  });
+
+  // Restore mocks that unhappy-path tests replace so they don't poison
+  // later test files (e.g. limit-reset.test.js -> "Sync read error" in CI).
+  afterEach(() => {
+    localStorage.get = realApi.localStorageGet;
+    localStorage.remove = realApi.localStorageRemove;
+    syncStorage.get = realApi.syncStorageGet;
   });
 
   // ==========================================
@@ -77,7 +95,7 @@ describe('customStorage (StorageManager Instance)', () => {
 
     test('checkSettingsExists sets defaults if no settings exist', async () => {
       const defaults = { exist: true, version: 1 };
-      
+
       await customStorage.checkSettingsExists(defaults);
 
       expect(await customStorage.getSync('settings')).toEqual(defaults);
